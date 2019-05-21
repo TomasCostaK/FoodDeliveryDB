@@ -55,7 +55,7 @@ Street={
 
 
 
-ids = 100
+ids = 0
 phones = 256000000
 
 #adicionar phone numbers
@@ -84,7 +84,7 @@ for i in range(30):
     phones+=1
     #Ordem: ID, name, contact, street, city, postalcode, type
     listRestaurants.write("{}\n".format(ids))
-    insert_restaurants.write("INSERT INTO FoodDelivery_FinalProject.Restaurant VALUES ('{}','{}','{}','{}','{}','{}', '{}');\n".format(ids,rest_name+" "+rest_lname,phone,street,city, postal_code, rest_type))
+    insert_restaurants.write("INSERT INTO FoodDelivery_FinalProject.Restaurant VALUES ('{}','{}','{}','{}','{}', '{}');\n".format(rest_name+" "+rest_lname,phone,street,city, postal_code, rest_type))
 
 insert_restaurants.close()
 listRestaurants.close()
