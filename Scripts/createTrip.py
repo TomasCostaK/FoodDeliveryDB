@@ -5,7 +5,7 @@ import string
 insert_trips = open('insert_trips.txt', 'w', encoding='utf8')
 
 trips_cost_file = open('trip_cost.txt', 'w', encoding='utf8')
-listDrivers = open('listDrivers.txt', 'r', encoding='utf8')
+listDrivers = open('driver_id.txt', 'r', encoding='utf8')
 
 driver_IDS = []
 
@@ -27,7 +27,7 @@ for i in range(100):
     #Distance
     distance=round(random.uniform(1.0, 20.0),3)
     #time formart = 00:00:00.0000000
-    time= str(random.randint(0,24))+':'+str(random.randint(0,59))+':'+str(random.randint(00,24))+'.'+str(random.randint(0,9999999))
+    time= str(random.randint(0,24))+':'+str(random.randint(0,59))+':'+str(random.randint(00,24))
     #for belongs table
     trips_cost_file.write("{}\n".format(trip_cost))
 

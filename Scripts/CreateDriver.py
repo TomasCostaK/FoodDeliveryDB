@@ -82,10 +82,7 @@ for i in range(50):
 
     
     #login name
-    
-    login=fname+"_"+lname+str(id)
-
-    
+    login=fname+"_"+lname+str(id)   
 
 
     # city and postal code and street
@@ -116,13 +113,7 @@ for i in range(50):
     lname = random.choice(last_names)
 
     #login name
-    
     login=fname+"_"+lname+str(id)
-
-    
-
-     
-
     
 
     # city and postal code
@@ -133,8 +124,6 @@ for i in range(50):
 
     #license_plates
     licenseplates=license_plates_used[99-i]
-    
-
 
     # phone
     phone = phones
