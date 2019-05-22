@@ -104,14 +104,14 @@ CREATE TABLE FoodDelivery_FinalProject.PaymentType(
 )
 
 CREATE TABLE FoodDelivery_FinalProject.Meal(
-	Name				VARCHAR(30) NOT NULL,
+	Name				VARCHAR(40) NOT NULL,
 	RestaurantID		INT	NOT NULL,
-	MealCost			DECIMAL(3,2) NOT NULL,
+	MealCost			DECIMAL(5,2) NOT NULL,
 	MainIngredient		VARCHAR(15),
 	SideIngredient		VARCHAR(15),
 	Drink				VARCHAR(15),
 
-	PRIMARY KEY(Name)
+	PRIMARY KEY(Name,RestaurantID)
 		
 )
 

@@ -12,7 +12,7 @@ driver_IDS = []
 for line in listDrivers:
   driver_IDS.append(line.strip('\n'))
 
-ids = 1000
+ids = 1
 
 # 100 meals
 for i in range(100):
@@ -27,12 +27,12 @@ for i in range(100):
     #Distance
     distance=round(random.uniform(1.0, 20.0),3)
     #time formart = 00:00:00.0000000
-    time= str(random.randint(0,24))+':'+str(random.randint(0,59))+':'+str(random.randint(00,24))
+    time= str(random.randint(0,23))+':'+str(random.randint(0,59))+':'+str(random.randint(00,59))
     #for belongs table
     trips_cost_file.write("{}\n".format(trip_cost))
 
     #final
-    insert_trips.write("INSERT INTO FoodDelivery_FinalProject.Trip VALUES ('{}','{}','{}','{}','{}');\n".format(Trip_ID,driver_ID,trip_cost,time,distance))
+    insert_trips.write("INSERT INTO FoodDelivery_FinalProject.Trip VALUES ('{}','{}','{}','{}');\n".format(driver_ID,trip_cost,time,distance))
 
 insert_trips.close()
 listDrivers.close()

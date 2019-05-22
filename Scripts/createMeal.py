@@ -34,10 +34,10 @@ for i in range(100):
     rand = random.uniform(0,1)
     #final
     if rand < probSide:
-        meal_name = main_ingredient + '_' + side_ingredient
+        meal_name = main_ingredient + '_' + side_ingredient + '_' + drink
         insert_meals.write("INSERT INTO FoodDelivery_FinalProject.Meal VALUES ('{}','{}','{}','{}','{}','{}');\n".format(meal_name, rest_ID ,meal_cost, main_ingredient, side_ingredient, drink))
     else:
-        meal_name = main_ingredient
+        meal_name = main_ingredient + '_' + drink
         insert_meals.write("INSERT INTO FoodDelivery_FinalProject.Meal VALUES ('{}','{}','{}','{}',NULL,'{}');\n".format(meal_name, rest_ID ,meal_cost, main_ingredient,drink))
     
     #Escrever meals cost

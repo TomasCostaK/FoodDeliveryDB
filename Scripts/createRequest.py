@@ -31,7 +31,7 @@ for line in listPayments:
 for line in listTripCost:
   trip_costs.append(line.strip('\n'))
 
-ids = 2000
+ids = 1
 i = 0
 
 # 100 meals
@@ -58,7 +58,7 @@ for i in range(31):
 
     i+=1
     #final
-    insert_request.write("INSERT INTO FoodDelivery_FinalProject.Request VALUES ('{}','{}','{}','{}');\n".format(request_ID,Client_ID,pay_ID,totalCost))
+    insert_request.write("INSERT INTO FoodDelivery_FinalProject.Request VALUES ('{}','{}','{}');\n".format(Client_ID,pay_ID,totalCost))
 
 insert_request.close()
 listClients.close()

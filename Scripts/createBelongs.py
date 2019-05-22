@@ -9,27 +9,27 @@ listRestName = open('name_restID.txt', 'r', encoding='utf8')
 
 names = []
 restaurants = []
-costs = []
+requests = []
 
 #Fill clients
 for line in listRestName:
     line = line.strip('\n')
     line = line.split(',')
     names.append(line[0])
-    costs.append(line[1])
+    restaurants.append(line[1])
 
 #Fill clients
 for line in listRequest:
-    restaurants.append(line.strip('\n'))
+    requests.append(line.strip('\n'))
 
 i = 0
 # 100 meals
 for i in range(100):
     name = names[i]
-    restaurant = random.choice(restaurants)
-    cost = costs[i]
+    restaurant = restaurants[i]
+    request = random.choice(requests)
 
-    insert_belongs.write("INSERT INTO FoodDelivery_FinalProject.Belongs VALUES ('{}','{}','{}');\n".format(name, restaurant, cost))
+    insert_belongs.write("INSERT INTO FoodDelivery_FinalProject.Belongs VALUES ('{}','{}','{}');\n".format(name, restaurant, request))
     i+=1
 
 insert_belongs.close()
