@@ -107,6 +107,7 @@ namespace FoodDelivery
         {
             panel1.Visible = true;
             panel2.Visible = false;
+            panel3.Visible = false;
             panel4.Visible = false;
         }
 
@@ -118,6 +119,7 @@ namespace FoodDelivery
         private void button4_Click(object sender, EventArgs e)
         {
             panel1.Visible = false;
+           
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -195,8 +197,9 @@ namespace FoodDelivery
         private void button6_Click(object sender, EventArgs e)
         {
             panel2.Visible = true;
+            panel1.Visible = true;
             panel4.Visible = false;
-            panel1.Visible = false;
+            
            
 
 
@@ -278,7 +281,14 @@ namespace FoodDelivery
         private void button5_Click(object sender, EventArgs e)
         {
             
-            
+            panel3.Visible = true;
+            panel1.Visible = true;
+            panel2.Visible = true;
+            panel4.Visible = false;
+
+
+
+
 
         }
 
@@ -301,9 +311,11 @@ namespace FoodDelivery
 
         private void button11_Click(object sender, EventArgs e)
         {
+            panel1.Visible = true;
+            panel2.Visible = true;
             panel4.Visible = true;
-            panel1.Visible = false;
-            panel2.Visible = false;
+            panel3.Visible = true;
+            
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -323,7 +335,55 @@ namespace FoodDelivery
 
             MessageBox.Show("ola " + ret);
 
-            panel2.Visible = false;
+            
+            panel1.Visible = false;
+           
+
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            
+            string Name = textBox25.Text;
+            string contact = textBox30.Text;
+            string street = textBox28.Text;
+            string city = textBox27.Text;
+            string postalCode = textBox26.Text;
+            string Type = textBox14.Text;
+
+
+
+            
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.AddRestaurant", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            
+            cmd.Parameters.Add("@pName", SqlDbType.NVarChar).Value = Name;
+            cmd.Parameters.Add("@Contact", SqlDbType.NChar, 9).Value = contact;
+            cmd.Parameters.Add("@Street", SqlDbType.NVarChar).Value = street;
+            cmd.Parameters.Add("@City", SqlDbType.NVarChar).Value = city;
+            cmd.Parameters.Add("@PostalCode ", SqlDbType.NVarChar).Value = postalCode;
+            cmd.Parameters.Add("@Type", SqlDbType.NVarChar).Value = Type;
+
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("ola " + cmd.Parameters["@responseMessage"].Value);
+
+            /*panel2.Visible = false;
+            panel3.Visible = false;
+            panel1.Visible = false;
+            panel4.Visible = false;*/
         }
 
         private void label37_Click(object sender, EventArgs e)
