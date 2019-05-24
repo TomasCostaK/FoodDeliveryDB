@@ -8,3 +8,13 @@ C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\
 C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.csproj.CoreCompileInputs.cache
 C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.exe
 C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.pdb
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\bin\Debug\FoodDelivery.exe.config
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\bin\Debug\FoodDelivery.exe
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\bin\Debug\FoodDelivery.pdb
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.csprojResolveAssemblyReference.cache
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.Form1.resources
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.Properties.Resources.resources
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.csproj.GenerateResource.Cache
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.csproj.CoreCompileInputs.cache
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.exe
+C:\Users\tomas\Downloads\FoodDeliveryDB-master\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.pdb

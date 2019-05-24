@@ -15,6 +15,7 @@ namespace FoodDelivery
     public partial class Form1 : Form
     {
         private SqlConnection cn;
+        public int thisDriverID;
         
 
         public Form1()
@@ -383,6 +384,35 @@ namespace FoodDelivery
             panel3.Visible = false;
             panel1.Visible = false;
             panel4.Visible = false;*/
+        }
+
+        private void label37_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand("SELECT * FROM FoodDelivery_FinalProject.Tracking where DriverID="+thisDriverID, cn);
+            SqlDataReader reader = cmd.ExecuteReader(); 
+            listBox1.Items.Clear();
+
+            while (reader.Read())
+            {
+                Tracking T = new Tracking();
+                T.gpslat = reader["GPS_Latitude"].ToString();
+                T.gpslong = reader["GPS_Longitude"].ToString();
+                T.date = reader["Date"].ToString();
+                T.hour = reader["Hour"].ToString();
+                listBox1.Items.Add(T);
+            }
+
+            cn.Close();
         }
     }
 }
