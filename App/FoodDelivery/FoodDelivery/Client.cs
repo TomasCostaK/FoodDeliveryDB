@@ -58,10 +58,13 @@ namespace FoodDelivery
             while (reader.Read())
             {
                 textBox1.Text = reader["LoginName"].ToString();
-                textBox1.Text = reader["LoginName"].ToString();
                 String temp = reader["Photo"].ToString();
-                byte[] image = Convert.FromBase64String(temp);
-                pictureBox1.Image = byteArrayToImage(image);
+                MessageBox.Show(temp);
+                if (temp != "") {
+                    byte[] image = Convert.FromBase64String(temp);
+                    pictureBox1.Image = byteArrayToImage(image);
+                }
+               
                 textBox3.Text = reader["Name"].ToString();
                 textBox4.Text = reader["Contact"].ToString();
                 textBox5.Text = reader["Street"].ToString();
@@ -118,6 +121,8 @@ namespace FoodDelivery
             button1.Hide();
             button2.Show();
             button3.Show();
+            button7.Show();
+            textBox10.Show();
             enableTextBoxs(false);
         }
 
@@ -126,13 +131,93 @@ namespace FoodDelivery
             button1.Show();
             button2.Hide();
             button3.Hide();
+            button7.Hide();
+            textBox10.Hide();
             enableTextBoxs(true);
             loadProfile();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            string LoginName = textBox1.Text;
+            string picturePath = textBox10.Text;
+            
 
+            string Name =textBox3.Text;
+            string contact = textBox4.Text;
+            string street = textBox5.Text;
+            string city =textBox7.Text;
+            string postalCode = textBox6.Text;
+            string cardNumber = textBox8.Text;
+            string cardExpiration=textBox9.Text;
+
+
+            string picture = null;
+
+            //Sign up
+            if (!(string.IsNullOrEmpty(picturePath)))
+            {
+                using (Image image = Image.FromFile(picturePath))
+                {
+                    using (MemoryStream m = new MemoryStream())
+                    {
+                        image.Save(m, image.RawFormat);
+                        byte[] imageBytes = m.ToArray();
+
+                        picture = Convert.ToBase64String(imageBytes);
+
+                    }
+
+                }
+            }
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.UpdateUser", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@pLogin", SqlDbType.NVarChar, 50).Value = LoginName;
+            cmd.Parameters.Add("@pName", SqlDbType.NVarChar).Value = Name;
+            cmd.Parameters.Add("@Contact", SqlDbType.NChar, 9).Value = contact;
+            if (picture == "") {
+                cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = null;
+            }
+            else
+            cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = picture;
+            cmd.Parameters.Add("@Street", SqlDbType.NVarChar).Value = street;
+            cmd.Parameters.Add("@City", SqlDbType.NVarChar).Value = city;
+            cmd.Parameters.Add("@PostalCode ", SqlDbType.NVarChar).Value = postalCode;
+            cmd.Parameters.Add("@CardNumber", SqlDbType.NChar, 16).Value = cardNumber;
+            cmd.Parameters.Add("@CardExpirationDate", SqlDbType.NChar, 5).Value = cardExpiration;
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("ola " + cmd.Parameters["@responseMessage"].Value);
+
+            button1.Show();
+            button2.Hide();
+            button3.Hide();
+            button7.Hide();
+            textBox10.Hide();
+            enableTextBoxs(true);
+            loadProfile();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFile = new OpenFileDialog();
+            if (openFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                String filename = openFile.FileName;
+                textBox10.Text = filename;
+            }
         }
     }
 }
