@@ -36,7 +36,7 @@ CREATE TABLE FoodDelivery_FinalProject.Tracking(
 	GPS_Longitude	DECIMAL(9,6) NOT NULL,					
 	[Date]			DATE,
 	Hour			TIME NOT NULL,
-	DriverID		INT	NOT NULL,
+	DriverID		VARCHAR(50)NOT NULL,
 	
 	PRIMARY KEY(DriverID,GPS_LATITUDE,GPS_LONGITUDE,Hour) 
 
@@ -59,7 +59,7 @@ CREATE TABLE FoodDelivery_FinalProject.Restaurant(
 )
 
 CREATE TABLE FoodDelivery_FinalProject.Driver(
-	DriverID			INT	IDENTITY(1,1) NOT NULL, --auto-increment feature
+	DriverID			VARCHAR(50) NOT NULL, --auto-increment feature
 	Name				VARCHAR(40) NOT NULL,
 	Contact				CHAR(9)	NOT NULL,
 	Photo				VARBINARY(MAX),
@@ -79,6 +79,7 @@ CREATE TABLE FoodDelivery_FinalProject.Trip(
 	TravelCost			DECIMAL(3,2) NOT NULL,
 	EstimatedTime		TIME,
 	Distance			DECIMAL(5,3),--20.400 km
+	RequestID			INT NOT NULL,
 
 	PRIMARY KEY(TripID)
 		
@@ -104,14 +105,14 @@ CREATE TABLE FoodDelivery_FinalProject.PaymentType(
 )
 
 CREATE TABLE FoodDelivery_FinalProject.Meal(
-	Name				VARCHAR(40) NOT NULL,
+	Name				VARCHAR(30) NOT NULL,
 	RestaurantID		INT	NOT NULL,
-	MealCost			DECIMAL(5,2) NOT NULL,
+	MealCost			DECIMAL(3,2) NOT NULL,
 	MainIngredient		VARCHAR(15),
 	SideIngredient		VARCHAR(15),
 	Drink				VARCHAR(15),
 
-	PRIMARY KEY(Name,RestaurantID)
+	PRIMARY KEY(Name)
 		
 )
 
@@ -127,6 +128,9 @@ CREATE TABLE FoodDelivery_FinalProject.Belongs(
 
 --Tracking
 alter table FoodDelivery_FinalProject.Tracking add constraint DriverTracking foreign key(DriverID) references FoodDelivery_FinalProject.Driver (DriverID);
+
+--Driver
+alter table FoodDelivery_FinalProject.Driver add constraint DriverLicense foreign key(LicensePlate) references FoodDelivery_FinalProject.Vehicle (LicensePlate);
 
 --VehicleType
 alter table FoodDelivery_FinalProject.VehicleType add constraint VehicleTypeLicensePlate foreign key(LicensePlate) references FoodDelivery_FinalProject.Vehicle (LicensePlate);

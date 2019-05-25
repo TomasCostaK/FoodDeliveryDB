@@ -1,10 +1,9 @@
 ALTER TABLE  FoodDelivery_FinalProject.Client
-ALTER COLUMN Photo VARCHAR(MAX) 
-
+ADD PasswordHash BINARY(64) NOT NULL
 SELECT *
 FROM FoodDelivery_FinalProject.Client
 
-CREATE PROCEDURE FoodDelivery_FinalProject.AddUser
+ALTER PROCEDURE FoodDelivery_FinalProject.AddUser
 
     @pLogin NVARCHAR(50), 
     @pPassword NVARCHAR(50),
@@ -26,7 +25,7 @@ BEGIN
     BEGIN TRY
 
         INSERT INTO FoodDelivery_FinalProject.Client (Name,Contact,Photo,Street,City,PostalCode,CardNumber,CardExpirationDate,Salt,PasswordHash,LoginName )
-        VALUES(@pName,@Contact,@Image,@Street,@City,@PostalCode,@CardNumber,@CardExpirationDate,@salt, HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))),@pLogin)
+        VALUES(@pName,@Contact,@Image,@Street,@City,@PostalCode,EncryptByPassPhrase('12345',@CardNumber),@CardExpirationDate,@salt, HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))),@pLogin)
 
        SET @responseMessage='Success'
 
@@ -39,7 +38,9 @@ END
 
 DECLARE @responseMessage NVARCHAR(250)
 
-EXEC FoodDelivery_FinalProject.AddUser
+EXEC FoodDelivery_FinalProject.AddDriver
+		  @LicensePlate='12-AA-33',
+		  @Model='Tesla',
           @pLogin = N'Admin',
           @pPassword = N'123',
           @pName = N'Admin',
@@ -48,6 +49,5 @@ EXEC FoodDelivery_FinalProject.AddUser
 		  @Street='ola',
 		  @City='adeus',
 		  @PostalCode='4812',
-		  @CardNumber=NULL,
-		  @CardExpirationDate=NULL,
+		  
           @responseMessage=@responseMessage OUTPUT
