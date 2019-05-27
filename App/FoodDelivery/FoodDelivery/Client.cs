@@ -82,6 +82,38 @@ namespace FoodDelivery
             cn.Close();
         }
 
+        private void loadRestaurants()
+        {
+            if (!verifySGBDConnection())
+                return;
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurant()", cn);
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            listView1.Columns.Add("Name", 150);
+            //listView1.Dock = DockStyle.Fill;
+
+            listView1.Items.Clear();
+
+            while (reader.Read())
+            {
+                string text= reader["Name"].ToString();
+                var row = new string[] { text };
+                var lvi = new ListViewItem(row);
+                listView1.View=View.Details;
+                listView1.Items.Add(lvi);
+                
+            }
+
+
+
+
+
+
+            cn.Close();
+        }
+
         public Image byteArrayToImage(byte[] byteArrayIn)
         {
             Image returnImage = null;
@@ -96,6 +128,7 @@ namespace FoodDelivery
         {
             cn = getSGBDConnection();
             loadProfile();
+            loadRestaurants();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -221,6 +254,16 @@ namespace FoodDelivery
                 String filename = openFile.FileName;
                 textBox10.Text = filename;
             }
+        }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
