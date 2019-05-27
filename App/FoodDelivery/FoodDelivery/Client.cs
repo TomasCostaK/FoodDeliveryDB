@@ -177,11 +177,14 @@ namespace FoodDelivery
             cmd.Parameters.Add("@pLogin", SqlDbType.NVarChar, 50).Value = LoginName;
             cmd.Parameters.Add("@pName", SqlDbType.NVarChar).Value = Name;
             cmd.Parameters.Add("@Contact", SqlDbType.NChar, 9).Value = contact;
-            if (picture == "") {
-                cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = null;
+            if (picture == "")
+            {
+                cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = "nothing";
             }
-            else
-            cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = picture;
+            else {
+                cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = picture;
+
+            }
             cmd.Parameters.Add("@Street", SqlDbType.NVarChar).Value = street;
             cmd.Parameters.Add("@City", SqlDbType.NVarChar).Value = city;
             cmd.Parameters.Add("@PostalCode ", SqlDbType.NVarChar).Value = postalCode;
