@@ -126,6 +126,45 @@ namespace FoodDelivery
             cn.Close();
         }
 
+        private void loadOrders()
+        {
+            if (!verifySGBDConnection())
+                return;
+            
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM  FoodDelivery_FinalProject.getRestaurantOrder('"+username+"')", cn); ;
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+            listView2.Items.Clear();
+
+            while (reader.Read())
+            {
+                string OrderID = reader["RequestID"].ToString();
+                MessageBox.Show(Name);
+                string PaymentType = reader["Type"].ToString();
+                string TotalCost = reader["TotalCost"].ToString();
+                string NameMeal = reader["Name"].ToString();
+                var row = new string[] {OrderID,PaymentType,TotalCost,NameMeal};
+                var lvi = new ListViewItem(row);
+                listView2.View = View.Details;
+                listView2.Items.Add(lvi);
+
+            }
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+
+
+
+
+
+            cn.Close();
+        }
+
         public Image byteArrayToImage(byte[] byteArrayIn)
         {
             Image returnImage = null;
@@ -142,6 +181,7 @@ namespace FoodDelivery
             createTable();
             populateComboBox();
             populateComboBox1();
+            loadOrders();
 
 
 
@@ -158,7 +198,11 @@ namespace FoodDelivery
             listView1.Columns.Add("City", 150);
             listView1.Columns.Add("Street", 150);
             listView1.Columns.Add("Type", 90);
-           
+            listView2.Columns.Add("ID", 150);
+            listView2.Columns.Add("PaymentType", 150);
+            listView2.Columns.Add("Total Cost", 150);
+            listView2.Columns.Add("Meal Name", 150);
+
         }
 
         private void populateComboBox() {
