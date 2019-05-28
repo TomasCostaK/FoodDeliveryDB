@@ -21,7 +21,6 @@ C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\
 C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.Form1.resources
 C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.Form2.resources
 C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.Form3.resources
-C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.Form4.resources
 C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.Form5.resources
 C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.Properties.Resources.resources
 C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.csproj.GenerateResource.Cache
@@ -44,3 +43,5 @@ C:\Users\tomas\Downloads\ProjetoBD\App\FoodDelivery\FoodDelivery\obj\Debug\FoodD
 C:\Users\tomas\Downloads\ProjetoBD\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.csproj.CoreCompileInputs.cache
 C:\Users\tomas\Downloads\ProjetoBD\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.DriverSignUp.resources
 C:\Users\tomas\Downloads\ProjetoBD\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.DriverPage.resources
+C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.DriverPage.resources
+C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.DriverSignUp.resources
