@@ -105,6 +105,10 @@ namespace FoodDelivery
             cmd.ExecuteNonQuery();
 
             MessageBox.Show("ola " + cmd.Parameters["@responseMessage"].Value);
+
+            Form v1 = new DriverPage();
+            v1.Show();
+            this.Close();
         }
 
         private void button10_Click(object sender, EventArgs e)

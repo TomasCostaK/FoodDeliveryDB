@@ -43,3 +43,4 @@ C:\Users\tomas\Downloads\ProjetoBD\App\FoodDelivery\FoodDelivery\obj\Debug\FoodD
 C:\Users\tomas\Downloads\ProjetoBD\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.csproj.GenerateResource.cache
 C:\Users\tomas\Downloads\ProjetoBD\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.csproj.CoreCompileInputs.cache
 C:\Users\tomas\Downloads\ProjetoBD\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.DriverSignUp.resources
+C:\Users\tomas\Downloads\ProjetoBD\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.DriverPage.resources
