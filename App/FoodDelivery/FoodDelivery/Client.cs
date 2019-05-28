@@ -27,7 +27,7 @@ namespace FoodDelivery
 
         private SqlConnection getSGBDConnection()
         {
-            return new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101 ;Initial Catalog = p5g10; uid =p5g10 ;password =PasssNovaBD!2018 ");
+            return new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101 ;Initial Catalog = p5g10; uid =p5g10 ;password =PasssNovaBD!2018;MultipleActiveResultSets=True ");
 
 
         }
@@ -74,6 +74,9 @@ namespace FoodDelivery
                 textBox9.Text = reader["CardExpirationDate"].ToString();
             }
 
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
 
 
 
@@ -86,25 +89,34 @@ namespace FoodDelivery
         {
             if (!verifySGBDConnection())
                 return;
+            string op=comboBox1.Text;
+            string op3 = comboBox3.Text;
+            string op2 = comboBox2.Text;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurant()", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantByType('" + op + "','"+op3+"') ORDER BY "+op2, cn); ;
 
 
             SqlDataReader reader = cmd.ExecuteReader();
-            listView1.Columns.Add("Name", 150);
+            
             //listView1.Dock = DockStyle.Fill;
 
             listView1.Items.Clear();
 
             while (reader.Read())
             {
-                string text= reader["Name"].ToString();
-                var row = new string[] { text };
+                string Name= reader["Name"].ToString();
+                string contact = reader["Contact"].ToString();
+                string city = reader["City"].ToString();
+                string street = reader["Street"].ToString();
+                string type = reader["Type"].ToString();
+                var row = new string[] { Name,contact,city,street,type };
                 var lvi = new ListViewItem(row);
                 listView1.View=View.Details;
                 listView1.Items.Add(lvi);
                 
             }
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
 
 
 
@@ -127,8 +139,95 @@ namespace FoodDelivery
         private void Client_Load_1(object sender, EventArgs e)
         {
             cn = getSGBDConnection();
+            createTable();
+            populateComboBox();
+            populateComboBox1();
+
+
+
             loadProfile();
-            loadRestaurants();
+           
+        }
+        
+
+
+
+        private void createTable() {
+            listView1.Columns.Add("Name", 150);
+            listView1.Columns.Add("Contact", 150);
+            listView1.Columns.Add("City", 150);
+            listView1.Columns.Add("Street", 150);
+            listView1.Columns.Add("Type", 90);
+           
+        }
+
+        private void populateComboBox() {
+            if (!verifySGBDConnection())
+                return;
+
+
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantType()", cn);
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+            var dataSource = new List<string>();
+            dataSource.Add("Todos");
+
+            while (reader.Read())
+            {
+                
+                string type = reader["Type"].ToString();
+                dataSource.Add(type);
+
+            }
+
+            comboBox1.DataSource = dataSource;
+
+
+
+
+
+
+            cn.Close();
+        }
+
+        private void populateComboBox1()
+        {
+            if (!verifySGBDConnection())
+                return;
+
+
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantCity()", cn);
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+            var dataSource = new List<string>();
+            dataSource.Add("Todos");
+
+            while (reader.Read())
+            {
+
+                string type = reader["City"].ToString();
+                dataSource.Add(type);
+
+            }
+
+            comboBox3.DataSource = dataSource;
+
+
+
+
+
+
+            cn.Close();
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -264,6 +363,66 @@ namespace FoodDelivery
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void label12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+            if (!verifySGBDConnection())
+                return;
+
+            string name = textBox11.Text;
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantName('"+name+"')", cn);
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            
+            //listView1.Dock = DockStyle.Fill;
+
+            listView1.Items.Clear();
+
+            while (reader.Read())
+            {
+                string Name = reader["Name"].ToString();
+                string contact = reader["Contact"].ToString();
+                string city = reader["City"].ToString();
+                string street = reader["Street"].ToString();
+                string type = reader["Type"].ToString();
+                var row = new string[] { Name, contact, city, street, type };
+                var lvi = new ListViewItem(row);
+                listView1.View = View.Details;
+                listView1.Items.Add(lvi);
+
+            }
+
+
+
+
+
+
+            cn.Close();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadRestaurants();
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadRestaurants();
+
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadRestaurants();
         }
     }
 }
