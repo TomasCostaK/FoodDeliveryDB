@@ -424,5 +424,10 @@ namespace FoodDelivery
         {
             loadRestaurants();
         }
+
+        private void Client_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
