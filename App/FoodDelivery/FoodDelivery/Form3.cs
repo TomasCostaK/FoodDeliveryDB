@@ -112,5 +112,12 @@ namespace FoodDelivery
                 textBox8.Text = filename;
             }
         }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Form v1 = new Form1();
+            v1.Show();
+            this.Close();
+        }
     }
 }

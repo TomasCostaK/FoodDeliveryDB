@@ -12,11 +12,11 @@ using System.Windows.Forms;
 
 namespace FoodDelivery
 {
-    public partial class Form4 : Form
+    public partial class DriverSignUp : Form
     {
         private SqlConnection cn;
 
-        public Form4()
+        public DriverSignUp()
         {
             InitializeComponent();
         }
@@ -115,6 +115,13 @@ namespace FoodDelivery
                 String filename = openFile.FileName;
                 textBox19.Text = filename;
             }
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Form v1 = new Form1();
+            v1.Show();
+            this.Close();
         }
     }
 }
