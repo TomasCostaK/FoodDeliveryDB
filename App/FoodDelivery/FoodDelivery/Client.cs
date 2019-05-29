@@ -192,6 +192,7 @@ namespace FoodDelivery
         {
             cn = getSGBDConnection();
             createTable();
+            createMealTable();
             populateComboBox();
             populateComboBox1();
             loadOrders();
@@ -495,8 +496,9 @@ namespace FoodDelivery
 
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            panel1.Visible = true;
+            //panel1.Visible = true;
             
+            /*
             createMealTable();
             ListView.SelectedIndexCollection indices = listView3.SelectedIndices;
             if (listView3.SelectedItems.Count > 0) {
@@ -509,8 +511,8 @@ namespace FoodDelivery
                     MessageBox.Show("");
                 }
 
-            }
-            
+            }*/
+
             //ListGrid media = (ListGrid)listView3.SelectedItems[0];
             //listView3.SelectedItems[0].SubItems[0].Text);
 
@@ -526,8 +528,59 @@ namespace FoodDelivery
         {
 
         }
+        private void loadMealDetails(String RequestID)
+        {
 
-        
+            if (!verifySGBDConnection())
+                return;
+
+            
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantMeal('" + RequestID + "')", cn);
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+            listView3.Items.Clear();
+            string MealCost="";
+            while (reader.Read())
+            {
+                string Name = reader["Name"].ToString();
+                MealCost = reader["MealCost"].ToString();
+                string MainIngredient = reader["MainIngredient"].ToString();
+                string SideIngredient = reader["SideIngredient"].ToString();
+                string Drink = reader["Drink"].ToString();
+                var row = new string[] { Name, MainIngredient,SideIngredient,Drink };
+                var lvi = new ListViewItem(row);
+                listView3.View = View.Details;
+                listView3.Items.Add(lvi);
+
+            }
+            textBox12.Text = MealCost+" €";
+
+
+
+
+
+
+            cn.Close();
+
+
+        }
+
+        private void listView2_MouseClick(object sender, MouseEventArgs e)
+        {   
+            string RequestID = listView2.SelectedItems[0].SubItems[0].Text;
+            loadMealDetails(RequestID);
+            panel1.Visible = true;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+        }
     }
 
     class ListGrid

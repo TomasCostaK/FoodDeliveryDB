@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem17 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem18 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem13 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem14 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem15 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem16 = new System.Windows.Forms.ListViewItem("");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBox10 = new System.Windows.Forms.TextBox();
@@ -97,6 +97,7 @@
             this.listView3 = new System.Windows.Forms.ListView();
             this.label12 = new System.Windows.Forms.Label();
             this.listView2 = new System.Windows.Forms.ListView();
+            this.button5 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -469,8 +470,8 @@
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2});
+            listViewItem17,
+            listViewItem18});
             this.listView1.Location = new System.Drawing.Point(31, 96);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(717, 408);
@@ -527,6 +528,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.button5);
             this.panel1.Controls.Add(this.textBox20);
             this.panel1.Controls.Add(this.label26);
             this.panel1.Controls.Add(this.textBox19);
@@ -550,9 +552,9 @@
             this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.listView3);
             this.panel1.Controls.Add(this.label12);
-            this.panel1.Location = new System.Drawing.Point(53, 35);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(965, 436);
+            this.panel1.Size = new System.Drawing.Size(1098, 544);
             this.panel1.TabIndex = 6;
             this.panel1.Visible = false;
             // 
@@ -746,8 +748,8 @@
             this.listView3.FullRowSelect = true;
             this.listView3.GridLines = true;
             this.listView3.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3,
-            listViewItem4});
+            listViewItem13,
+            listViewItem14});
             this.listView3.Location = new System.Drawing.Point(25, 99);
             this.listView3.Name = "listView3";
             this.listView3.Size = new System.Drawing.Size(267, 239);
@@ -769,14 +771,25 @@
             this.listView2.FullRowSelect = true;
             this.listView2.GridLines = true;
             this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem5,
-            listViewItem6});
+            listViewItem15,
+            listViewItem16});
             this.listView2.Location = new System.Drawing.Point(53, 87);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(717, 408);
             this.listView2.TabIndex = 5;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.SelectedIndexChanged += new System.EventHandler(this.listView2_SelectedIndexChanged);
+            this.listView2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView2_MouseClick);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(450, 478);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(109, 35);
+            this.button5.TabIndex = 29;
+            this.button5.Text = "Back";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // Client
             // 
@@ -867,5 +880,6 @@
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox textBox18;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Button button5;
     }
 }
