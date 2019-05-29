@@ -17,7 +17,29 @@ namespace FoodDelivery
     {
         private SqlConnection cn;
         private String username;
-        
+        Dictionary<string, string[]> GPS = new Dictionary<string, string[]>
+        { {"Aveiro", new String [2] {"40.64427", "-8.64554" } },
+               {"Beja",new String [2]  {"38.015060"," -7.863230" } },
+               {"Braga",new String [2] {"41.550320","-8.420050"}},
+               {"Bragança",new String [2] {"41.805820", "-6.757190"}},
+               {"Castelo Branco",new String [2] {"39.822190","-7.490870"}},
+               {"Coimbra",new String [2] {"40.205640","-8.419550"}},
+               {"Évora",new String [2] {"38.566670"," -7.900000"}},
+               {"Faro",new String [2] {"37.019370","-7.932230"}},
+               {"Guarda",new String [2] {"40.537330","-7.265750"}},
+               {"Leiria",new String [2] {"39.743620"," -8.807050"}},
+               {"Lisboa",new String [2] {"38.716670"," -9.133330"}},
+               
+               {"Portalegre",new String [2] {"39.293790","-7.431220"}},
+               {"Porto",new String [2] {"41.149610","-8.610990"}},
+               {"Santarém",new String [2] {"39.233330","-8.683330"}},
+               {"Setúbal",new String [2] {"38.524400","-8.888200"}},
+               {"Viana do Castelo",new String [2] {"41.693230","-8.832870"}},
+               {"Vila Real",new String [2] {"41.300620"," -7.744130"}},
+            { "Viseu",new String [2] {"40.661010"," -7.909710"}},
+        };
+
+
 
         public Client(String username)
         {
@@ -61,7 +83,6 @@ namespace FoodDelivery
             {
                 textBox1.Text = reader["LoginName"].ToString();
                 String temp = reader["Photo"].ToString();
-                MessageBox.Show(temp);
                 if (temp != "") {
                     byte[] image = Convert.FromBase64String(temp);
                     pictureBox1.Image = byteArrayToImage(image);
@@ -545,10 +566,11 @@ namespace FoodDelivery
 
             listView3.Items.Clear();
             string MealCost="";
+            double TotalMealCost=0;
             while (reader.Read())
             {
                 string Name = reader["Name"].ToString();
-                MealCost = reader["MealCost"].ToString();
+                TotalMealCost+=Convert.ToDouble(reader["MealCost"]);
                 string MainIngredient = reader["MainIngredient"].ToString();
                 string SideIngredient = reader["SideIngredient"].ToString();
                 string Drink = reader["Drink"].ToString();
@@ -558,8 +580,87 @@ namespace FoodDelivery
                 listView3.Items.Add(lvi);
 
             }
-            textBox12.Text = MealCost+" €";
+            textBox12.Text = TotalMealCost+" €";
 
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRequest('" + RequestID + "')", cn);
+            reader = cmd.ExecuteReader();
+            string driverID = "";
+            while (reader.Read())
+            {
+                string totalCost = reader["TotalCost"].ToString();
+                string paymentID = reader["PaymentID"].ToString();
+                string travelCost= reader["TravelCost"].ToString();
+                string estimatedTime = reader["EstimatedTime"].ToString();
+                string distance = reader["Distance"].ToString();
+                driverID = reader["DriverID"].ToString();
+
+
+                textBox13.Text = travelCost+" €";
+                textBox14.Text = totalCost+" €";
+                textBox19.Text = estimatedTime;
+                textBox20.Text = distance+" km";
+
+            }
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getDriverDetails('" + driverID + "')", cn);
+            reader = cmd.ExecuteReader();
+            
+            while (reader.Read())
+            {
+                string Name = reader["Name"].ToString();
+                string Contact = reader["Contact"].ToString();
+                string licensePlate = reader["LicensePlate"].ToString();
+                string model = reader["Model"].ToString();
+                string temp = reader["Photo"].ToString();
+                if (temp != "")
+                {
+                    byte[] image = Convert.FromBase64String(temp);
+                    pictureBox2.Image = byteArrayToImage(image);
+                }
+
+                label27.Text = Contact;
+                textBox17.Text = Name;
+                textBox16.Text = model;
+                textBox15.Text = licensePlate;
+               
+
+            }
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getDriverTracking('" + driverID + "')", cn);
+            reader = cmd.ExecuteReader();
+            string latitude = "";
+            string longitude = "";
+
+            while (reader.Read())
+            {
+                latitude = reader["GPS_Latitude"].ToString();
+                longitude = reader["GPS_Longitude"].ToString();
+                
+
+                
+
+
+            }
+            //MessageBox.Show(GPS["Lisboa"][0].Length+" "+latitude.Length);
+            //MessageBox.Show(Convert.ToDouble(latitude) + " "+longitude+"--" + Convert.ToDecimal(GPS["Lisboa"][0].Trim()));
+
+
+            foreach (var city in GPS)
+            {
+                MessageBox.Show(city.Value[0]+"  "+latitude);
+                if (Equals(latitude.Normalize(),city.Value[0].Normalize())) {
+                    
+                    textBox18.Text = city.Key;
+                }
+            }
 
 
 
