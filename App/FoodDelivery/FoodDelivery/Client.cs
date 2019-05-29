@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace FoodDelivery
     {
         private SqlConnection cn;
         private String username;
+        
 
         public Client(String username)
         {
@@ -132,7 +134,7 @@ namespace FoodDelivery
                 return;
             
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM  FoodDelivery_FinalProject.getRestaurantOrder('"+username+"')", cn); ;
+            SqlCommand cmd = new SqlCommand("SELECT * FROM  FoodDelivery_FinalProject.getRestaurantOrderComplex('"+username+"')", cn); ;
 
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -144,11 +146,22 @@ namespace FoodDelivery
             while (reader.Read())
             {
                 string OrderID = reader["RequestID"].ToString();
-                MessageBox.Show(Name);
-                string PaymentType = reader["Type"].ToString();
+                
+                string PaymentType = reader["PaymentType"].ToString();
                 string TotalCost = reader["TotalCost"].ToString();
-                string NameMeal = reader["Name"].ToString();
-                var row = new string[] {OrderID,PaymentType,TotalCost,NameMeal};
+                string EstimatedTime = reader["EstimatedTime"].ToString();
+                bool Status =Convert.ToBoolean(reader.GetOrdinal("RequestStatus"));
+                
+                string RequestStatus = "";
+                if ( Status)
+                {
+                    RequestStatus = "In transit";
+                }
+                else {
+                    RequestStatus = "Delivered";
+                }
+               
+                var row = new string[] {OrderID,PaymentType,TotalCost,EstimatedTime,RequestStatus};
                 var lvi = new ListViewItem(row);
                 listView2.View = View.Details;
                 listView2.Items.Add(lvi);
@@ -201,7 +214,18 @@ namespace FoodDelivery
             listView2.Columns.Add("ID", 150);
             listView2.Columns.Add("PaymentType", 150);
             listView2.Columns.Add("Total Cost", 150);
-            listView2.Columns.Add("Meal Name", 150);
+            listView2.Columns.Add("Estimated Time", 150);
+            listView2.Columns.Add("RequestStatus", 90);
+
+        }
+
+        private void createMealTable()
+        {
+            
+            listView3.Columns.Add("Name", 150);
+            listView3.Columns.Add("Main Ingredient", 150);
+            listView3.Columns.Add("Side Ingredient", 150);
+            listView3.Columns.Add("Drink", 150);
 
         }
 
@@ -468,5 +492,52 @@ namespace FoodDelivery
         {
             loadRestaurants();
         }
+
+        private void listView2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            panel1.Visible = true;
+            
+            createMealTable();
+            ListView.SelectedIndexCollection indices = listView3.SelectedIndices;
+            if (listView3.SelectedItems.Count > 0) {
+                if (listView3.SelectedItems[0].Tag != null)
+                {
+                    MessageBox.Show(listView3.SelectedItems[0].Tag.ToString());
+                }
+                else
+                {
+                    MessageBox.Show("");
+                }
+
+            }
+            
+            //ListGrid media = (ListGrid)listView3.SelectedItems[0];
+            //listView3.SelectedItems[0].SubItems[0].Text);
+
+            //filTable();
+        }
+
+        private void label16_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label22_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
+    }
+
+    class ListGrid
+    {
+        public string Name{ get; set; }
+        public string MealCost { get; set; }
+        public string MainIngredient { get; set; }
+        public string SideIngredient { get; set; }
+        public string Drink { get; set; }
+
+
     }
 }
