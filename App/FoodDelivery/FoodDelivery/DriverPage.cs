@@ -192,7 +192,7 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.Tracking WHERE DriverID='Filipa_Gual100000090'", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getTracking('Filipa_Gual100000090')", cn);
 
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -221,7 +221,7 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.Tracking" ,cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getTracking('" + driverID + "')" ,cn);
 
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -244,9 +244,43 @@ namespace FoodDelivery
 
             cn.Close();
         }
-    
+
+        private void loadRequests()
+        {
+            if (!verifySGBDConnection())
+                return;
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getTracking('" + driverID + "')", cn);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+            listView2.Items.Clear();
+
+            while (reader.Read())
+            {
+                string lat = reader["GPS_Latitude"].ToString();
+                string longi = reader["GPS_Latitude"].ToString();
+                string trdate = reader["Date"].ToString();
+                string hour = reader["Hour"].ToString();
+                var row = new string[] { lat, longi, trdate, hour };
+                var lvi = new ListViewItem(row);
+                listView2.View = View.Details;
+                listView2.Items.Add(lvi);
+
+            }
+
+            cn.Close();
+        }
+
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label1_Click_1(object sender, EventArgs e)
         {
 
         }
