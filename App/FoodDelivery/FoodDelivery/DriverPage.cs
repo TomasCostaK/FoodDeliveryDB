@@ -54,6 +54,15 @@ namespace FoodDelivery
 
         }
 
+        private void createTable2()
+        {
+            listView1.Columns.Add("RequestID", 120);
+            listView1.Columns.Add("ClientID", 120);
+            listView1.Columns.Add("TravelCost", 120);
+            listView1.Columns.Add("EstimatedTime", 150);
+
+        }
+
         private void populateComboBox1()
         {
             if (!verifySGBDConnection())
@@ -132,6 +141,7 @@ namespace FoodDelivery
             textBox7.ReadOnly = check;
             textBox8.ReadOnly = check;
             textBox9.ReadOnly = check;
+            textBox11.ReadOnly = check;
         }
 
         private void TabPage2_Click(object sender, EventArgs e)
@@ -143,9 +153,12 @@ namespace FoodDelivery
         {
             cn = getSGBDConnection();
             createTable();
+            createTable2();
             //populateComboBox1();
 
+            enableTextBoxs(true);
             loadTrackings();
+            loadRequests();
             loadProfile();
         }
 
@@ -190,7 +203,10 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getTracking('Filipa_Gual100000090')", cn);
+            string op1 = comboBox1.Text;
+            string userlookingfor = button6.Text;
+
+            SqlCommand cmd = new SqlCommand("exec FoodDelivery_FinalProject.getAllTrackings '" + op1 + "'", cn);
 
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -213,13 +229,15 @@ namespace FoodDelivery
 
             cn.Close();
         }
-
+        
         private void loadTrackings()
         {
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getTracking('" + driverID + "')" ,cn);
+            string op1 = comboBox1.Text;
+            MessageBox.Show(op1);
+            SqlCommand cmd = new SqlCommand("exec FoodDelivery_FinalProject.getAllTrackings '"+op1 + "'", cn);
 
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -248,7 +266,7 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRequests('" + driverID + "')", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getOrders('Mariana_Vasconcelos100000080')", cn);
 
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -258,14 +276,14 @@ namespace FoodDelivery
 
             while (reader.Read())
             {
-                string lat = reader["GPS_Latitude"].ToString();
-                string longi = reader["GPS_Latitude"].ToString();
-                string trdate = reader["Date"].ToString();
-                string hour = reader["Hour"].ToString();
-                var row = new string[] { lat, longi, trdate, hour };
+                string req = reader["RequestID"].ToString();
+                string cli = reader["ClientID"].ToString();
+                string cost = reader["TravelCost"].ToString();
+                string time = reader["EstimatedTime"].ToString();
+                var row = new string[] { req, cli, cost, time };
                 var lvi = new ListViewItem(row);
-                listView2.View = View.Details;
-                listView2.Items.Add(lvi);
+                listView1.View = View.Details;
+                listView1.Items.Add(lvi);
 
             }
 
@@ -275,7 +293,7 @@ namespace FoodDelivery
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            loadTrackings();
         }
 
 
