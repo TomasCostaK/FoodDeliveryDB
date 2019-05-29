@@ -100,6 +100,12 @@ namespace FoodDelivery
                     client.Show();
                     this.Hide();
                 }
+                if (type == "Driver Login")
+                {
+                    Form driver = new DriverPage(logname);
+                    driver.Show();
+                    this.Hide();
+                }
             }
         }
     }
