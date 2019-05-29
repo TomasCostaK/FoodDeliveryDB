@@ -86,15 +86,13 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getProfile('" + driverID + "')", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getDriver('" + driverID + "')", cn);
 
 
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                textBox1.Text = reader["LoginName"].ToString();
                 String temp = reader["Photo"].ToString();
-                MessageBox.Show(temp);
                 if (temp != "")
                 {
                     byte[] image = Convert.FromBase64String(temp);
@@ -250,7 +248,7 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getTracking('" + driverID + "')", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRequests('" + driverID + "')", cn);
 
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -280,9 +278,7 @@ namespace FoodDelivery
 
         }
 
-        private void Label1_Click_1(object sender, EventArgs e)
-        {
 
-        }
+
     }
 }

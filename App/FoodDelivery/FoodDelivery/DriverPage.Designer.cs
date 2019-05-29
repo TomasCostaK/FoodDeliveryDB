@@ -426,7 +426,6 @@
             this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Previous Requests";
-            this.label1.Click += new System.EventHandler(this.Label1_Click_1);
             // 
             // listView1
             // 
