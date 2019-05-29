@@ -100,7 +100,18 @@ namespace FoodDelivery
                     client.Show();
                     this.Hide();
                 }
+                if (type == "Driver Login")
+                {
+                    Form driver = new DriverPage(logname);
+                    driver.Show();
+                    this.Hide();
+                }
             }
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
