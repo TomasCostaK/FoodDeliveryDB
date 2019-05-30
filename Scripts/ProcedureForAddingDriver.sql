@@ -39,8 +39,8 @@ BEGIN
 
     BEGIN TRY
 
-        INSERT INTO FoodDelivery_FinalProject.Driver (LoginName,Name,Contact,Photo,Street,City,PostalCode,PasswordHash,Salt,LicensePlate )
-        VALUES(@pLogin,@pName,@Contact,@Image,@Street,@City,@PostalCode,HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))),@salt,@LicensePlate)
+        INSERT INTO FoodDelivery_FinalProject.Driver (LoginName,Name,Contact,Photo,Street,City,PostalCode,PasswordHash,Salt,LicensePlate,Ocuppied)
+        VALUES(@pLogin,@pName,@Contact,@Image,@Street,@City,@PostalCode,HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))),@salt,@LicensePlate,0x00)
 
        SET @responseMessage='Success'
 
