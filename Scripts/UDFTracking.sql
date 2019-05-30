@@ -14,7 +14,9 @@ AS
 SELECT * FROM   FoodDelivery_FinalProject.getDriver('tomas12')
 
 
-drop function  FoodDelivery_FinalProject.getOrders
+--drop function  FoodDelivery_FinalProject.getOrders
+
+
 
 create function FoodDelivery_FinalProject.getOrders(@driver VARCHAR(50)) returns table
 as
@@ -27,4 +29,5 @@ as
 			)
 
 select * from FoodDelivery_FinalProject.Trip
+select * from FoodDelivery_FinalProject.getOrders('Mariana_Vasconcelos100000080')
 
