@@ -66,6 +66,8 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.listView1 = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
+            this.listView3 = new System.Windows.Forms.ListView();
+            this.label12 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -415,6 +417,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label12);
+            this.tabPage3.Controls.Add(this.listView3);
             this.tabPage3.Controls.Add(this.listView1);
             this.tabPage3.Controls.Add(this.label1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
@@ -426,20 +430,38 @@
             // 
             // listView1
             // 
-            this.listView1.Location = new System.Drawing.Point(20, 40);
+            this.listView1.Location = new System.Drawing.Point(443, 40);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(810, 353);
+            this.listView1.Size = new System.Drawing.Size(387, 353);
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(401, 11);
+            this.label1.Location = new System.Drawing.Point(608, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Previous Requests";
+            // 
+            // listView3
+            // 
+            this.listView3.Location = new System.Drawing.Point(9, 40);
+            this.listView3.Name = "listView3";
+            this.listView3.Size = new System.Drawing.Size(419, 353);
+            this.listView3.TabIndex = 2;
+            this.listView3.UseCompatibleStateImageBehavior = false;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(157, 15);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(89, 13);
+            this.label12.TabIndex = 3;
+            this.label12.Text = "Current Requests";
+            this.label12.Click += new System.EventHandler(this.Label12_Click);
             // 
             // DriverPage
             // 
@@ -502,5 +524,7 @@
         private System.Windows.Forms.TextBox textBox12;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ListView listView3;
     }
 }

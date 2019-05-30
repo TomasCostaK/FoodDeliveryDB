@@ -56,6 +56,11 @@ namespace FoodDelivery
 
         private void createTable2()
         {
+            listView3.Columns.Add("RequestID", 100);
+            listView3.Columns.Add("ClientID", 100);
+            listView3.Columns.Add("City", 150);
+            listView3.Columns.Add("Street", 150);
+
             listView1.Columns.Add("RequestID", 120);
             listView1.Columns.Add("ClientID", 120);
             listView1.Columns.Add("TravelCost", 120);
@@ -159,6 +164,7 @@ namespace FoodDelivery
             enableTextBoxs(true);
             loadTrackings();
             loadRequests();
+            loadDoneRequests();
             loadProfile();
         }
 
@@ -236,7 +242,6 @@ namespace FoodDelivery
                 return;
 
             string op1 = comboBox1.Text;
-            MessageBox.Show(op1);
             SqlCommand cmd = new SqlCommand("exec FoodDelivery_FinalProject.getAllTrackings '"+op1 + "'", cn);
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -266,13 +271,42 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getOrders('Mariana_Vasconcelos100000080')", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getOrders('Mariana_Vasconcelos100000080',0x00)", cn);
 
             SqlDataReader reader = cmd.ExecuteReader();
 
             //listView1.Dock = DockStyle.Fill;
 
-            listView2.Items.Clear();
+            listView3.Items.Clear();
+
+            while (reader.Read())
+            {
+                string req = reader["RequestID"].ToString();
+                string cli = reader["ClientID"].ToString();
+                string city = reader["City"].ToString();
+                string street = reader["Street"].ToString();
+                var row = new string[] { req, cli, city, street };
+                var lvi = new ListViewItem(row);
+                listView3.View = View.Details;
+                listView3.Items.Add(lvi);
+
+            }
+
+            cn.Close();
+        }
+
+        private void loadDoneRequests()
+        {
+            if (!verifySGBDConnection())
+                return;
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getOrders('Mariana_Vasconcelos100000080',0x01)", cn);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+            listView1.Items.Clear();
 
             while (reader.Read())
             {
@@ -280,6 +314,7 @@ namespace FoodDelivery
                 string cli = reader["ClientID"].ToString();
                 string cost = reader["TravelCost"].ToString();
                 string time = reader["EstimatedTime"].ToString();
+
                 var row = new string[] { req, cli, cost, time };
                 var lvi = new ListViewItem(row);
                 listView1.View = View.Details;
@@ -290,13 +325,14 @@ namespace FoodDelivery
             cn.Close();
         }
 
-
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+            private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             loadTrackings();
         }
 
+        private void Label12_Click(object sender, EventArgs e)
+        {
 
-
+        }
     }
 }
