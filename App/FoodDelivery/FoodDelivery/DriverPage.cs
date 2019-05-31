@@ -200,6 +200,7 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
             string op1 = comboBox1.Text;
+            string chunk = textBox12.Text;
             SqlCommand cmd = null;
             string city = textBox12.Text;
             listView2.Items.Clear();
@@ -208,7 +209,7 @@ namespace FoodDelivery
                 string gps_lat = GPS[city][0];//.Replace(',', '.');
                 string gps_lon = GPS[city][1];//.Replace(',', '.');
 
-                cmd = new SqlCommand("exec FoodDelivery_FinalProject.getAllTrackings '" + op1 + "' , '" + driverID + "'", cn);
+                cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getAllTrackings('" + op1 + "' , '" + driverID + "', '" + chunk + "')", cn);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
@@ -236,7 +237,8 @@ namespace FoodDelivery
                 return;
 
             string op1 = comboBox1.Text;
-            SqlCommand cmd = new SqlCommand("exec FoodDelivery_FinalProject.getAllTrackings '"+op1+ "' , '" + driverID + "'", cn);
+            string chunk = textBox12.Text;
+            SqlCommand cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getAllTrackings('"+op1+ "' , '" + driverID + "', '" + chunk + "')", cn);
             SqlDataReader reader = cmd.ExecuteReader();
 
             listView2.Items.Clear();
