@@ -24,6 +24,7 @@ namespace FoodDelivery
         private double minDistance;
         private double travelCost;
         private double totalCost;
+        private int pageNumberMeals = 1;
         Dictionary<string, string[]> GPS = new Dictionary<string, string[]>
         {      {"Aveiro", new String [2] {"40.64427", "-8.64554" } },
                {"Beja",new String [2]  {"38.015060"," -7.863230" } },
@@ -123,8 +124,9 @@ namespace FoodDelivery
             string op = comboBox1.Text;
             string op3 = comboBox3.Text;
             string op2 = comboBox2.Text;
+            string search = textBox11.Text;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantByType('" + op + "','" + op3 + "') ORDER BY " + op2, cn); ;
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantByType('" + op + "','" + op3 + "','"+search+"') ORDER BY " + op2, cn); ;
 
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -164,7 +166,7 @@ namespace FoodDelivery
                 return;
 
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM  FoodDelivery_FinalProject.getRestaurantOrderComplex('" + username + "')", cn); ;
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT RequestID,PaymentType,TotalCost,EstimatedTime, RequestStatus FROM  FoodDelivery_FinalProject.getRestaurantOrderComplex('" + username + "')", cn); ;
 
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -224,10 +226,12 @@ namespace FoodDelivery
             cn = getSGBDConnection();
             createTable();
             createMealTable();
+            createMealTabTable();
             createAvailableMealTable();
             createOrderTable();
             populateComboBox();
             populateComboBox1();
+            populateTabMeal();
             loadOrders();
 
 
@@ -262,6 +266,16 @@ namespace FoodDelivery
             listView3.Columns.Add("Main Ingredient", 150);
             listView3.Columns.Add("Side Ingredient", 150);
             listView3.Columns.Add("Drink", 150);
+
+        }
+
+        private void createMealTabTable()
+        {
+            listView6.Columns.Add("Meal Name", 150);
+            listView6.Columns.Add("Main Ingredient", 150);
+            listView6.Columns.Add("Side Ingredient", 150);
+            listView6.Columns.Add("Drink", 150);
+            listView6.Columns.Add("Price", 150);
 
         }
 
@@ -400,6 +414,54 @@ namespace FoodDelivery
             loadProfile();
         }
 
+        private void populateTabMeal()
+        {
+            
+            int pageSize = 20;
+            label37.Text = pageNumberMeals.ToString();
+
+            string sort = comboBox4.Text;
+            
+
+
+            
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.MealTab", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@pageNum", SqlDbType.Int).Value = pageNumberMeals;
+            cmd.Parameters.Add("@pageSize", SqlDbType.Int).Value = pageSize;
+            cmd.Parameters.Add("@sortColumnName", SqlDbType.NVarChar).Value =sort;
+            
+
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            SqlDataReader reader = cmd.ExecuteReader();
+
+
+            while (reader.Read()) {
+                string Name = reader["Name"].ToString();
+                
+                double mealCost=Convert.ToDouble(reader["MealCost"]);
+                string MainIngredient = reader["MainIngredient"].ToString();
+                string SideIngredient = reader["SideIngredient"].ToString();
+                string Drink = reader["Drink"].ToString();
+                var row = new string[] { Name, MainIngredient, SideIngredient, Drink,mealCost.ToString() };
+                var lvi = new ListViewItem(row);
+                listView6.View = View.Details;
+                listView6.Items.Add(lvi);
+
+
+            }
+
+           
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             string LoginName = textBox1.Text;
@@ -505,42 +567,7 @@ namespace FoodDelivery
         private void button4_Click(object sender, EventArgs e)
         {
 
-            if (!verifySGBDConnection())
-                return;
-
-            string name = textBox11.Text;
-
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantName('" + name + "')", cn);
-
-
-            SqlDataReader reader = cmd.ExecuteReader();
-
-            //listView1.Dock = DockStyle.Fill;
-
-            listView1.Items.Clear();
-
-            while (reader.Read())
-            {
-                string RestaurantID = reader["RestaurantID"].ToString();
-
-                string Name = reader["Name"].ToString();
-                string contact = reader["Contact"].ToString();
-                string city = reader["City"].ToString();
-                string street = reader["Street"].ToString();
-                string type = reader["Type"].ToString();
-                var row = new string[] { RestaurantID, Name, contact, city, street, type };
-                var lvi = new ListViewItem(row);
-                listView1.View = View.Details;
-                listView1.Items.Add(lvi);
-
-            }
-
-
-
-
-
-
-            cn.Close();
+            loadRestaurants();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -1197,6 +1224,29 @@ namespace FoodDelivery
             }
             MessageBox.Show("Request submitted");
 
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            pageNumberMeals++;
+            listView6.Items.Clear();
+            populateTabMeal();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            if (pageNumberMeals != 1) {
+                pageNumberMeals--;
+                listView6.Items.Clear();
+                populateTabMeal();
+            }
+            
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listView6.Items.Clear();
+            populateTabMeal();
         }
     }
 
