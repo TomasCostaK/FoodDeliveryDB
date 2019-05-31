@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,27 @@ namespace FoodDelivery
 
         private SqlConnection cn;
         private String driverID;
+        Dictionary<string, string[]> GPS = new Dictionary<string, string[]>
+        { {"Aveiro", new String [2] { "40,644270", "-8,645540" } },
+               {"Beja",new String [2]  {"38,015060", "-7,863230" } },
+               {"Braga",new String [2] {"41,550320","-8,420050"}},
+               {"Bragança",new String [2] {"41,805820", "-6,757190"}},
+               {"Castelo Branco",new String [2] {"39,822190","-7,490870"}},
+               {"Coimbra",new String [2] {"40,205640","-8,419550"}},
+               {"Évora",new String [2] {"38,566670","-7,900000"}},
+               {"Faro",new String [2] {"37,019370","-7,932230"}},
+               {"Guarda",new String [2] {"40,537330","-7,265750"}},
+               {"Leiria",new String [2] {"39,743620","-8,807050"}},
+               {"Lisboa",new String [2] {"38,716670","-9,133330"}},
+
+               {"Portalegre",new String [2] {"39,293790","-7,431220"}},
+               {"Porto",new String [2] {"41,149610","-8,610990"}},
+               {"Santarém",new String [2] {"39,233330","-8,683330"}},
+               {"Setúbal",new String [2] {"38,524400","-8,888200"}},
+               {"Viana do Castelo",new String [2]   {"41,693230","-8,832870"}},
+               {"Vila Real",new String [2]          {"41,300620","-7,744130"}},
+               { "Viseu",new String [2]                {"40,661010","-7,909710"}},
+        };
 
         public DriverPage(String driverID)
         {
@@ -47,8 +69,7 @@ namespace FoodDelivery
 
         private void createTable()
         {
-            listView2.Columns.Add("Latitude", 120);
-            listView2.Columns.Add("Longitude", 120);
+            listView2.Columns.Add("City", 130);
             listView2.Columns.Add("Date", 120);
             listView2.Columns.Add("Hour", 120);
 
@@ -56,6 +77,11 @@ namespace FoodDelivery
 
         private void createTable2()
         {
+            listView3.Columns.Add("RequestID", 100);
+            listView3.Columns.Add("ClientID", 100);
+            listView3.Columns.Add("City", 150);
+            listView3.Columns.Add("Street", 150);
+
             listView1.Columns.Add("RequestID", 120);
             listView1.Columns.Add("ClientID", 120);
             listView1.Columns.Add("TravelCost", 120);
@@ -63,37 +89,13 @@ namespace FoodDelivery
 
         }
 
-        private void populateComboBox1()
-        {
-            if (!verifySGBDConnection())
-                return;
-
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantCity()", cn);
-
-
-            SqlDataReader reader = cmd.ExecuteReader();
-
-            //listView1.Dock = DockStyle.Fill;
-
-            var dataSource = new List<string>();
-
-            while (reader.Read())
-            {
-
-                string type = reader["City"].ToString();
-                dataSource.Add(type);
-
-            }
-
-            comboBox1.DataSource = dataSource;
-
-            cn.Close();
-        }
 
         private void loadProfile()
         {
             if (!verifySGBDConnection())
                 return;
+
+            textBox10.Hide();
 
             SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getDriver('" + driverID + "')", cn);
 
@@ -136,11 +138,6 @@ namespace FoodDelivery
 
         private void enableTextBoxs(Boolean check)
         {
-            textBox5.ReadOnly = check;
-            textBox6.ReadOnly = check;
-            textBox7.ReadOnly = check;
-            textBox8.ReadOnly = check;
-            textBox9.ReadOnly = check;
             textBox11.ReadOnly = check;
         }
 
@@ -154,11 +151,12 @@ namespace FoodDelivery
             cn = getSGBDConnection();
             createTable();
             createTable2();
-            //populateComboBox1();
+            populateComboBox2();
 
             enableTextBoxs(true);
             loadTrackings();
             loadRequests();
+            loadDoneRequests();
             loadProfile();
         }
 
@@ -199,59 +197,69 @@ namespace FoodDelivery
 
         private void Button6_Click(object sender, EventArgs e)
         {
-
             if (!verifySGBDConnection())
                 return;
-
             string op1 = comboBox1.Text;
-            string userlookingfor = button6.Text;
-
-            SqlCommand cmd = new SqlCommand("exec FoodDelivery_FinalProject.getAllTrackings '" + op1 + "'", cn);
-
-            SqlDataReader reader = cmd.ExecuteReader();
-
-            //listView1.Dock = DockStyle.Fill;
-
+            string chunk = textBox12.Text;
+            SqlCommand cmd = null;
+            string city = textBox12.Text;
             listView2.Items.Clear();
-
-            while (reader.Read())
+            if (GPS.ContainsKey(city))
             {
-                string lat = reader["GPS_Latitude"].ToString();
-                string longi = reader["GPS_Latitude"].ToString();
-                string trdate = reader["Date"].ToString();
-                string hour = reader["Hour"].ToString();
-                var row = new string[] { lat, longi, trdate, hour};
-                var lvi = new ListViewItem(row);
-                listView2.View = View.Details;
-                listView2.Items.Add(lvi);
+                string gps_lat = GPS[city][0];//.Replace(',', '.');
+                string gps_lon = GPS[city][1];//.Replace(',', '.');
+
+                cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getAllTrackings('" + op1 + "' , '" + driverID + "', '" + chunk + "')", cn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (reader["GPS_Latitude"].ToString().Equals(gps_lat) && reader["GPS_Longitude"].ToString().Equals(gps_lon))
+                    {
+
+                        string trdate = (reader["Date"].ToString()).Split(' ')[0];
+                        string hour = reader["Hour"].ToString();
+                        var row = new string[] { city, trdate, hour };
+                        var lvi = new ListViewItem(row);
+                        listView2.View = View.Details;
+                        listView2.Items.Add(lvi);
+                    }
+                }
 
             }
 
             cn.Close();
         }
         
+
         private void loadTrackings()
         {
             if (!verifySGBDConnection())
                 return;
 
             string op1 = comboBox1.Text;
-            MessageBox.Show(op1);
-            SqlCommand cmd = new SqlCommand("exec FoodDelivery_FinalProject.getAllTrackings '"+op1 + "'", cn);
-
+            string chunk = textBox12.Text;
+            SqlCommand cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getAllTrackings('"+op1+ "' , '" + driverID + "', '" + chunk + "')", cn);
             SqlDataReader reader = cmd.ExecuteReader();
-
-            //listView1.Dock = DockStyle.Fill;
 
             listView2.Items.Clear();
 
             while (reader.Read())
             {
                 string lat = reader["GPS_Latitude"].ToString();
-                string longi = reader["GPS_Latitude"].ToString();
-                string trdate = reader["Date"].ToString();
+                string longi = reader["GPS_Longitude"].ToString();
+                string displaycity = "None";
+                foreach (var city in GPS)
+                {
+                    Debug.WriteLine(city.Value[0] + " -> " + lat + " : " + city.Value[1]  +" -> " + longi);
+                    if (city.Value[0].Equals(lat) && city.Value[1].Equals(longi))
+                    {
+                        displaycity = city.Key.ToString();
+                    }
+                }
+
+                string trdate = (reader["Date"].ToString()).Split(' ')[0];
                 string hour = reader["Hour"].ToString();
-                var row = new string[] { lat, longi, trdate, hour };
+                var row = new string[] { displaycity, trdate, hour };
                 var lvi = new ListViewItem(row);
                 listView2.View = View.Details;
                 listView2.Items.Add(lvi);
@@ -266,13 +274,42 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getOrders('Mariana_Vasconcelos100000080')", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getOrders('" +driverID + "',0x00)", cn);
 
             SqlDataReader reader = cmd.ExecuteReader();
 
             //listView1.Dock = DockStyle.Fill;
 
-            listView2.Items.Clear();
+            listView3.Items.Clear();
+
+            while (reader.Read())
+            {
+                string req = reader["RequestID"].ToString();
+                string cli = reader["ClientID"].ToString();
+                string city = reader["City"].ToString();
+                string street = reader["Street"].ToString();
+                var row = new string[] { req, cli, city, street };
+                var lvi = new ListViewItem(row);
+                listView3.View = View.Details;
+                listView3.Items.Add(lvi);
+
+            }
+
+            cn.Close();
+        }
+
+        private void loadDoneRequests()
+        {
+            if (!verifySGBDConnection())
+                return;
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getOrders('"+ driverID + "',0x01)", cn);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+            listView1.Items.Clear();
 
             while (reader.Read())
             {
@@ -280,6 +317,7 @@ namespace FoodDelivery
                 string cli = reader["ClientID"].ToString();
                 string cost = reader["TravelCost"].ToString();
                 string time = reader["EstimatedTime"].ToString();
+
                 var row = new string[] { req, cli, cost, time };
                 var lvi = new ListViewItem(row);
                 listView1.View = View.Details;
@@ -290,13 +328,123 @@ namespace FoodDelivery
             cn.Close();
         }
 
-
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             loadTrackings();
         }
 
+        private void Label12_Click(object sender, EventArgs e)
+        {
 
+        }
 
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            String filename = null;
+            
+            OpenFileDialog openFile = new OpenFileDialog();
+            if (openFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                filename = openFile.FileName;
+                textBox10.Text = filename;
+            }
+
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            string picture = null;
+            string filename = textBox10.Text;
+            string Name = textBox9.Text;
+            string contact = textBox8.Text;
+            string street = textBox7.Text;
+            string postalcode = textBox5.Text;
+            string city = textBox6.Text;
+
+            if (!(string.IsNullOrEmpty(filename)))
+            {
+                using (Image image = Image.FromFile(filename))
+                {
+                    using (MemoryStream m = new MemoryStream())
+                    {
+                        image.Save(m, image.RawFormat);
+                        byte[] imageBytes = m.ToArray();
+
+                        picture = Convert.ToBase64String(imageBytes);
+                    }
+
+                }
+            }
+
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.EditDriver", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@pLogin", SqlDbType.NVarChar).Value = driverID;
+            cmd.Parameters.Add("@pName", SqlDbType.NVarChar).Value = Name;
+            cmd.Parameters.Add("@Contact", SqlDbType.NChar, 9).Value = contact;
+            cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = picture;
+            cmd.Parameters.Add("@Street", SqlDbType.NVarChar).Value = street;
+            cmd.Parameters.Add("@City", SqlDbType.NVarChar).Value = city;
+            cmd.Parameters.Add("@PostalCode ", SqlDbType.NVarChar).Value = postalcode;
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("ola " + cmd.Parameters["@responseMessage"].Value);
+
+            loadProfile();
+
+        }
+
+        private void Button5_Click(object sender, EventArgs e)
+        {
+            textBox9.Text = "";
+            textBox8.Text = "";
+            textBox7.Text = "";
+            textBox5.Text = "";
+            textBox6.Text = "";
+        }
+
+        private void ComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            createTracking();
+        }
+
+        private void populateComboBox2()
+        {
+            var dataSource = new List<string>();
+
+            foreach (var city in GPS)
+            {
+                dataSource.Add(city.Key);
+            }
+            comboBox2.DataSource = dataSource;
+        }
+
+        private void createTracking()
+        {
+            string city = comboBox2.Text;
+            string gps_lat = GPS[city][0].Replace(',', '.');
+            string gps_lon = GPS[city][1].Replace(',', '.');
+
+            SqlCommand cmd = new SqlCommand("exec FoodDelivery_FinalProject.AddTracking '" + driverID +"', '"+ gps_lat +"', '" + gps_lon +"'",cn);
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            loadTrackings();
+        }
     }
 }

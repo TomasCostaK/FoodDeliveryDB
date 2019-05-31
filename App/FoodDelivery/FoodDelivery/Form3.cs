@@ -119,5 +119,15 @@ namespace FoodDelivery
             v1.Show();
             this.Close();
         }
+
+        private void Form3_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TextBox8_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
