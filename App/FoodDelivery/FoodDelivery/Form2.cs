@@ -77,6 +77,7 @@ namespace FoodDelivery
 
             Form v1 = new RestaurantPage(RestaurantID);
             v1.Show();
+            this.Close();
 
             MessageBox.Show("ola " + ret);
         }
