@@ -3,6 +3,7 @@ ALTER PROCEDURE FoodDelivery_FinalProject.MealTab
 (
     @pageNum INT,
     @pageSize INT,
+    @search varchar(50),
     @sortColumnName VARCHAR(50)
 )
 AS
@@ -19,12 +20,10 @@ BEGIN
 	 
 	  END) AS RowNumber
     FROM FoodDelivery_FinalProject.Meal WITH(NOLOCK)
+    WHERE Name like @search+'%'
   )
   SELECT *
   FROM PagingCTE
   WHERE RowNumber BETWEEN (@pageNum - 1) * @pageSize + 1 
    AND @pageNum * @pageSize
 END
-
-EXEC FoodDelivery_FinalProject.MealTab
-      @pageNum = 1, @pageSize = 10, @sortColumnName='Name'

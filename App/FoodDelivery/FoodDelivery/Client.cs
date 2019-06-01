@@ -25,6 +25,7 @@ namespace FoodDelivery
         private double travelCost;
         private double totalCost;
         private int pageNumberMeals = 1;
+        private int count = 0;
         Dictionary<string, string[]> GPS = new Dictionary<string, string[]>
         {      {"Aveiro", new String [2] {"40.64427", "-8.64554" } },
                {"Beja",new String [2]  {"38.015060"," -7.863230" } },
@@ -229,6 +230,7 @@ namespace FoodDelivery
             createMealTabTable();
             createAvailableMealTable();
             createOrderTable();
+            createRestaurantTable();
             populateComboBox();
             populateComboBox1();
             populateTabMeal();
@@ -268,6 +270,18 @@ namespace FoodDelivery
             listView3.Columns.Add("Drink", 150);
 
         }
+
+        private void createRestaurantTable()
+        {
+
+            listView7.Columns.Add("RestaurantID", 80);
+            listView7.Columns.Add("Name", 150);
+            listView7.Columns.Add("Contact", 150);
+            listView7.Columns.Add("City", 150);
+            listView7.Columns.Add("Street", 150);
+            listView7.Columns.Add("Type", 90);
+
+        }                     
 
         private void createMealTabTable()
         {
@@ -418,6 +432,7 @@ namespace FoodDelivery
         {
             
             int pageSize = 20;
+            count = 0;
             label37.Text = pageNumberMeals.ToString();
 
             string sort = comboBox4.Text;
@@ -432,7 +447,8 @@ namespace FoodDelivery
             cmd.Parameters.Add("@pageNum", SqlDbType.Int).Value = pageNumberMeals;
             cmd.Parameters.Add("@pageSize", SqlDbType.Int).Value = pageSize;
             cmd.Parameters.Add("@sortColumnName", SqlDbType.NVarChar).Value =sort;
-            
+            cmd.Parameters.Add("@search", SqlDbType.NVarChar).Value = textBox24.Text;
+
 
 
 
@@ -445,6 +461,7 @@ namespace FoodDelivery
 
 
             while (reader.Read()) {
+                count++;
                 string Name = reader["Name"].ToString();
                 
                 double mealCost=Convert.ToDouble(reader["MealCost"]);
@@ -1228,9 +1245,12 @@ namespace FoodDelivery
 
         private void button13_Click(object sender, EventArgs e)
         {
-            pageNumberMeals++;
-            listView6.Items.Clear();
-            populateTabMeal();
+            if (count == 20) {
+                pageNumberMeals++;
+                listView6.Items.Clear();
+                populateTabMeal();
+            }
+           
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -1246,7 +1266,97 @@ namespace FoodDelivery
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
         {
             listView6.Items.Clear();
+            pageNumberMeals = 1;
+
             populateTabMeal();
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            listView6.Items.Clear();
+            pageNumberMeals = 1;
+            populateTabMeal();
+        }
+
+        private void label43_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label41_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listView7_MouseClick(object sender, MouseEventArgs e)
+        {
+            
+        }
+
+        private void loadRestaurantsView(String mealName)
+        {
+            SqlCommand cmd = null;
+            label42.Text = mealName;
+            /*
+            cmd = new SqlCommand("FoodDelivery_FinalProject.addTripforRequest", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@DriverID", SqlDbType.NVarChar).Value = driverID;
+            cmd.Parameters.Add("@EstimatedTime", SqlDbType.Int).Value = Convert.ToInt32((minDistance / 80) * 3600);//velocidade media de 80 km/h
+            cmd.Parameters.Add("@Distance", SqlDbType.Decimal).Value = minDistance;
+            cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = RequestID;
+            cmd.Parameters.Add("@TravelCost", SqlDbType.Decimal).Value = travelCost;
+            MessageBox.Show(driverID + "--" + minDistance + "--" + RequestID + "--" + travelCost + "--" + Convert.ToInt32((minDistance / 80) * 3600));
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            if (minDistance == 0)
+            {
+                cmd = new SqlCommand(" FoodDelivery_FinalProject.changeStatusDriver", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@DriverID", SqlDbType.NVarChar).Value = driverID;
+                cmd.Parameters.Add("@check", SqlDbType.Int).Value = 0;
+
+
+
+                if (!verifySGBDConnection())
+                    return;
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+                cmd = new SqlCommand(" FoodDelivery_FinalProject.changeStatusRequest", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = RequestID;
+                cmd.Parameters.Add("@check", SqlDbType.Int).Value = 1;
+
+
+
+                if (!verifySGBDConnection())
+                    return;
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+            }
+            MessageBox.Show("Request submitted");*/
+
+        }
+
+        private void listView6_MouseClick(object sender, MouseEventArgs e)
+        {
+            //if (listView7.SelectedItems.Count >= 1) {
+            string MealName = listView6.SelectedItems[0].SubItems[1].Text;
+            panel4.Visible = true;
+            loadRestaurantsView(MealName);
+            
+            
         }
     }
 
