@@ -81,6 +81,12 @@
     <Compile Include="DriverPage.Designer.cs">
       <DependentUpon>DriverPage.cs</DependentUpon>
     </Compile>
+    <Compile Include="RestaurantPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RestaurantPage.Designer.cs">
+      <DependentUpon>RestaurantPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form5.cs">
       <SubType>Form</SubType>
     </Compile>

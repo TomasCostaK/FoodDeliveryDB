@@ -75,6 +75,10 @@ namespace FoodDelivery
 
             int ret = (int)cmd.ExecuteScalar();
 
+            Form v1 = new RestaurantPage(RestaurantID);
+            v1.Show();
+            this.Close();
+
             MessageBox.Show("ola " + ret);
         }
     }
