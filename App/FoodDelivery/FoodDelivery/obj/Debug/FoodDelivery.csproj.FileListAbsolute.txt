@@ -61,3 +61,4 @@ C:\Users\tomas\Downloads\FoodDeliveryDB\FoodDeliveryDB\App\FoodDelivery\FoodDeli
 C:\Users\tomas\Downloads\FoodDeliveryDB\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.csproj.CoreCompileInputs.cache
 C:\Users\tomas\Downloads\FoodDeliveryDB\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.exe
 C:\Users\tomas\Downloads\FoodDeliveryDB\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.pdb
+C:\Users\User\Documents\GitHub\FoodDeliveryDB\App\FoodDelivery\FoodDelivery\obj\Debug\FoodDelivery.RestaurantPage.resources
