@@ -93,7 +93,8 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.tabControl1);
             this.Name = "RestaurantPage";
-            this.Text = "Form4";
+            this.Text = "Restaurant Page";
+            this.Load += new System.EventHandler(this.RestaurantPage_Load);
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 

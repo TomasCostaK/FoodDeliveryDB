@@ -12,9 +12,16 @@ namespace FoodDelivery
 {
     public partial class RestaurantPage : Form
     {
-        public RestaurantPage()
+        private int restID;
+        public RestaurantPage(string restauID)
         {
+            this.restID = Convert.ToInt32(restauID);
             InitializeComponent();
+        }
+
+        private void RestaurantPage_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

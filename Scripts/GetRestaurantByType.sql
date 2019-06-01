@@ -1,4 +1,4 @@
-alter FUNCTION FoodDelivery_FinalProject.getRestaurantByType (@SelectedType VARCHAR(20), @SelectedCity  VARCHAR(20)) returns @RTable  Table (
+alter FUNCTION FoodDelivery_FinalProject.getRestaurantByType (@SelectedType VARCHAR(20), @SelectedCity  VARCHAR(20),@RestaurantName varchar(50)) returns @RTable  Table (
 	RestaurantID		INT	NOT NULL,
 	Name				VARCHAR(25) NOT NULL,
 	Contact				CHAR(9)	NOT NULL,
@@ -13,11 +13,11 @@ BEGIN
 	IF @SelectedCity='Todos'
 	BEGIN
 		
-		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant 																						
+		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant where Name LIKE '%'+@RestaurantName+'%'																				
 	END
 	ELSE
 	BEGIN
-		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant where City=@SelectedCity 
+		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant where City=@SelectedCity and  Name LIKE '%'+@RestaurantName+'%'	
 	END
 	
   END
@@ -25,11 +25,11 @@ BEGIN
   BEGIN
 	IF @SelectedCity='Todos'
 	BEGIN
-		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant WHERE Type=@SelectedType 
+		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant WHERE Type=@SelectedType and Name LIKE '%'+@RestaurantName+'%'	
 	END
 	ELSE
 	BEGIN
-		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant WHERE Type=@SelectedType AND City=@SelectedCity
+		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant WHERE Type=@SelectedType AND City=@SelectedCity and  Name LIKE '%'+@RestaurantName+'%'	
 	END
 	
   END

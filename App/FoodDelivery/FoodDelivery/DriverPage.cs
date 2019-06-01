@@ -210,6 +210,7 @@ namespace FoodDelivery
                 string gps_lon = GPS[city][1];//.Replace(',', '.');
 
                 cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getAllTrackings('" + op1 + "' , '" + driverID + "', '" + chunk + "')", cn);
+
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {

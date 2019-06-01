@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,8 +18,15 @@ namespace FoodDelivery
     {
         private SqlConnection cn;
         private String username;
+        private String paymentID;
+        private String RequestID;
+        private String driverID;
+        private double minDistance;
+        private double travelCost;
+        private double totalCost;
+        private int pageNumberMeals = 1;
         Dictionary<string, string[]> GPS = new Dictionary<string, string[]>
-        { {"Aveiro", new String [2] {"40.64427", "-8.64554" } },
+        {      {"Aveiro", new String [2] {"40.64427", "-8.64554" } },
                {"Beja",new String [2]  {"38.015060"," -7.863230" } },
                {"Braga",new String [2] {"41.550320","-8.420050"}},
                {"Bragança",new String [2] {"41.805820", "-6.757190"}},
@@ -29,7 +37,6 @@ namespace FoodDelivery
                {"Guarda",new String [2] {"40.537330","-7.265750"}},
                {"Leiria",new String [2] {"39.743620"," -8.807050"}},
                {"Lisboa",new String [2] {"38.716670"," -9.133330"}},
-               
                {"Portalegre",new String [2] {"39.293790","-7.431220"}},
                {"Porto",new String [2] {"41.149610","-8.610990"}},
                {"Santarém",new String [2] {"39.233330","-8.683330"}},
@@ -45,7 +52,7 @@ namespace FoodDelivery
         {
             InitializeComponent();
             this.username = username;
-            
+
 
         }
 
@@ -69,13 +76,14 @@ namespace FoodDelivery
 
             return cn.State == ConnectionState.Open;
         }
-        
 
-        private void loadProfile() {
+
+        private void loadProfile()
+        {
             if (!verifySGBDConnection())
                 return;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getProfile('"+username+"')", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getProfile('" + username + "')", cn);
 
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -83,11 +91,12 @@ namespace FoodDelivery
             {
                 textBox1.Text = reader["LoginName"].ToString();
                 String temp = reader["Photo"].ToString();
-                if (temp != "") {
+                if (temp != "")
+                {
                     byte[] image = Convert.FromBase64String(temp);
                     pictureBox1.Image = byteArrayToImage(image);
                 }
-               
+
                 textBox3.Text = reader["Name"].ToString();
                 textBox4.Text = reader["Contact"].ToString();
                 textBox5.Text = reader["Street"].ToString();
@@ -112,31 +121,33 @@ namespace FoodDelivery
         {
             if (!verifySGBDConnection())
                 return;
-            string op=comboBox1.Text;
+            string op = comboBox1.Text;
             string op3 = comboBox3.Text;
             string op2 = comboBox2.Text;
+            string search = textBox11.Text;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantByType('" + op + "','"+op3+"') ORDER BY "+op2, cn); ;
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantByType('" + op + "','" + op3 + "','"+search+"') ORDER BY " + op2, cn); ;
 
 
             SqlDataReader reader = cmd.ExecuteReader();
-            
+
             //listView1.Dock = DockStyle.Fill;
 
             listView1.Items.Clear();
 
             while (reader.Read())
             {
-                string Name= reader["Name"].ToString();
+                string RestaurantID = reader["RestaurantID"].ToString();
+                string Name = reader["Name"].ToString();
                 string contact = reader["Contact"].ToString();
                 string city = reader["City"].ToString();
                 string street = reader["Street"].ToString();
                 string type = reader["Type"].ToString();
-                var row = new string[] { Name,contact,city,street,type };
+                var row = new string[] { RestaurantID, Name, contact, city, street, type };
                 var lvi = new ListViewItem(row);
-                listView1.View=View.Details;
+                listView1.View = View.Details;
                 listView1.Items.Add(lvi);
-                
+
             }
             reader.Close(); // <- too easy to forget
             reader.Dispose();
@@ -153,9 +164,9 @@ namespace FoodDelivery
         {
             if (!verifySGBDConnection())
                 return;
-            
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM  FoodDelivery_FinalProject.getRestaurantOrderComplex('"+username+"')", cn); ;
+
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT RequestID,PaymentType,TotalCost,EstimatedTime, RequestStatus FROM  FoodDelivery_FinalProject.getRestaurantOrderComplex('" + username + "')", cn); ;
 
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -167,22 +178,23 @@ namespace FoodDelivery
             while (reader.Read())
             {
                 string OrderID = reader["RequestID"].ToString();
-                
+
                 string PaymentType = reader["PaymentType"].ToString();
                 string TotalCost = reader["TotalCost"].ToString();
                 string EstimatedTime = reader["EstimatedTime"].ToString();
-                bool Status =Convert.ToBoolean(reader.GetOrdinal("RequestStatus"));
-                
+                bool Status = Convert.ToBoolean(reader.GetOrdinal("RequestStatus"));
+
                 string RequestStatus = "";
-                if ( Status)
+                if (Status)
                 {
                     RequestStatus = "In transit";
                 }
-                else {
+                else
+                {
                     RequestStatus = "Delivered";
                 }
-               
-                var row = new string[] {OrderID,PaymentType,TotalCost,EstimatedTime,RequestStatus};
+
+                var row = new string[] { OrderID, PaymentType, TotalCost, EstimatedTime, RequestStatus };
                 var lvi = new ListViewItem(row);
                 listView2.View = View.Details;
                 listView2.Items.Add(lvi);
@@ -214,20 +226,26 @@ namespace FoodDelivery
             cn = getSGBDConnection();
             createTable();
             createMealTable();
+            createMealTabTable();
+            createAvailableMealTable();
+            createOrderTable();
             populateComboBox();
             populateComboBox1();
+            populateTabMeal();
             loadOrders();
 
 
 
             loadProfile();
-           
+
         }
-        
 
 
 
-        private void createTable() {
+
+        private void createTable()
+        {
+            listView1.Columns.Add("RestaurantID", 80);
             listView1.Columns.Add("Name", 150);
             listView1.Columns.Add("Contact", 150);
             listView1.Columns.Add("City", 150);
@@ -243,7 +261,7 @@ namespace FoodDelivery
 
         private void createMealTable()
         {
-            
+
             listView3.Columns.Add("Name", 150);
             listView3.Columns.Add("Main Ingredient", 150);
             listView3.Columns.Add("Side Ingredient", 150);
@@ -251,7 +269,44 @@ namespace FoodDelivery
 
         }
 
-        private void populateComboBox() {
+        private void createMealTabTable()
+        {
+            listView6.Columns.Add("Meal Name", 150);
+            listView6.Columns.Add("Main Ingredient", 150);
+            listView6.Columns.Add("Side Ingredient", 150);
+            listView6.Columns.Add("Drink", 150);
+            listView6.Columns.Add("Price", 150);
+
+        }
+
+        private void createAvailableMealTable()
+        {
+
+            listView4.Columns.Add("Meal Name", 150);
+            listView4.Columns.Add("Main Ingredient", 150);
+            listView4.Columns.Add("Side Ingredient", 150);
+            listView4.Columns.Add("Drink", 150);
+            listView4.Columns.Add("Price", 150);
+
+        }
+
+        private void createOrderTable()
+        {
+
+            listView5.Columns.Add("Meal Name", 150);
+            listView5.Columns.Add("Main Ingredient", 150);
+            listView5.Columns.Add("Side Ingredient", 150);
+            listView5.Columns.Add("Drink", 150);
+            listView5.Columns.Add("Price", 150);
+            listView5.Columns.Add("Restaurant Name", 150);
+            listView5.Columns.Add("Restaurant ID", 150);
+
+
+
+        }
+
+        private void populateComboBox()
+        {
             if (!verifySGBDConnection())
                 return;
 
@@ -269,7 +324,7 @@ namespace FoodDelivery
 
             while (reader.Read())
             {
-                
+
                 string type = reader["Type"].ToString();
                 dataSource.Add(type);
 
@@ -359,19 +414,67 @@ namespace FoodDelivery
             loadProfile();
         }
 
+        private void populateTabMeal()
+        {
+            
+            int pageSize = 20;
+            label37.Text = pageNumberMeals.ToString();
+
+            string sort = comboBox4.Text;
+            
+
+
+            
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.MealTab", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@pageNum", SqlDbType.Int).Value = pageNumberMeals;
+            cmd.Parameters.Add("@pageSize", SqlDbType.Int).Value = pageSize;
+            cmd.Parameters.Add("@sortColumnName", SqlDbType.NVarChar).Value =sort;
+            
+
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            SqlDataReader reader = cmd.ExecuteReader();
+
+
+            while (reader.Read()) {
+                string Name = reader["Name"].ToString();
+                
+                double mealCost=Convert.ToDouble(reader["MealCost"]);
+                string MainIngredient = reader["MainIngredient"].ToString();
+                string SideIngredient = reader["SideIngredient"].ToString();
+                string Drink = reader["Drink"].ToString();
+                var row = new string[] { Name, MainIngredient, SideIngredient, Drink,mealCost.ToString() };
+                var lvi = new ListViewItem(row);
+                listView6.View = View.Details;
+                listView6.Items.Add(lvi);
+
+
+            }
+
+           
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
             string LoginName = textBox1.Text;
             string picturePath = textBox10.Text;
-            
 
-            string Name =textBox3.Text;
+
+            string Name = textBox3.Text;
             string contact = textBox4.Text;
             string street = textBox5.Text;
-            string city =textBox7.Text;
+            string city = textBox7.Text;
             string postalCode = textBox6.Text;
             string cardNumber = textBox8.Text;
-            string cardExpiration=textBox9.Text;
+            string cardExpiration = textBox9.Text;
 
 
             string picture = null;
@@ -403,7 +506,8 @@ namespace FoodDelivery
             {
                 cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = "nothing";
             }
-            else {
+            else
+            {
                 cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = picture;
 
             }
@@ -463,40 +567,7 @@ namespace FoodDelivery
         private void button4_Click(object sender, EventArgs e)
         {
 
-            if (!verifySGBDConnection())
-                return;
-
-            string name = textBox11.Text;
-
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantName('"+name+"')", cn);
-
-
-            SqlDataReader reader = cmd.ExecuteReader();
-            
-            //listView1.Dock = DockStyle.Fill;
-
-            listView1.Items.Clear();
-
-            while (reader.Read())
-            {
-                string Name = reader["Name"].ToString();
-                string contact = reader["Contact"].ToString();
-                string city = reader["City"].ToString();
-                string street = reader["Street"].ToString();
-                string type = reader["Type"].ToString();
-                var row = new string[] { Name, contact, city, street, type };
-                var lvi = new ListViewItem(row);
-                listView1.View = View.Details;
-                listView1.Items.Add(lvi);
-
-            }
-
-
-
-
-
-
-            cn.Close();
+            loadRestaurants();
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -518,7 +589,7 @@ namespace FoodDelivery
         private void listView2_SelectedIndexChanged(object sender, EventArgs e)
         {
             //panel1.Visible = true;
-            
+
             /*
             createMealTable();
             ListView.SelectedIndexCollection indices = listView3.SelectedIndices;
@@ -555,7 +626,7 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-            
+
 
             SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantMeal('" + RequestID + "')", cn);
 
@@ -565,22 +636,22 @@ namespace FoodDelivery
             //listView1.Dock = DockStyle.Fill;
 
             listView3.Items.Clear();
-            string MealCost="";
-            double TotalMealCost=0;
+            string MealCost = "";
+            double TotalMealCost = 0;
             while (reader.Read())
             {
                 string Name = reader["Name"].ToString();
-                TotalMealCost+=Convert.ToDouble(reader["MealCost"]);
+                TotalMealCost += Convert.ToDouble(reader["MealCost"]);
                 string MainIngredient = reader["MainIngredient"].ToString();
                 string SideIngredient = reader["SideIngredient"].ToString();
                 string Drink = reader["Drink"].ToString();
-                var row = new string[] { Name, MainIngredient,SideIngredient,Drink };
+                var row = new string[] { Name, MainIngredient, SideIngredient, Drink };
                 var lvi = new ListViewItem(row);
                 listView3.View = View.Details;
                 listView3.Items.Add(lvi);
 
             }
-            textBox12.Text = TotalMealCost+" €";
+            textBox12.Text = TotalMealCost + " €";
 
             reader.Close(); // <- too easy to forget
             reader.Dispose();
@@ -592,16 +663,16 @@ namespace FoodDelivery
             {
                 string totalCost = reader["TotalCost"].ToString();
                 string paymentID = reader["PaymentID"].ToString();
-                string travelCost= reader["TravelCost"].ToString();
+                string travelCost = reader["TravelCost"].ToString();
                 string estimatedTime = reader["EstimatedTime"].ToString();
                 string distance = reader["Distance"].ToString();
                 driverID = reader["DriverID"].ToString();
 
 
-                textBox13.Text = travelCost+" €";
-                textBox14.Text = totalCost+" €";
+                textBox13.Text = travelCost + " €";
+                textBox14.Text = totalCost + " €";
                 textBox19.Text = estimatedTime;
-                textBox20.Text = distance+" km";
+                textBox20.Text = distance + " km";
 
             }
 
@@ -610,7 +681,7 @@ namespace FoodDelivery
 
             cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getDriverDetails('" + driverID + "')", cn);
             reader = cmd.ExecuteReader();
-            
+
             while (reader.Read())
             {
                 string Name = reader["Name"].ToString();
@@ -628,7 +699,7 @@ namespace FoodDelivery
                 textBox17.Text = Name;
                 textBox16.Text = model;
                 textBox15.Text = licensePlate;
-               
+
 
             }
             reader.Close(); // <- too easy to forget
@@ -643,9 +714,9 @@ namespace FoodDelivery
             {
                 latitude = reader["GPS_Latitude"].ToString();
                 longitude = reader["GPS_Longitude"].ToString();
-                
 
-                
+
+
 
 
             }
@@ -655,9 +726,13 @@ namespace FoodDelivery
 
             foreach (var city in GPS)
             {
-                MessageBox.Show(city.Value[0]+"  "+latitude);
-                if (Equals(latitude.Normalize(),city.Value[0].Normalize())) {
-                    
+                //MessageBox.Show(city.Value[0]+"  "+latitude);
+                latitude = latitude.Replace(",", ".");
+                longitude = longitude.Replace(",", ".");
+
+                if (Equals(latitude, city.Value[0]) && Equals(longitude, city.Value[1]))
+                {
+
                     textBox18.Text = city.Key;
                 }
             }
@@ -671,27 +746,518 @@ namespace FoodDelivery
 
         }
 
+        private void loadAvailableMeals(String RestaurantID, String RestaurantName)
+        {
+
+            if (!verifySGBDConnection())
+                return;
+
+
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getAvailableMeals('" + Convert.ToInt32(RestaurantID) + "')", cn);
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+            label35.Text = RestaurantName;
+            label36.Text = RestaurantID;
+
+            listView4.Items.Clear();
+
+            while (reader.Read())
+            {
+                string mealName = reader["MealName"].ToString();
+
+                string MainIngredient = reader["MainIngredient"].ToString();
+                string SideIngredient = reader["SideIngredient"].ToString();
+                string Drink = reader["Drink"].ToString();
+                string MealCost = reader["MealCost"].ToString() + " ";
+                var row = new string[] { mealName, MainIngredient, SideIngredient, Drink, MealCost };
+                var lvi = new ListViewItem(row);
+                listView4.View = View.Details;
+                listView4.Items.Add(lvi);
+
+            }
+
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+        }
+
         private void listView2_MouseClick(object sender, MouseEventArgs e)
-        {   
+        {
             string RequestID = listView2.SelectedItems[0].SubItems[0].Text;
             loadMealDetails(RequestID);
             panel1.Visible = true;
         }
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            string RestaurantID = listView1.SelectedItems[0].SubItems[0].Text;
+            string RestaurantName = listView1.SelectedItems[0].SubItems[1].Text;
+            loadAvailableMeals(RestaurantID,RestaurantName);
+            panel2.Visible = true;
+        }
+
 
         private void button5_Click(object sender, EventArgs e)
         {
             panel1.Visible = false;
         }
+
+        private void label28_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            panel2.Visible = false;
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+            //loadAvailableMeals(RestaurantID);
+            //panel2.Visible = true;
+
+
+            if (listView4.SelectedItems.Count >= 1)
+            {
+
+
+                foreach (ListViewItem item in listView4.SelectedItems)
+                {
+
+
+                    var row = new string[] { item.SubItems[0].Text, item.SubItems[1].Text, item.SubItems[2].Text, item.SubItems[3].Text, item.SubItems[4].Text,label35.Text,label36.Text };
+                    var lvi = new ListViewItem(row);
+                    listView5.View = View.Details;
+                    listView5.Items.Add(lvi);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nothing selected");
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            if (listView5.SelectedItems.Count >= 1)
+            {
+
+
+                for (int i = listView5.Items.Count - 1; i >= 0; i--)
+                {
+
+
+                    if (listView5.Items[i].Selected)
+                    {
+                        listView5.Items[i].Remove();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Nothing selected");
+            }
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            if (!verifySGBDConnection())
+                return;
+
+            if (listView5.Items.Count != 0)
+            {
+
+                SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.CheckAvailableDrivers( )", cn);
+
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                //listView1.Dock = DockStyle.Fill;
+
+                listView4.Items.Clear();
+
+                while (reader.Read())
+                {
+                    string numberOfDrivers = reader["NavailableDrivers"].ToString();
+
+                    if (numberOfDrivers == "0")
+                    {
+                        MessageBox.Show("No available Drivers at the moment, try later :)");
+                    }
+                    else
+                    {
+                        getDriver();
+                    }
+
+
+
+                }
+
+
+                reader.Close(); // <- too easy to forget
+                reader.Dispose();
+
+
+            }
+            else
+            {
+                MessageBox.Show("Add items to the cart");
+            }
+
+
+
+
+        }
+
+        public double HaversineDistance(double pos1_latitude, double pos1_longitude, double pos2_latitude, double pos2_longitude)
+        {
+            double R = 6371;
+            var lat = (pos2_latitude - pos1_latitude).ToRadians();
+            var lng = (pos2_longitude - pos1_longitude).ToRadians();
+            var h1 = Math.Sin(lat / 2) * Math.Sin(lat / 2) +
+                          Math.Cos(pos1_latitude.ToRadians()) * Math.Cos(pos2_latitude.ToRadians()) *
+                          Math.Sin(lng / 2) * Math.Sin(lng / 2);
+            var h2 = 2 * Math.Asin(Math.Min(1, Math.Sqrt(h1)));
+            return R * h2;
+        }
+
+        private void getDriver()
+        {
+
+            if (!verifySGBDConnection())
+                return;
+
+            ArrayList list = new ArrayList();
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.PickDriver( )", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                string DriverID = reader["DriverID"].ToString();
+                string Date = reader["Date"].ToString();
+                string Hour = reader["Hour"].ToString();
+                string latitude = reader["GPS_Latitude"].ToString();
+                string longitude = reader["GPS_Longitude"].ToString();
+                list.Add(new Driver(DriverID, Date, Hour, latitude, longitude));
+
+                //verificar se existe algum driver na cidade do cliente
+
+
+
+
+
+
+
+
+
+
+
+            }
+
+
+
+            minDistance = 500;
+            driverID = "";
+
+            foreach (Driver b in list)
+            {
+                double driverLatitude = Convert.ToDouble(b.Latitude);
+                double driverLongitude = Convert.ToDouble(b.Longitude);
+                string[] coord;
+
+
+                GPS.TryGetValue(textBox7.Text, out coord);
+
+                if (Equals(b.Latitude, coord[0].Replace(".", ",")))
+                {
+                    MessageBox.Show("Found Driver");
+                    driverID = b.Id;
+                    minDistance = 0;
+                    break;
+                }
+                else
+                {
+                    double latitude_client = Convert.ToDouble(coord[0].Replace(".", ","));
+                    double longitude_client = Convert.ToDouble(coord[1].Replace(".", ","));
+                    double final_distance = HaversineDistance(driverLatitude, driverLongitude, latitude_client, longitude_client);
+                    if (final_distance < minDistance)
+                    {
+                        minDistance = final_distance;
+                        driverID = b.Id;
+                    }
+
+
+                }
+
+            }
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.changeStatusDriver", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@DriverID", SqlDbType.NVarChar).Value = driverID;
+            cmd.Parameters.Add("@check", SqlDbType.Int).Value = 1;
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+
+            createpayment();
+
+        }
+
+        private void createpayment()
+        {
+            panel3.Visible = true;
+            double totalMealCost = 0;
+            double costByKm = 0.36;
+
+            for (int i = listView5.Items.Count - 1; i >= 0; i--)
+            {
+
+                totalMealCost += Convert.ToDouble(listView5.Items[i].SubItems[4].Text);
+
+            }
+            textBox23.Text = totalMealCost + " €";
+            textBox22.Text = costByKm*minDistance + " €";
+            travelCost = costByKm * minDistance;
+            totalCost = travelCost + totalMealCost;
+            textBox21.Text =Convert.ToString(totalMealCost + costByKm * minDistance)+" €";
+
+            
+            
+
+
+
+
+
+        }
+        
+
+        class ListGrid
+        {
+            public string Name { get; set; }
+            public string MealCost { get; set; }
+            public string MainIngredient { get; set; }
+            public string SideIngredient { get; set; }
+            public string Drink { get; set; }
+
+
+        }
+
+        public class Driver
+        {
+            public string Id { get; set; }
+            public string Date { get; set; }
+            public string Hour { get; set; }
+            public string Latitude { get; set; }
+            public string Longitude { get; set; }
+
+            public Driver(string id, string date, string hour, string latitude, string longitude)
+            {
+                this.Id = id;
+                this.Date = date;
+                this.Hour = hour;
+                this.Latitude = latitude;
+                this.Longitude = Longitude;
+            }
+
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            
+            var checkedButton = panel3.Controls.OfType<RadioButton>()
+                                      .FirstOrDefault(r => r.Checked);
+            if (checkedButton == null)
+            {
+                MessageBox.Show("Select type of payment");
+
+            }
+            else {
+
+                SqlCommand cmd = null;
+                
+                
+
+                cmd = new SqlCommand("FoodDelivery_FinalProject.addPayment", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter outPutVal = new SqlParameter("@PaymentID", SqlDbType.Int);
+                outPutVal.Direction = ParameterDirection.Output;
+                cmd.Parameters.Add(outPutVal);
+
+                cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+                cmd.Parameters.Add("@Type", SqlDbType.NVarChar).Value = checkedButton.Text;
+                cmd.Parameters.Add("@ValueGiven", SqlDbType.Decimal).Value = Convert.ToDecimal(totalCost);
+                if (!verifySGBDConnection())
+                    return;
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+
+                if (outPutVal.Value != DBNull.Value) paymentID = outPutVal.Value.ToString();
+                //MessageBox.Show(paymentID);
+
+                createRequest();
+            }
+        }
+
+        private void createRequest() {
+            SqlCommand cmd = null;
+
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.addRequest", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            SqlParameter outPutVal = new SqlParameter("@RequestID", SqlDbType.Int);
+            outPutVal.Direction = ParameterDirection.Output;
+            cmd.Parameters.Add(outPutVal);
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@ClientID", SqlDbType.NVarChar).Value = username;
+            cmd.Parameters.Add("@PaymentID", SqlDbType.NVarChar).Value = paymentID;
+            cmd.Parameters.Add("@TotalCost ", SqlDbType.Decimal).Value =totalCost;
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+            if (outPutVal.Value != DBNull.Value) RequestID = outPutVal.Value.ToString();
+            MessageBox.Show(RequestID);
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.addBelong", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@Name", SqlDbType.NVarChar);
+            //MessageBox.Show(RequestID_2);
+            cmd.Parameters.Add("@RestaurantID", SqlDbType.NVarChar);
+            cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = RequestID;
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            
+
+            for (int i = listView5.Items.Count - 1; i >= 0; i--)
+            {
+               // MessageBox.Show("ola");
+                string MealName=listView5.Items[i].SubItems[0].Text;
+                
+                string RestaurantID = listView5.Items[i].SubItems[6].Text;
+
+                cmd.Parameters["@Name"].Value = MealName;
+
+                cmd.Parameters["@RestaurantID"].Value = RestaurantID;
+
+
+                cmd.ExecuteNonQuery();
+                MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
+                cmd.Parameters.Clear();
+
+            }
+
+            createTrip();
+
+        }
+
+        private void createTrip()
+        {
+            SqlCommand cmd = null;
+
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.addTripforRequest", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+            cmd.Parameters.Add("@DriverID", SqlDbType.NVarChar).Value = driverID;
+            cmd.Parameters.Add("@EstimatedTime", SqlDbType.Int).Value = Convert.ToInt32((minDistance/80)*3600);//velocidade media de 80 km/h
+            cmd.Parameters.Add("@Distance", SqlDbType.Decimal).Value = minDistance;
+            cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = RequestID;
+            cmd.Parameters.Add("@TravelCost", SqlDbType.Decimal).Value = travelCost;
+            MessageBox.Show(driverID + "--" + minDistance + "--" + RequestID + "--" + travelCost+"--"+Convert.ToInt32((minDistance / 80) * 3600));
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            if (minDistance == 0)
+            {
+                cmd = new SqlCommand(" FoodDelivery_FinalProject.changeStatusDriver", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@DriverID", SqlDbType.NVarChar).Value = driverID;
+                cmd.Parameters.Add("@check", SqlDbType.Int).Value = 0;
+
+
+
+                if (!verifySGBDConnection())
+                    return;
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+
+                cmd = new SqlCommand(" FoodDelivery_FinalProject.changeStatusRequest", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = RequestID;
+                cmd.Parameters.Add("@check", SqlDbType.Int).Value = 1;
+
+
+
+                if (!verifySGBDConnection())
+                    return;
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
+            }
+            MessageBox.Show("Request submitted");
+
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            pageNumberMeals++;
+            listView6.Items.Clear();
+            populateTabMeal();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            if (pageNumberMeals != 1) {
+                pageNumberMeals--;
+                listView6.Items.Clear();
+                populateTabMeal();
+            }
+            
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            listView6.Items.Clear();
+            populateTabMeal();
+        }
     }
 
-    class ListGrid
+    public static class Foo
     {
-        public string Name{ get; set; }
-        public string MealCost { get; set; }
-        public string MainIngredient { get; set; }
-        public string SideIngredient { get; set; }
-        public string Drink { get; set; }
 
+        public static double ToRadians(this double angleIn10thofaDegree)
+        {
+            // Angle in 10th of a degree
+            return (angleIn10thofaDegree * Math.PI) / 1800;
+        }
 
     }
 }
