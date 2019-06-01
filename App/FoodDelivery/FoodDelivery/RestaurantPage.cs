@@ -45,9 +45,102 @@ namespace FoodDelivery
         private void RestaurantPage_Load(object sender, EventArgs e)
         {
             createTable();
-
+            createOrderTable();
+            loadOrderTable();
+            loadProfile();
             loadMeals();
             loadStats();
+        }
+
+        private void createOrderTable() {
+            listView1.Columns.Add("ID", 150);
+            listView1.Columns.Add("Meal Name", 150);
+            listView1.Columns.Add("Total Cost", 150);
+            listView1.Columns.Add("RequestStatus", 90);
+        }
+
+        private void loadOrderTable() {
+            if(!verifySGBDConnection())
+                return;
+
+
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantOrder('"+restID+"')", cn);
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+
+            while (reader.Read())
+            {
+
+                string requestID = reader["RequestID"].ToString();
+                string mealName= reader["mealName"].ToString();
+                string totalCost = reader["TotalCost"].ToString();
+                byte [] status_byte =(byte []) reader["RequestStatus"];
+
+                string RequestStatus = "";
+                if ((int)status_byte[0] == 0)
+                {
+                    RequestStatus = "In transit";
+                }
+                else
+                {
+                    RequestStatus = "Delivered";
+                }
+
+                var row = new string[] { requestID, mealName, totalCost, RequestStatus };
+                var lvi = new ListViewItem(row);
+                listView1.View = View.Details;
+                listView1.Items.Add(lvi);
+
+            }
+
+            
+
+
+
+
+
+
+            cn.Close();
+
+
+        }
+
+        private void loadProfile()
+        {
+            if (!verifySGBDConnection())
+                return;
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantProfile('" + restID + "')", cn);
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                
+
+                textBox15.Text = reader["Name"].ToString();
+                textBox14.Text = reader["Contact"].ToString();
+                textBox13.Text = reader["Street"].ToString();
+                textBox11.Text = reader["City"].ToString();
+                textBox5.Text = reader["PostalCode"].ToString();
+                textBox10.Text = reader["Type"].ToString();
+                
+            }
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+
+
+
+
+
+            cn.Close();
         }
 
         private void loadStats()
@@ -155,6 +248,87 @@ namespace FoodDelivery
         private void Label7_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox13_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            button4.Hide();
+            button3.Show();
+            button1.Show();
+            
+            enableTextBoxs(false);
+        }
+
+        private void enableTextBoxs(Boolean check)
+        {
+            textBox15.ReadOnly = check;
+            textBox14.ReadOnly = check;
+            textBox13.ReadOnly = check;
+            textBox11.ReadOnly = check;
+            textBox10.ReadOnly = check;
+            textBox5.ReadOnly = check;
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            button4.Show();
+            button1.Hide();
+            button3.Hide();
+            
+            enableTextBoxs(true);
+            loadProfile();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            
+
+
+            string restaurantName = textBox15.Text;
+            string contact = textBox14.Text;
+            string street = textBox13.Text;
+            string city = textBox11.Text;
+            string postalCode = textBox5.Text;
+            string type = textBox10.Text;
+
+
+            
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.UpdateRestaurant", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@RestaurantID", SqlDbType.Int).Value = restID;
+            cmd.Parameters.Add("@RestaurantName", SqlDbType.NVarChar).Value = restaurantName;
+            cmd.Parameters.Add("@Contact", SqlDbType.NChar, 9).Value = contact;
+            cmd.Parameters.Add("@Street", SqlDbType.NVarChar).Value = street;
+            cmd.Parameters.Add("@City", SqlDbType.NVarChar).Value = city;
+            cmd.Parameters.Add("@PostalCode ", SqlDbType.NVarChar).Value = postalCode;
+            cmd.Parameters.Add("@Type", SqlDbType.NChar, 16).Value = type;
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("ola " + cmd.Parameters["@responseMessage"].Value);
+
+            button4.Show();
+            button1.Hide();
+            button3.Hide();
+            
+            enableTextBoxs(true);
+            loadProfile();  
         }
     }
 }
