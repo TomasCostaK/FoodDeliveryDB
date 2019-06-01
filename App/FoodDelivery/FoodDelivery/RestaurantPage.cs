@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -329,6 +330,84 @@ namespace FoodDelivery
             
             enableTextBoxs(true);
             loadProfile();  
+        }
+
+        private void label37_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label41_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void loadOrderDetails(string RequestID) {
+            string op1 = comboBox1.Text;
+            string op2 = textBox12.Text;
+
+            if (!verifySGBDConnection())
+                return;
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getClientProfilebyOrder('"+RequestID+"') ", cn);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+            listView2.Items.Clear();
+            string name = "";
+            string street ="";
+            string city="";
+            string contact="";
+            string photo="";
+
+
+            while (reader.Read())
+            {
+                 name = reader["Name"].ToString();
+                 street = reader["Street"].ToString();
+                 city = reader["City"].ToString();
+                 contact = reader["Contact"].ToString();
+                 photo = reader["photo"].ToString();
+                
+
+            }
+
+            if (photo != "")
+            {
+                byte[] image = Convert.FromBase64String(photo);
+                pictureBox1.Image = byteArrayToImage(image);
+            }
+            textBox24.Text = name;
+            textBox23.Text = contact;
+            textBox22.Text = city;
+            textBox21.Text = street;
+            cn.Close();
+
+        }
+
+        private void listView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            string RequestID = listView1.SelectedItems[0].SubItems[0].Text;
+            loadOrderDetails(RequestID);
+            MessageBox.Show(RequestID);
+            panel1.Visible = true;
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+        }
+
+        public Image byteArrayToImage(byte[] byteArrayIn)
+        {
+            Image returnImage = null;
+            using (MemoryStream ms = new MemoryStream(byteArrayIn))
+            {
+                returnImage = Image.FromStream(ms);
+            }
+            return returnImage;
         }
     }
 }
