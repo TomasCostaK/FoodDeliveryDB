@@ -1,0 +1,4 @@
+CREATE FUNCTION FoodDelivery_FinalProject.getAvailableMeals(@RestaurantID int)returns Table
+AS
+	Return(SELECT FoodDelivery_FinalProject.Restaurant.RestaurantID,FoodDelivery_FinalProject.Restaurant.Name as RestaurantName,FoodDelivery_FinalProject.Meal.Name as MealName,MainIngredient,SideIngredient,Drink,MealCost FROM   FoodDelivery_FinalProject.Restaurant JOIN FoodDelivery_FinalProject.Meal ON FoodDelivery_FinalProject.Restaurant.RestaurantID=FoodDelivery_FinalProject.Meal.RestaurantID WHERE FoodDelivery_FinalProject.Restaurant.RestaurantID=@RestaurantID) 
+

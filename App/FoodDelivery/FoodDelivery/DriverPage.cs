@@ -447,5 +447,39 @@ namespace FoodDelivery
 
             loadTrackings();
         }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            Form v1 = new Form1();
+            v1.Show();
+            this.Close();
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.DeleteDriver", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@DriverID", SqlDbType.NVarChar, 50).Value = driverID;
+
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
+
+            Form v1 = new Form1();
+            v1.Show();
+            this.Close();
+        }
     }
 }

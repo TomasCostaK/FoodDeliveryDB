@@ -617,5 +617,32 @@ namespace FoodDelivery
         {
             loadStats();
         }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.DeleteRestaurant", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@RestaurantID", SqlDbType.Int).Value = restID;
+
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
+
+            Form v1 = new Form2();
+            v1.Show();
+            this.Close();
+        }
     }
 }

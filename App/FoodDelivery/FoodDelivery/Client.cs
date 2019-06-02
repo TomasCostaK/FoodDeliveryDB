@@ -399,7 +399,6 @@ namespace FoodDelivery
         private void enableTextBoxs(Boolean check)
         {
             textBox1.ReadOnly = check;
-            textBox2.ReadOnly = check;
             textBox3.ReadOnly = check;
             textBox4.ReadOnly = check;
             textBox5.ReadOnly = check;
@@ -1383,6 +1382,34 @@ namespace FoodDelivery
             Form v1 = new Form1();
             v1.Show();
             this.Close();
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.DeleteUser", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@pLogin", SqlDbType.NVarChar, 50).Value = username;
+            
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
+
+            Form v1 = new Form1();
+            v1.Show();
+            this.Close();
+
         }
     }
 

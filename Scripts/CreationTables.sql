@@ -140,15 +140,17 @@ alter table FoodDelivery_FinalProject.Request add constraint ClientRequest forei
 alter table FoodDelivery_FinalProject.Request add constraint PaymentRequest foreign key(PaymentID) references FoodDelivery_FinalProject.PaymentType(PaymentID);
 
 --Trip
-alter table FoodDelivery_FinalProject.Trip add constraint TripDriver foreign key(DriverID) references FoodDelivery_FinalProject.Driver(DriverID);
+alter table FoodDelivery_FinalProject.Trip add constraint TripDriver foreign key(DriverID) references FoodDelivery_FinalProject.Driver(LoginName) on delete cascade;
+alter table FoodDelivery_FinalProject.Trip add constraint TripRequest foreign key(RequestID) references FoodDelivery_FinalProject.Request(RequestID) ON DELETE CASCADE;
 
 --Meal
-alter table FoodDelivery_FinalProject.Meal add constraint MealRestaurant foreign key(RestaurantID) references FoodDelivery_FinalProject.Restaurant(RestaurantID);
+alter table FoodDelivery_FinalProject.Meal add constraint MealRestaurant foreign key(RestaurantID) references FoodDelivery_FinalProject.Restaurant(RestaurantID) ON DELETE CASCADE;
 
 --Belongs
 alter table FoodDelivery_FinalProject.Belongs add constraint BelongsMeal foreign key(Name) references FoodDelivery_FinalProject.Meal(Name);
-alter table FoodDelivery_FinalProject.Belongs add constraint BelongsRestaurant foreign key(RestaurantID) references FoodDelivery_FinalProject.Restaurant(RestaurantID);
-alter table FoodDelivery_FinalProject.Belongs add constraint BelongsRequest foreign key(RequestID) references FoodDelivery_FinalProject.Request(RequestID);
+alter table FoodDelivery_FinalProject.Belongs ADD constraint BelongsRequest foreign key(RequestID) references FoodDelivery_FinalProject.Request(RequestID) ON DELETE CASCADE;
+alter table FoodDelivery_FinalProject.Belongs ADD constraint BelongsRestaurant foreign key(RestaurantID) references FoodDelivery_FinalProject.Restaurant(RestaurantID) ON DELETE CASCADE;
+
 
 
 ALTER TABLE FoodDelivery_FinalProject.Driver

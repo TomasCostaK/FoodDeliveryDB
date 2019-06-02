@@ -1,10 +1,10 @@
-
-
 alter PROCEDURE FoodDelivery_FinalProject.addRequest
 	
 	
     @ClientID VARCHAR(50),
 	@PaymentID Varchar(20),
+	@RequestID int OUTPUT,
+
 	@TotalCost decimal(5,2),
 	
 
@@ -17,9 +17,9 @@ BEGIN
     BEGIN TRY
 
         INSERT INTO FoodDelivery_FinalProject.Request (ClientID,PaymentID,TotalCost,RequestStatus)
-		OUTPUT INSERTED.RequestID
-		VALUES('Amélia_Pereira78',6,100.3,0X00)
 		
+		VALUES(@ClientID,@PaymentID,@TotalCost,0X00)
+		SELECT  @RequestID=SCOPE_IDENTITY()
 
 
     END TRY
@@ -28,7 +28,6 @@ BEGIN
     END CATCH
 
 END
-
     
 
 
