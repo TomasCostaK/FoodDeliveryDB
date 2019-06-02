@@ -24,31 +24,34 @@ BEGIN
     SET NOCOUNT ON
 
     DECLARE @salt UNIQUEIDENTIFIER=NEWID()
+	IF not EXISTS (SELECT TOP 1 LoginName FROM FoodDelivery_FinalProject.Client WHERE LoginName=@pLogin)
+	begin
+		BEGIN TRY
 
-	BEGIN TRY
+			INSERT INTO FoodDelivery_FinalProject.Vehicle (LicensePlate,Model )
+			VALUES(@LicensePlate,@Model)
 
-        INSERT INTO FoodDelivery_FinalProject.Vehicle (LicensePlate,Model )
-        VALUES(@LicensePlate,@Model)
+		   SET @responseMessage='Success'
 
-       SET @responseMessage='Success'
+		END TRY
+		BEGIN CATCH
+			SET @responseMessage=ERROR_MESSAGE() 
+		END CATCH
 
-    END TRY
-    BEGIN CATCH
-        SET @responseMessage=ERROR_MESSAGE() 
-    END CATCH
+		BEGIN TRY
 
-    BEGIN TRY
+			INSERT INTO FoodDelivery_FinalProject.Driver (LoginName,Name,Contact,Photo,Street,City,PostalCode,PasswordHash,Salt,LicensePlate,Ocuppied)
+			VALUES(@pLogin,@pName,@Contact,@Image,@Street,@City,@PostalCode,HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))),@salt,@LicensePlate,0x00)
 
-        INSERT INTO FoodDelivery_FinalProject.Driver (LoginName,Name,Contact,Photo,Street,City,PostalCode,PasswordHash,Salt,LicensePlate,Ocuppied)
-        VALUES(@pLogin,@pName,@Contact,@Image,@Street,@City,@PostalCode,HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))),@salt,@LicensePlate,0x00)
+		   SET @responseMessage='Success'
 
-       SET @responseMessage='Success'
-
-    END TRY
-    BEGIN CATCH
-        SET @responseMessage=ERROR_MESSAGE() 
-    END CATCH
-
+		END TRY
+		BEGIN CATCH
+			SET @responseMessage=ERROR_MESSAGE() 
+		END CATCH
+	END
+	ELSE
+		SET @responseMessage='Username already exists'
 END
 
 DECLARE @responseMessage NVARCHAR(250)

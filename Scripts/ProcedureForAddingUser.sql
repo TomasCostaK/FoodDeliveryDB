@@ -20,20 +20,23 @@ ALTER PROCEDURE FoodDelivery_FinalProject.AddUser
 AS
 BEGIN
     SET NOCOUNT ON
+	IF(not EXISTS (SELECT TOP 1 LoginName FROM FoodDelivery_FinalProject.Driver WHERE LoginName=@pLogin))
+	BEGIN
+		DECLARE @salt UNIQUEIDENTIFIER=NEWID()
+		BEGIN TRY
 
-    DECLARE @salt UNIQUEIDENTIFIER=NEWID()
-    BEGIN TRY
+			INSERT INTO FoodDelivery_FinalProject.Client (Name,Contact,Photo,Street,City,PostalCode,CardNumber,CardExpirationDate,Salt,PasswordHash,LoginName )
+			VALUES(@pName,@Contact,@Image,@Street,@City,@PostalCode,EncryptByPassPhrase('12345',@CardNumber),@CardExpirationDate,@salt, HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))),@pLogin)
 
-        INSERT INTO FoodDelivery_FinalProject.Client (Name,Contact,Photo,Street,City,PostalCode,CardNumber,CardExpirationDate,Salt,PasswordHash,LoginName )
-        VALUES(@pName,@Contact,@Image,@Street,@City,@PostalCode,EncryptByPassPhrase('12345',@CardNumber),@CardExpirationDate,@salt, HASHBYTES('SHA2_512', @pPassword+CAST(@salt AS NVARCHAR(36))),@pLogin)
+		   SET @responseMessage='Success'
 
-       SET @responseMessage='Success'
-
-    END TRY
-    BEGIN CATCH
-        SET @responseMessage=ERROR_MESSAGE() 
-    END CATCH
-
+		END TRY
+		BEGIN CATCH
+			SET @responseMessage=ERROR_MESSAGE() 
+		END CATCH
+	END
+	ELSE
+		SET @responseMessage='Username already exists'
 END
 
 DECLARE @responseMessage NVARCHAR(250)
