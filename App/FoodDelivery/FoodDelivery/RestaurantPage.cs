@@ -79,7 +79,7 @@ namespace FoodDelivery
 
                 string requestID = reader["RequestID"].ToString();
                 string mealName= reader["mealName"].ToString();
-                string totalCost = reader["TotalCost"].ToString();
+                string totalCost = reader["MealCost"].ToString();
                 byte [] status_byte =(byte []) reader["RequestStatus"];
 
                 string RequestStatus = "";
@@ -342,10 +342,11 @@ namespace FoodDelivery
 
         }
 
-        private void loadOrderDetails(string RequestID) {
+        private void loadOrderDetails(string RequestID,string cost, string mealName) {
             string op1 = comboBox1.Text;
             string op2 = textBox12.Text;
-
+            textBox9.Text = mealName;
+            textBox8.Text = cost + " €";
             if (!verifySGBDConnection())
                 return;
 
@@ -355,7 +356,7 @@ namespace FoodDelivery
 
             //listView1.Dock = DockStyle.Fill;
 
-            listView2.Items.Clear();
+            //listView2.Items.Clear();
             string name = "";
             string street ="";
             string city="";
@@ -383,6 +384,73 @@ namespace FoodDelivery
             textBox23.Text = contact;
             textBox22.Text = city;
             textBox21.Text = street;
+
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getDriverbyOrder('"+RequestID+"') ", cn);
+
+            reader = cmd.ExecuteReader();
+
+            name = "";
+            string vehicle = "";
+            string licensePlate = "";
+            string DriverID = "";
+            contact = "";
+            photo = "";
+
+            while (reader.Read())
+            { 
+                name = reader["Name"].ToString();
+                vehicle = reader["Vehicle"].ToString();
+                licensePlate = reader["LicensePlate"].ToString();
+                contact = reader["Contact"].ToString();
+                photo = reader["Photo"].ToString();
+                DriverID= reader["DriverID"].ToString();
+
+
+            }
+
+            if (photo != "")
+            {
+                byte[] image = Convert.FromBase64String(photo);
+                pictureBox2.Image = byteArrayToImage(image);
+            }
+
+            textBox17.Text = name;
+            textBox16.Text = vehicle;
+            textBox6.Text = licensePlate;
+            textBox18.Text = contact;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+            MessageBox.Show(DriverID);
+
+            cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getTripbyDriver('" + DriverID + "') ", cn);
+
+            reader = cmd.ExecuteReader();
+
+            
+            string estimatedTime = "";
+            string distance = "";
+            
+
+            while (reader.Read())
+            {
+                estimatedTime = reader["EstimatedTime"].ToString();
+                distance= reader["Distance"].ToString();
+                
+
+
+            }
+
+            
+            textBox19.Text = estimatedTime;
+            textBox20.Text = distance;
+            
+
+
             cn.Close();
 
         }
@@ -390,7 +458,11 @@ namespace FoodDelivery
         private void listView1_MouseClick(object sender, MouseEventArgs e)
         {
             string RequestID = listView1.SelectedItems[0].SubItems[0].Text;
-            loadOrderDetails(RequestID);
+            string mealName = listView1.SelectedItems[0].SubItems[2].Text;
+            string cost = listView1.SelectedItems[0].SubItems[1].Text;
+
+
+            loadOrderDetails(RequestID,mealName,cost);
             MessageBox.Show(RequestID);
             panel1.Visible = true;
         }
