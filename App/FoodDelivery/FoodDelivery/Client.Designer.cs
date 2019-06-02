@@ -38,6 +38,8 @@
             System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.button7 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -157,8 +159,6 @@
             this.listView5 = new System.Windows.Forms.ListView();
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
-            this.button17 = new System.Windows.Forms.Button();
-            this.button18 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -224,6 +224,28 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Profile";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // button17
+            // 
+            this.button17.BackColor = System.Drawing.Color.Red;
+            this.button17.Location = new System.Drawing.Point(1265, 417);
+            this.button17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(148, 46);
+            this.button17.TabIndex = 78;
+            this.button17.Text = "Delete Account";
+            this.button17.UseVisualStyleBackColor = false;
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(1282, 279);
+            this.button18.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(103, 42);
+            this.button18.TabIndex = 77;
+            this.button18.Text = "Logout";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // textBox10
             // 
@@ -1018,7 +1040,7 @@
             this.panel1.Controls.Add(this.label15);
             this.panel1.Controls.Add(this.listView3);
             this.panel1.Controls.Add(this.label12);
-            this.panel1.Location = new System.Drawing.Point(367, 241);
+            this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1464, 670);
@@ -1545,28 +1567,6 @@
             this.button9.Text = "Delete Item";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // button17
-            // 
-            this.button17.BackColor = System.Drawing.Color.Red;
-            this.button17.Location = new System.Drawing.Point(1265, 417);
-            this.button17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(148, 46);
-            this.button17.TabIndex = 78;
-            this.button17.Text = "Delete Account";
-            this.button17.UseVisualStyleBackColor = false;
-            // 
-            // button18
-            // 
-            this.button18.Location = new System.Drawing.Point(1282, 279);
-            this.button18.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(103, 42);
-            this.button18.TabIndex = 77;
-            this.button18.Text = "Logout";
-            this.button18.UseVisualStyleBackColor = true;
-            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // Client
             // 

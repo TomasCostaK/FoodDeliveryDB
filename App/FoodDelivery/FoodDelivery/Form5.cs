@@ -83,9 +83,9 @@ namespace FoodDelivery
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
             string restaurantID="";
-            /*if (outPutVal.Value != DBNull.Value) restaurantID = outPutVal.Value.ToString();
+            /*if (outPutVal.Value != DBNull.Value) restaurantID = outPutVal.Value.ToString();*/
 
-            MessageBox.Show("Your restaurant ID " + restaurantID);*/
+            MessageBox.Show("Your restaurant ID " + cmd.Parameters["@responseMessage"].Value.ToString());
 
             /*panel2.Visible = false;
             panel3.Visible = false;

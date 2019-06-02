@@ -728,11 +728,14 @@ namespace FoodDelivery
             reader = cmd.ExecuteReader();
             string latitude = "";
             string longitude = "";
+            string city = "";
 
             while (reader.Read())
             {
                 latitude = reader["GPS_Latitude"].ToString();
                 longitude = reader["GPS_Longitude"].ToString();
+                city = reader["City"].ToString();
+
 
 
 
@@ -743,18 +746,10 @@ namespace FoodDelivery
             //MessageBox.Show(Convert.ToDouble(latitude) + " "+longitude+"--" + Convert.ToDecimal(GPS["Lisboa"][0].Trim()));
 
 
-            foreach (var city in GPS)
-            {
-                //MessageBox.Show(city.Value[0]+"  "+latitude);
-                latitude = latitude.Replace(",", ".");
-                longitude = longitude.Replace(",", ".");
 
-                if (Equals(latitude, city.Value[0]) && Equals(longitude, city.Value[1]))
-                {
 
-                    textBox18.Text = city.Key;
-                }
-            }
+            textBox18.Text = city;
+                
 
 
 
@@ -1215,7 +1210,7 @@ namespace FoodDelivery
 
             if (minDistance == 0)
             {
-                cmd = new SqlCommand(" FoodDelivery_FinalProject.changeStatusDriver", cn);
+                cmd = new SqlCommand("FoodDelivery_FinalProject.changeStatusDriver", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("@DriverID", SqlDbType.NVarChar).Value = driverID;
@@ -1228,7 +1223,7 @@ namespace FoodDelivery
                 cmd.Connection = cn;
                 cmd.ExecuteNonQuery();
 
-                cmd = new SqlCommand(" FoodDelivery_FinalProject.changeStatusRequest", cn);
+                cmd = new SqlCommand("FoodDelivery_FinalProject.changeStatusRequest", cn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = RequestID;

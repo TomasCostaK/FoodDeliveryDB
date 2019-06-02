@@ -438,7 +438,7 @@ namespace FoodDelivery
             string gps_lat = GPS[city][0].Replace(',', '.');
             string gps_lon = GPS[city][1].Replace(',', '.');
 
-            SqlCommand cmd = new SqlCommand("exec FoodDelivery_FinalProject.AddTracking '" + driverID +"', '"+ gps_lat +"', '" + gps_lon +"'",cn);
+            SqlCommand cmd = new SqlCommand("exec FoodDelivery_FinalProject.AddTracking '" + driverID +"', '"+ gps_lat +"', '" + gps_lon +"','"+city+"'",cn);
 
             if (!verifySGBDConnection())
                 return;
