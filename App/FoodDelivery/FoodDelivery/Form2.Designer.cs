@@ -34,11 +34,13 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(646, 393);
+            this.button5.Location = new System.Drawing.Point(651, 454);
             this.button5.Margin = new System.Windows.Forms.Padding(4);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(331, 36);
@@ -49,7 +51,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(646, 452);
+            this.button4.Location = new System.Drawing.Point(651, 513);
             this.button4.Margin = new System.Windows.Forms.Padding(4);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(331, 31);
@@ -60,7 +62,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(646, 334);
+            this.button3.Location = new System.Drawing.Point(651, 395);
             this.button3.Margin = new System.Windows.Forms.Padding(4);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(331, 36);
@@ -98,11 +100,32 @@
             this.textBox4.Size = new System.Drawing.Size(203, 22);
             this.textBox4.TabIndex = 16;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(658, 332);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(73, 17);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "Password:";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(762, 332);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(203, 22);
+            this.textBox2.TabIndex = 20;
+            this.textBox2.UseSystemPasswordChar = true;
+            this.textBox2.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1474, 702);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
@@ -125,5 +148,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }

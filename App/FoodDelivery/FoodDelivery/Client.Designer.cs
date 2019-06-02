@@ -28,14 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem21 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem22 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem23 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem24 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem17 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem18 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem19 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem20 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBox10 = new System.Windows.Forms.TextBox();
@@ -157,6 +157,8 @@
             this.listView5 = new System.Windows.Forms.ListView();
             this.button10 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -188,6 +190,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button17);
+            this.tabPage1.Controls.Add(this.button18);
             this.tabPage1.Controls.Add(this.textBox10);
             this.tabPage1.Controls.Add(this.button7);
             this.tabPage1.Controls.Add(this.button3);
@@ -628,8 +632,8 @@
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem21,
-            listViewItem22});
+            listViewItem1,
+            listViewItem2});
             this.listView1.Location = new System.Drawing.Point(56, 94);
             this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.Name = "listView1";
@@ -964,8 +968,8 @@
             this.listView6.FullRowSelect = true;
             this.listView6.GridLines = true;
             this.listView6.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem23,
-            listViewItem24});
+            listViewItem3,
+            listViewItem4});
             this.listView6.Location = new System.Drawing.Point(96, 105);
             this.listView6.Margin = new System.Windows.Forms.Padding(4);
             this.listView6.Name = "listView6";
@@ -1263,8 +1267,8 @@
             this.listView3.FullRowSelect = true;
             this.listView3.GridLines = true;
             this.listView3.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem17,
-            listViewItem18});
+            listViewItem5,
+            listViewItem6});
             this.listView3.Location = new System.Drawing.Point(33, 122);
             this.listView3.Margin = new System.Windows.Forms.Padding(4);
             this.listView3.Name = "listView3";
@@ -1288,8 +1292,8 @@
             this.listView2.FullRowSelect = true;
             this.listView2.GridLines = true;
             this.listView2.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem19,
-            listViewItem20});
+            listViewItem7,
+            listViewItem8});
             this.listView2.Location = new System.Drawing.Point(71, 107);
             this.listView2.Margin = new System.Windows.Forms.Padding(4);
             this.listView2.Name = "listView2";
@@ -1542,6 +1546,28 @@
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
+            // button17
+            // 
+            this.button17.BackColor = System.Drawing.Color.Red;
+            this.button17.Location = new System.Drawing.Point(1265, 417);
+            this.button17.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(148, 46);
+            this.button17.TabIndex = 78;
+            this.button17.Text = "Delete Account";
+            this.button17.UseVisualStyleBackColor = false;
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(1282, 279);
+            this.button18.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(103, 42);
+            this.button18.TabIndex = 77;
+            this.button18.Text = "Logout";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
             // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1702,5 +1728,7 @@
         private System.Windows.Forms.TextBox textBox25;
         private System.Windows.Forms.TextBox textBox28;
         private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button18;
     }
 }

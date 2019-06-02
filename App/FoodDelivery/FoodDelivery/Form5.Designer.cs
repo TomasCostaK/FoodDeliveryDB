@@ -43,6 +43,8 @@
             this.textBox30 = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
             this.label37 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox14
@@ -182,11 +184,31 @@
             this.label37.TabIndex = 102;
             this.label37.Text = "Restaurant Sign Up";
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(745, 218);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(247, 22);
+            this.textBox1.TabIndex = 118;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(609, 221);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 17);
+            this.label1.TabIndex = 117;
+            this.label1.Text = "Password*:";
+            // 
             // Form5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1474, 702);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox14);
             this.Controls.Add(this.label27);
             this.Controls.Add(this.label28);
@@ -227,5 +249,7 @@
         private System.Windows.Forms.TextBox textBox30;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label37;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label1;
     }
 }

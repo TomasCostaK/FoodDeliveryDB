@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBox4 = new System.Windows.Forms.TextBox();
@@ -108,6 +108,8 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -307,6 +309,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button8);
+            this.tabPage2.Controls.Add(this.button7);
             this.tabPage2.Controls.Add(this.textBox10);
             this.tabPage2.Controls.Add(this.label26);
             this.tabPage2.Controls.Add(this.label25);
@@ -846,8 +850,8 @@
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2});
+            listViewItem7,
+            listViewItem8});
             this.listView1.Location = new System.Drawing.Point(108, 121);
             this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.Name = "listView1";
@@ -966,6 +970,28 @@
             this.label6.TabIndex = 0;
             this.label6.Text = "Your Restaurant Stats";
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(1269, 184);
+            this.button7.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(103, 42);
+            this.button7.TabIndex = 75;
+            this.button7.Text = "Logout";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button8
+            // 
+            this.button8.BackColor = System.Drawing.Color.Red;
+            this.button8.Location = new System.Drawing.Point(1252, 322);
+            this.button8.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(148, 46);
+            this.button8.TabIndex = 76;
+            this.button8.Text = "Delete Account";
+            this.button8.UseVisualStyleBackColor = false;
+            // 
             // RestaurantPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1074,5 +1100,7 @@
         private System.Windows.Forms.TextBox textBox23;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.TextBox textBox22;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button7;
     }
 }

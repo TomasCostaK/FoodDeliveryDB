@@ -66,7 +66,7 @@ namespace FoodDelivery
 
 
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantOrder('"+restID+"')", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantOrderRestaurantPage('" + restID+"')", cn);
 
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -78,8 +78,8 @@ namespace FoodDelivery
             {
 
                 string requestID = reader["RequestID"].ToString();
-                string mealName= reader["mealName"].ToString();
-                string totalCost = reader["MealCost"].ToString();
+                string mealName= reader["MealName"].ToString();
+                string totalCost = reader["TotalCost"].ToString();
                 byte [] status_byte =(byte []) reader["RequestStatus"];
 
                 string RequestStatus = "";
@@ -480,6 +480,15 @@ namespace FoodDelivery
                 returnImage = Image.FromStream(ms);
             }
             return returnImage;
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            Form v2 = new Form2();
+            v2.Show();
+            this.Close();
+            
+            
         }
     }
 }

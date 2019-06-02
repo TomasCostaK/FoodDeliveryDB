@@ -45,6 +45,7 @@ namespace FoodDelivery
         private void button12_Click(object sender, EventArgs e)
         {
             string Name = textBox25.Text;
+            string password = textBox1.Text;
             string contact = textBox30.Text;
             string street = textBox28.Text;
             string city = textBox27.Text;
@@ -58,8 +59,12 @@ namespace FoodDelivery
 
             cmd = new SqlCommand("FoodDelivery_FinalProject.AddRestaurant", cn);
             cmd.CommandType = CommandType.StoredProcedure;
-
+            /*SqlParameter outPutVal = new SqlParameter("@IdentityOutput", SqlDbType.Int);
+            outPutVal.Direction = ParameterDirection.Output;
+            cmd.Parameters.Add(outPutVal);*/
             cmd.Parameters.Add("@pName", SqlDbType.NVarChar).Value = Name;
+            cmd.Parameters.Add("@pPassword", SqlDbType.NVarChar).Value = password;
+
             cmd.Parameters.Add("@Contact", SqlDbType.NChar, 9).Value = contact;
             cmd.Parameters.Add("@Street", SqlDbType.NVarChar).Value = street;
             cmd.Parameters.Add("@City", SqlDbType.NVarChar).Value = city;
@@ -77,8 +82,10 @@ namespace FoodDelivery
                 return;
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
+            string restaurantID="";
+            /*if (outPutVal.Value != DBNull.Value) restaurantID = outPutVal.Value.ToString();
 
-            MessageBox.Show("ola " + cmd.Parameters["@responseMessage"].Value);
+            MessageBox.Show("Your restaurant ID " + restaurantID);*/
 
             /*panel2.Visible = false;
             panel3.Visible = false;

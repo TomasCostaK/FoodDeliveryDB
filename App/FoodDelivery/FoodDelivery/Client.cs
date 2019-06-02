@@ -1382,6 +1382,13 @@ namespace FoodDelivery
                 MessageBox.Show("Nothing selected");
             }
         }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            Form v1 = new Form1();
+            v1.Show();
+            this.Close();
+        }
     }
 
     public static class Foo

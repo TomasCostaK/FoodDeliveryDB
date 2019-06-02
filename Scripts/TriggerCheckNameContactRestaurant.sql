@@ -8,9 +8,11 @@ AS
     DECLARE @Street NVARCHAR(30)
 	DECLARE @City	NVARCHAR(20)
 	DECLARE @PostalCode NVARCHAR(15)
+	DECLARE @pPassword binary(64)
+	DECLARE @Salt UNIQUEIDENTIFIER
     DECLARE @Type   VARCHAR(20)
 
-	SELECT @Name=[Name], @Contact=Contact,@Street=Street,@City=City,@PostalCode=PostalCode,@Type=[Type] FROM inserted;
+	SELECT @Name=[Name],@Salt=Salt,@pPassword=PasswordHash, @Contact=Contact,@Street=Street,@City=City,@PostalCode=PostalCode,@Type=[Type] FROM inserted;
 	
 	IF EXISTS (SELECT TOP 1 [Name], Contact FROM FoodDelivery_FinalProject.Restaurant WHERE Name=@Name and Contact=@Contact) 
 		BEGIN
@@ -21,8 +23,8 @@ AS
     ELSE
         BEGIN
             
-             INSERT INTO FoodDelivery_FinalProject.Restaurant ( Name,Contact,Street,City,PostalCode,Type )
-            VALUES(@Name,@Contact,@Street,@City,@PostalCode,@Type)
+             INSERT INTO FoodDelivery_FinalProject.Restaurant ( Name,Contact,Street,City,PostalCode,Type,Salt,PasswordHash )
+            VALUES(@Name,@Contact,@Street,@City,@PostalCode,@Type,@Salt,@pPassword)
         END
 
 

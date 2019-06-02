@@ -64,22 +64,48 @@ namespace FoodDelivery
         {
             SqlCommand cmd = null;
 
-            string RestaurantID = textBox4.Text;
-
-            cmd = new SqlCommand("SELECT FoodDelivery_FinalProject.restaurantLogin(" + RestaurantID + ")", cn);
+            
 
 
-            if (!verifySGBDConnection())
-                return;
-            cmd.Connection = cn;
+            String logname = textBox4.Text;
+            String logPass = textBox2.Text;
 
-            int ret = (int)cmd.ExecuteScalar();
+            if (logname == string.Empty)
+            {
+                MessageBox.Show("Insert Username");
+            }
+            else if (logPass == string.Empty)
+            {
+                MessageBox.Show("Insert Password");
+            }
+            else
+            {
+                cmd = new SqlCommand("FoodDelivery_FinalProject.restaurantLoginProcedure", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.Add("@pLoginName", SqlDbType.NVarChar, 50).Value = logname;
+                cmd.Parameters.Add("@pPassword", SqlDbType.NVarChar).Value = logPass;
+                cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
 
-            Form v1 = new RestaurantPage(RestaurantID);
-            v1.Show();
-            this.Close();
+                if (!verifySGBDConnection())
+                    return;
+                cmd.Connection = cn;
+                cmd.ExecuteNonQuery();
 
-            MessageBox.Show("ola " + ret);
+                String type = (String)cmd.Parameters["@responseMessage"].Value;
+
+                if (type == "Restaurant Login")
+                {
+                    Form v1 = new RestaurantPage(logname);
+                    v1.Show();
+                    this.Close();
+                }
+                
+            }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

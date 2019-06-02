@@ -13,11 +13,11 @@ BEGIN
 	IF @SelectedCity='Todos'
 	BEGIN
 		
-		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant where Name LIKE @RestaurantName+'%'																				
+		INSERT INTO @RTable SELECT RestaurantID,Name,Contact,Street,City,PostalCode,Type FROM FoodDelivery_FinalProject.Restaurant where Name LIKE @RestaurantName+'%'																				
 	END
 	ELSE
 	BEGIN
-		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant where City=@SelectedCity and  Name LIKE @RestaurantName+'%'	
+		INSERT INTO @RTable SELECT RestaurantID,Name,Contact,Street,City,PostalCode,Type FROM FoodDelivery_FinalProject.Restaurant where City=@SelectedCity and  Name LIKE @RestaurantName+'%'	
 	END
 	
   END
@@ -25,14 +25,14 @@ BEGIN
   BEGIN
 	IF @SelectedCity='Todos'
 	BEGIN
-		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant WHERE Type=@SelectedType and Name LIKE @RestaurantName+'%'	
+		INSERT INTO @RTable SELECT RestaurantID,Name,Contact,Street,City,PostalCode,Type FROM FoodDelivery_FinalProject.Restaurant WHERE Type=@SelectedType and Name LIKE @RestaurantName+'%'	
 	END
 	ELSE
 	BEGIN
-		INSERT INTO @RTable SELECT * FROM FoodDelivery_FinalProject.Restaurant WHERE Type=@SelectedType AND City=@SelectedCity and  Name LIKE @RestaurantName+'%'	
+		INSERT INTO @RTable SELECT RestaurantID,Name,Contact,Street,City,PostalCode,Type FROM FoodDelivery_FinalProject.Restaurant WHERE Type=@SelectedType AND City=@SelectedCity and  Name LIKE @RestaurantName+'%'	
 	END
 	
   END
  
   RETURN 
-END
+END	
