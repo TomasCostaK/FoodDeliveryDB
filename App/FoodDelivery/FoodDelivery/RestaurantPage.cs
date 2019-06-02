@@ -136,17 +136,138 @@ namespace FoodDelivery
             reader.Close(); // <- too easy to forget
             reader.Dispose();
 
-
-
-
-
-
             cn.Close();
         }
 
         private void loadStats()
         {
-            
+            string expensive = "";
+            string expensivename = "";
+            string cheapest = "";
+            string cheapestname = "";
+            string moneymade = "";
+            string clientID = "";
+            string numberClients = "";
+            string mainIng = "";
+            string mainSide = "";
+            string mainDrink = "";
+
+            disableTextBoxes();
+            if (!verifySGBDConnection())
+                return;
+
+            SqlCommand cmd = new SqlCommand("select top 1 * from FoodDelivery_FinalProject.getMeals('None', " + restID + ") order by MealCost desc", cn);
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            reader.Read();
+            expensivename = reader["Name"].ToString();
+            expensive = reader["MealCost"].ToString();
+
+            textBox29.Text = expensivename;
+            textBox33.Text = expensive;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            cmd = new SqlCommand("select top 1 * from FoodDelivery_FinalProject.getMeals('None', " + restID + ") order by MealCost asc", cn);
+            reader = cmd.ExecuteReader();
+
+            reader.Read();
+            cheapestname = reader["Name"].ToString();
+            cheapest = reader["MealCost"].ToString();
+
+            textBox28.Text = cheapestname;
+            textBox32.Text = cheapest;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            //
+            cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getMoneyMade("+ restID +")", cn);
+            reader = cmd.ExecuteReader();
+
+            reader.Read();
+            moneymade = reader["moneyMade"].ToString();
+
+            textBox31.Text = moneymade;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            //
+            cmd = new SqlCommand("select * from FoodDelivery_FinalProject.BestClient(" + restID + ")", cn);
+            reader = cmd.ExecuteReader();
+
+            reader.Read();
+            clientID = reader["ClientID"].ToString();
+
+            textBox30.Text = clientID;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            //
+            cmd = new SqlCommand("select * from FoodDelivery_FinalProject.NumClients(" + restID + ")", cn);
+            reader = cmd.ExecuteReader();
+
+            reader.Read();
+            numberClients = reader["RequestsNo"].ToString();
+
+            textBox7.Text = numberClients;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            //
+            cmd = new SqlCommand("select * from FoodDelivery_FinalProject.soldMain(" + restID + ")", cn);
+            reader = cmd.ExecuteReader();
+
+            reader.Read();
+            mainIng = reader["MainIngredient"].ToString();
+
+            textBox25.Text = mainIng;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            //
+            cmd = new SqlCommand("select * from FoodDelivery_FinalProject.soldSide(" + restID + ")", cn);
+            reader = cmd.ExecuteReader();
+
+            reader.Read();
+            mainSide = reader["SideIngredient"].ToString();
+
+            textBox27.Text = mainSide;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+
+            //
+            cmd = new SqlCommand("select * from FoodDelivery_FinalProject.soldDrink(" + restID + ")", cn);
+            reader = cmd.ExecuteReader();
+
+            reader.Read();
+            mainDrink = reader["Drink"].ToString();
+
+            textBox26.Text = mainDrink;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+        }
+
+        private void disableTextBoxes()
+        {
+            textBox7.ReadOnly = true;
+            textBox25.ReadOnly = true;
+            textBox26.ReadOnly = true;
+            textBox27.ReadOnly = true;
+            textBox28.ReadOnly = true;
+            textBox29.ReadOnly =  true;
+            textBox30.ReadOnly = true;
+            textBox31.ReadOnly = true;
+            textBox32.ReadOnly = true;
+            textBox33.ReadOnly = true;
         }
 
         private void loadMeals()
@@ -244,6 +365,7 @@ namespace FoodDelivery
         private void Button2_Click(object sender, EventArgs e)
         {
             createMeal();
+            loadStats();
         }
 
         private void Label7_Click(object sender, EventArgs e)
@@ -489,6 +611,11 @@ namespace FoodDelivery
             this.Close();
             
             
+        }
+
+        private void TabPage4_Click(object sender, EventArgs e)
+        {
+            loadStats();
         }
     }
 }
