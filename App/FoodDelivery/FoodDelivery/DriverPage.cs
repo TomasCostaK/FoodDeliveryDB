@@ -508,7 +508,7 @@ namespace FoodDelivery
 
             disableDetailBoxes();
 
-            SqlCommand cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getDetailsOrderDriver('" + driverID + "," + requestID + "')", cn);
+            SqlCommand cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getDetailsOrderDriver('" + driverID + "','" + requestID + "')", cn);
             SqlDataReader reader = cmd.ExecuteReader();
 
             string tripID = "";
@@ -524,7 +524,7 @@ namespace FoodDelivery
             {
                 tripID = reader["TripID"].ToString();
                 cost = reader["TravelCost"].ToString();
-                time = reader["EstimtedTime"].ToString();
+                time = reader["EstimatedTime"].ToString();
                 name = reader["Name"].ToString();
                 city = reader["City"].ToString();
                 contact = reader["Contact"].ToString();
