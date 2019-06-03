@@ -1303,7 +1303,7 @@ namespace FoodDelivery
             if(!verifySGBDConnection())
                 return;
             SqlCommand cmd = null;
-            label42.Text = mealName;
+           
             
             cmd = new SqlCommand("SELECT * FROM FoodDelivery_FinalProject.getRestaurantByMeal('"+mealName+"')", cn);
             SqlDataReader reader = cmd.ExecuteReader();
@@ -1338,6 +1338,7 @@ namespace FoodDelivery
                 listView7.Items.Add(lvi);
 
             }
+           
 
             textBox25.Text = mainIngredient;
             textBox26.Text = sideIngredient;
@@ -1480,6 +1481,11 @@ namespace FoodDelivery
             }
 
             MessageBox.Show("Added to cart");
+
+        }
+
+        private void listView6_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
         }
     }

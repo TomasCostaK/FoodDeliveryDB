@@ -126,6 +126,22 @@ CREATE TABLE FoodDelivery_FinalProject.Belongs(
 		
 )
 
+CREATE TABLE FoodDelivery_FinalProject.Promotional(
+	Code				varchar(50) NOT NULL,
+	StartDate			DATE 
+	EndDate				DATE,
+	Discount			INT,
+	RestaurantID		INT ,
+
+	CHECK(Discount>0 AND Discount<=100)
+	PRIMARY KEY(Code)
+		
+)
+
+--Promotional
+alter table FoodDelivery_FinalProject.Promotional add constraint RestaurantPromotional foreign key(RestaurantID) references FoodDelivery_FinalProject.Restaurant (RestaurantID);
+
+
 --Tracking
 alter table FoodDelivery_FinalProject.Tracking add constraint DriverTracking foreign key(DriverID) references FoodDelivery_FinalProject.Driver (DriverID);
 
