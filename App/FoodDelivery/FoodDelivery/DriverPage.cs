@@ -19,7 +19,7 @@ namespace FoodDelivery
         private SqlConnection cn;
         private String driverID;
         Dictionary<string, string[]> GPS = new Dictionary<string, string[]>
-        { {"Aveiro", new String [2] { "40,644270", "-8,645540" } },
+        {      {"Aveiro", new String [2] { "40,644270", "-8,645540" } },
                {"Beja",new String [2]  {"38,015060", "-7,863230" } },
                {"Braga",new String [2] {"41,550320","-8,420050"}},
                {"Bragança",new String [2] {"41,805820", "-6,757190"}},
@@ -30,7 +30,6 @@ namespace FoodDelivery
                {"Guarda",new String [2] {"40,537330","-7,265750"}},
                {"Leiria",new String [2] {"39,743620","-8,807050"}},
                {"Lisboa",new String [2] {"38,716670","-9,133330"}},
-
                {"Portalegre",new String [2] {"39,293790","-7,431220"}},
                {"Porto",new String [2] {"41,149610","-8,610990"}},
                {"Santarém",new String [2] {"39,233330","-8,683330"}},
@@ -153,9 +152,15 @@ namespace FoodDelivery
             createTable2();
             populateComboBox2();
 
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+
             enableTextBoxs(true);
             loadTrackings();
             loadRequests();
+
+            panel1.Visible = false;
+
             loadDoneRequests();
             loadProfile();
         }
@@ -480,6 +485,95 @@ namespace FoodDelivery
             Form v1 = new Form1();
             v1.Show();
             this.Close();
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            panel1.Visible = false;
+        }
+
+        private void ListView3_MouseClick(object sender, MouseEventArgs e)
+        {
+            string RequestID = listView1.SelectedItems[0].SubItems[0].Text;
+
+            loadOrderDetails(RequestID);
+            MessageBox.Show(RequestID);
+            panel1.Visible = true;
+        }
+
+        private void loadOrderDetails(string requestID)
+        {
+            if (!verifySGBDConnection())
+                return;
+
+            disableDetailBoxes();
+
+            SqlCommand cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getDetailsOrderDriver('" + driverID + "," + requestID + "')", cn);
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            string tripID = "";
+            string cost = "";
+            string time = "";
+            string name = "";
+            string distance = "";
+            string contact = "";
+            string photo = "";
+            string city = "";
+
+            while (reader.Read())
+            {
+                tripID = reader["TripID"].ToString();
+                cost = reader["TravelCost"].ToString();
+                time = reader["EstimtedTime"].ToString();
+                name = reader["Name"].ToString();
+                city = reader["City"].ToString();
+                contact = reader["Contact"].ToString();
+                photo = reader["Photo"].ToString();
+            }
+
+            if (photo != "")
+            {
+                byte[] image = Convert.FromBase64String(photo);
+                pictureBox2.Image = byteArrayToImage(image);
+            }
+
+            textBox3.Text =  tripID;
+            textBox19.Text = time;
+            textBox21.Text = city;
+            textBox22.Text = cost;
+            textBox23.Text = contact;
+            textBox24.Text = name;
+
+            reader.Close(); // <- too easy to forget
+            reader.Dispose();
+            MessageBox.Show(driverID);
+
+            cn.Close();
+
+        }
+
+        private void disableDetailBoxes()
+        {
+            textBox3.ReadOnly = true;
+            textBox19.ReadOnly = true;
+            textBox21.ReadOnly = true;
+            textBox22.ReadOnly = true;
+            textBox23.ReadOnly = true;
+            textBox24.ReadOnly = true;
+        }
+
+        private void ListView1_MouseClick(object sender, MouseEventArgs e)
+        {
+            string RequestID = listView1.SelectedItems[0].SubItems[0].Text;
+
+            loadOrderDetails(RequestID);
+            MessageBox.Show(RequestID);
+            panel1.Visible = true;
+        }
+
+        private void Label34_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
