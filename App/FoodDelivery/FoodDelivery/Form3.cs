@@ -14,6 +14,27 @@ namespace FoodDelivery
 {
     public partial class Form3 : Form
     {
+        Dictionary<string, string[]> GPS = new Dictionary<string, string[]>
+        {      {"Aveiro", new String [2] { "40,644270", "-8,645540" } },
+               {"Beja",new String [2]  {"38,015060", "-7,863230" } },
+               {"Braga",new String [2] {"41,550320","-8,420050"}},
+               {"Bragança",new String [2] {"41,805820", "-6,757190"}},
+               {"Castelo Branco",new String [2] {"39,822190","-7,490870"}},
+               {"Coimbra",new String [2] {"40,205640","-8,419550"}},
+               {"Évora",new String [2] {"38,566670","-7,900000"}},
+               {"Faro",new String [2] {"37,019370","-7,932230"}},
+               {"Guarda",new String [2] {"40,537330","-7,265750"}},
+               {"Leiria",new String [2] {"39,743620","-8,807050"}},
+               {"Lisboa",new String [2] {"38,716670","-9,133330"}},
+               {"Portalegre",new String [2] {"39,293790","-7,431220"}},
+               {"Porto",new String [2] {"41,149610","-8,610990"}},
+               {"Santarém",new String [2] {"39,233330","-8,683330"}},
+               {"Setúbal",new String [2] {"38,524400","-8,888200"}},
+               {"Viana do Castelo",new String [2]   {"41,693230","-8,832870"}},
+               {"Vila Real",new String [2]          {"41,300620","-7,744130"}},
+               { "Viseu",new String [2]                {"40,661010","-7,909710"}},
+        };
+
         private SqlConnection cn;
 
         public Form3()
@@ -50,7 +71,7 @@ namespace FoodDelivery
             string Name = textBox6.Text;
             string contact = textBox7.Text;
             string street = textBox9.Text;
-            string city = textBox10.Text;
+            string city = comboBox1.Text;
             string postalCode = textBox11.Text;
             string cardNumber = textBox12.Text;
             string cardExpiration = textBox13.Text;
@@ -122,6 +143,19 @@ namespace FoodDelivery
 
         private void Form3_Load(object sender, EventArgs e)
         {
+            populatebox1();
+        }
+
+        private void populatebox1()
+        {
+            var dataSource = new List<string>();
+
+            foreach (var city in GPS)
+            {
+                dataSource.Add(city.Key);
+            }
+            comboBox1.DataSource = dataSource;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
 
         }
 

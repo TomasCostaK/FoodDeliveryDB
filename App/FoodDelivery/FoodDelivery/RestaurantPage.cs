@@ -20,7 +20,6 @@ namespace FoodDelivery
         {
             this.restID = Convert.ToInt32(restauID);
             InitializeComponent();
-            MessageBox.Show(restID.ToString());
         }
 
         private SqlConnection getSGBDConnection()
@@ -47,6 +46,7 @@ namespace FoodDelivery
         {
             createTable();
             createOrderTable();
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             loadOrderTable();
             loadProfile();
             loadMeals();
@@ -278,8 +278,29 @@ namespace FoodDelivery
 
             if (!verifySGBDConnection())
                 return;
+            SqlCommand cmd = null;
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getMeals('" + op1 + "' ,'"+ restID + "') where Name LIKE '%" + op2 + "%'", cn);
+            if (op1.Equals("Price Ascending"))
+            {
+                cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getMeals('" + op1 + "' ,'" + restID + "') where Name LIKE '%" + op2 + "%' order by MealCost ASC", cn);
+            }
+            else if (op1.Equals("Price Descending"))
+            {
+                cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getMeals('" + op1 + "' ,'" + restID + "') where Name LIKE '%" + op2 + "%' order by MealCost DESC", cn);
+            }
+            else if (op1.Equals("Name Ascending"))
+            {
+                cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getMeals('" + op1 + "' ,'" + restID + "') where Name LIKE '%" + op2 + "%' order by Name ASC", cn);
+            }
+            else if(op1.Equals("Name Descending"))
+            {
+                cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getMeals('" + op1 + "' ,'" + restID + "') where Name LIKE '%" + op2 + "%' order by Name DESC", cn);
+            }
+            else
+            {
+                cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getMeals('" + op1 + "' ,'" + restID + "') where Name LIKE '%" + op2 + "%' order by Name ASC", cn);
+            }
+
 
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -643,6 +664,11 @@ namespace FoodDelivery
             Form v1 = new Form2();
             v1.Show();
             this.Close();
+        }
+
+        private void TextBox12_TextChanged(object sender, EventArgs e)
+        {
+            loadMeals();
         }
     }
 }
