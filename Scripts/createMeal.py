@@ -2,24 +2,24 @@
 import random
 import string
 
-insert_meals = open('insert_meals.txt', 'w', encoding='utf8')
-listRestaurants = open('listRestaurants.txt', 'r', encoding='utf8')
-meals_cost_file = open('meal_cost.txt', 'w', encoding='utf8')
-name_restID = open('name_restID.txt', 'w', encoding='utf8')
+insert_meals = open('insert_mealsV2.txt', 'w', encoding='utf8')
+listRestaurants = open('RestaurantWithNoMeals.txt', 'r', encoding='utf8')
+meals_cost_file = open('meal_costV2.txt', 'w', encoding='utf8')
+name_restID = open('name_restIDV2.txt', 'w', encoding='utf8')
 
 restaurant_IDS = []
 
 probSide = 0.7
 
-main_ingredients = ['fiambre','salada','borrego','cozido','panados','frango','porco','pato','coelho','salmao','dourada','pescada','sushi','atum']
-side_ingredients = ['batatas_fritas','arroz_feijao','arroz_branco','massa','carbonara','gelatina']
+main_ingredients = ['fiambre','salada','borrego','panados','frango','porco','pato','coelho','salmao','dourada','pescada','sushi','atum','robalo','salmao','polvo','camarao','marisco']
+side_ingredients = ['batatas_fritas','arroz_feijao','arroz_branco','massa','bulgur','quinoa','batata_cozida','batata_assada','salada','cuscuz']
 drinks = ['agua','coca-cola','pepsi','sprite','fanta','vinho_branco','vinho_tinto','sumo_laranja']
 
 for line in listRestaurants:   
   restaurant_IDS.append(line.strip('\n'))
 
 # 100 meals
-for i in range(100):
+for i in range(300):
 
     # meal
     main_ingredient = random.choice(main_ingredients)

@@ -166,8 +166,8 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
-
-            SqlCommand cmd = new SqlCommand("SELECT DISTINCT RequestID,PaymentType,TotalCost,EstimatedTime, RequestStatus FROM  FoodDelivery_FinalProject.getRestaurantOrderComplex('" + username + "')", cn); ;
+            string op = comboBox5.Text;
+            SqlCommand cmd = new SqlCommand("SELECT DISTINCT RequestID,PaymentType,TotalCost,EstimatedTime, RequestStatus FROM  FoodDelivery_FinalProject.getRestaurantOrderComplex('" + username + "','"+op+"')", cn); ;
 
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -270,6 +270,8 @@ namespace FoodDelivery
             listView3.Columns.Add("Main Ingredient", 150);
             listView3.Columns.Add("Side Ingredient", 150);
             listView3.Columns.Add("Drink", 150);
+            listView3.Columns.Add("Meal cost", 90);
+            listView3.Columns.Add("Restaurant ID", 90);
 
         }
 
@@ -659,11 +661,13 @@ namespace FoodDelivery
             while (reader.Read())
             {
                 string Name = reader["Name"].ToString();
-                TotalMealCost += Convert.ToDouble(reader["MealCost"]);
+                string tempMealCost = reader["MealCost"].ToString();
+                TotalMealCost += Convert.ToDouble(tempMealCost);
                 string MainIngredient = reader["MainIngredient"].ToString();
                 string SideIngredient = reader["SideIngredient"].ToString();
                 string Drink = reader["Drink"].ToString();
-                var row = new string[] { Name, MainIngredient, SideIngredient, Drink };
+                string RestaurantID = reader["RestaurantID"].ToString();
+                var row = new string[] { Name, MainIngredient, SideIngredient, Drink,tempMealCost,RestaurantID };
                 var lvi = new ListViewItem(row);
                 listView3.View = View.Details;
                 listView3.Items.Add(lvi);
@@ -766,7 +770,7 @@ namespace FoodDelivery
                 return;
 
 
-
+            int count = 0;
             SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getAvailableMeals('" + Convert.ToInt32(RestaurantID) + "')", cn);
 
 
@@ -780,6 +784,7 @@ namespace FoodDelivery
 
             while (reader.Read())
             {
+                count++;
                 string mealName = reader["MealName"].ToString();
 
                 string MainIngredient = reader["MainIngredient"].ToString();
@@ -793,7 +798,8 @@ namespace FoodDelivery
 
             }
 
-
+            if (count == 0)
+                label47.Visible = true;
             reader.Close(); // <- too easy to forget
             reader.Dispose();
         }
@@ -848,6 +854,7 @@ namespace FoodDelivery
                     listView5.View = View.Details;
                     listView5.Items.Add(lvi);
                 }
+                MessageBox.Show("Added to cart");
             }
             else
             {
@@ -1145,7 +1152,7 @@ namespace FoodDelivery
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
             if (outPutVal.Value != DBNull.Value) RequestID = outPutVal.Value.ToString();
-            MessageBox.Show(RequestID);
+            //MessageBox.Show(RequestID);
 
             cmd = new SqlCommand("FoodDelivery_FinalProject.addBelong", cn);
             cmd.CommandType = CommandType.StoredProcedure;
@@ -1174,7 +1181,7 @@ namespace FoodDelivery
 
 
                 cmd.ExecuteNonQuery();
-                MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
+                //MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
                 cmd.Parameters.Clear();
 
             }
@@ -1197,7 +1204,7 @@ namespace FoodDelivery
             cmd.Parameters.Add("@Distance", SqlDbType.Decimal).Value = minDistance;
             cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = RequestID;
             cmd.Parameters.Add("@TravelCost", SqlDbType.Decimal).Value = travelCost;
-            MessageBox.Show(driverID + "--" + minDistance + "--" + RequestID + "--" + travelCost+"--"+Convert.ToInt32((minDistance / 80) * 3600));
+            //MessageBox.Show(driverID + "--" + minDistance + "--" + RequestID + "--" + travelCost+"--"+Convert.ToInt32((minDistance / 80) * 3600));
 
 
 
@@ -1236,6 +1243,7 @@ namespace FoodDelivery
                 cmd.ExecuteNonQuery();
             }
             MessageBox.Show("Request submitted");
+            loadOrders();
 
         }
 
@@ -1370,6 +1378,8 @@ namespace FoodDelivery
                     listView5.View = View.Details;
                     listView5.Items.Add(lvi);
                 }
+
+                MessageBox.Show("Added to cart");
             }
             else
             {
@@ -1409,6 +1419,67 @@ namespace FoodDelivery
             Form v1 = new Form1();
             v1.Show();
             this.Close();
+
+        }
+
+        private void listView1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loadOrders();
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = null;
+            if (!verifySGBDConnection())
+                return;
+            
+            
+
+
+            for (int i = listView3.Items.Count - 1; i >= 0; i--)
+            {
+
+
+
+
+                string restID = listView3.Items[i].SubItems[5].Text;
+                string mealName= listView3.Items[i].SubItems[0].Text;
+                string mainIngredient= listView3.Items[i].SubItems[1].Text;
+                string sideIngredient=listView3.Items[i].SubItems[2].Text;
+                string drink=listView3.Items[i].SubItems[3].Text;
+                string mealCost= listView3.Items[i].SubItems[4].Text;
+                cmd = new SqlCommand("Select * from FoodDelivery_FinalProject.getRestaurantProfile ('"+Convert.ToInt32(restID)+"')", cn);
+                cmd.Connection = cn;
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    string Name = reader["Name"].ToString();
+
+                    var row = new string[] { mealName, mainIngredient, sideIngredient, drink, mealCost.Replace("€",""), Name,restID};
+                    var lvi = new ListViewItem(row);
+                    listView5.View = View.Details;
+                    listView5.Items.Add(lvi);
+
+
+
+
+
+
+
+
+
+
+
+                }
+            }
+
+            MessageBox.Show("Added to cart");
 
         }
     }
