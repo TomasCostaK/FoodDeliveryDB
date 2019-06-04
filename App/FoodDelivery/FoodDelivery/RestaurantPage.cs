@@ -46,11 +46,13 @@ namespace FoodDelivery
         {
             createTable();
             createOrderTable();
+            CreatePromotionalTable();
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             loadOrderTable();
             loadProfile();
             loadMeals();
             loadStats();
+            loadCodes();
         }
 
         private void createOrderTable() {
@@ -325,6 +327,43 @@ namespace FoodDelivery
             cn.Close();
         }
 
+        private void loadCodes()
+        {
+
+            string op1 = comboBox1.Text;
+            string op2 = textBox12.Text;
+
+            if (!verifySGBDConnection())
+                return;
+            SqlCommand cmd = null;
+
+            
+            cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getCodeByRestaurant('" + restID + "')", cn);
+           
+
+
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            //listView1.Dock = DockStyle.Fill;
+
+            listView2.Items.Clear();
+
+            while (reader.Read())
+            {
+                string code = reader["Code"].ToString();
+                string Sdate = reader["StartDate"].ToString();
+                string Edate = reader["EndDate"].ToString();
+                string discount = reader["Discount"].ToString();
+                var row = new string[] { code,Sdate,Edate,discount };
+                var lvi = new ListViewItem(row);
+                listView3.View = View.Details;
+                listView3.Items.Add(lvi);
+
+            }
+
+            cn.Close();
+        }
+
         private void createTable()
         {
             listView2.Columns.Add("Name", 120);
@@ -332,6 +371,13 @@ namespace FoodDelivery
             listView2.Columns.Add("Main Ingredient", 130);
             listView2.Columns.Add("Side Ingredient", 130);
             listView2.Columns.Add("Drink", 120);
+        }
+
+        private void CreatePromotionalTable() {
+            listView3.Columns.Add("Code", 130);
+            listView3.Columns.Add("Start Date", 130);
+            listView3.Columns.Add("End Date", 130);
+            listView3.Columns.Add("Discount", 130);
         }
 
         private void TabPage1_Click(object sender, EventArgs e)
@@ -669,6 +715,42 @@ namespace FoodDelivery
         private void TextBox12_TextChanged(object sender, EventArgs e)
         {
             loadMeals();
+        }
+
+        private void label27_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = null;
+
+            cmd = new SqlCommand("FoodDelivery_FinalProject.addCode", cn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add("@Code", SqlDbType.VarChar).Value =textBox37.Text;
+            cmd.Parameters.Add("@StartDate", SqlDbType.VarChar).Value = textBox36.Text;
+            cmd.Parameters.Add("@EndDate", SqlDbType.VarChar).Value = textBox35.Text;
+            cmd.Parameters.Add("@Discount", SqlDbType.Int).Value = Convert.ToInt32(textBox34.Text);
+            cmd.Parameters.Add("@RestaurantID", SqlDbType.VarChar).Value = restID;
+
+
+
+
+            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+
+
+
+
+
+            if (!verifySGBDConnection())
+                return;
+            cmd.Connection = cn;
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
+            loadCodes();
+           
         }
     }
 }

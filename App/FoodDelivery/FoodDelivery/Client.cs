@@ -681,9 +681,10 @@ namespace FoodDelivery
             cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRequest('" + RequestID + "')", cn);
             reader = cmd.ExecuteReader();
             string driverID = "";
+            string realTotalCost = "";
             while (reader.Read())
             {
-                string totalCost = reader["TotalCost"].ToString();
+                realTotalCost = reader["TotalCost"].ToString();
                 string paymentID = reader["PaymentID"].ToString();
                 string travelCost = reader["TravelCost"].ToString();
                 string estimatedTime = reader["EstimatedTime"].ToString();
@@ -692,7 +693,7 @@ namespace FoodDelivery
 
 
                 textBox13.Text = travelCost + " €";
-                textBox14.Text = totalCost + " €";
+                textBox14.Text = (Convert.ToDouble(travelCost)+Convert.ToDouble(TotalMealCost)).ToString() + " €";
                 textBox19.Text = estimatedTime;
                 textBox20.Text = distance + " km";
 
@@ -700,6 +701,17 @@ namespace FoodDelivery
 
             reader.Close(); // <- too easy to forget
             reader.Dispose();
+
+            if (Convert.ToDouble(textBox14.Text.Replace("€", "")) != Convert.ToDouble(realTotalCost)){
+                textBox30.Text = realTotalCost.ToString() + " €";
+                textBox30.Visible = true;
+                label53.Visible = true;
+                label16.Visible = true;
+                int discount =Convert.ToInt32(100-((Convert.ToDouble(realTotalCost)) * 100) / Convert.ToDouble(textBox14.Text.Replace("€", "")));
+                label53.Text = "After discount:" + "(" + discount.ToString() + "%)";
+
+
+            }
 
             cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getDriverDetails('" + driverID + "')", cn);
             reader = cmd.ExecuteReader();
@@ -822,6 +834,20 @@ namespace FoodDelivery
         private void button5_Click(object sender, EventArgs e)
         {
             panel1.Visible = false;
+            label53.Visible = false;
+            label16.Visible = false;
+            textBox30.Visible = false;
+            foreach (Control c in panel1.Controls)
+            {
+                TextBox t = (c as TextBox);
+                NumericUpDown n = (c as NumericUpDown);
+
+                if (t != null)
+                    t.Text = "";
+
+                if (n != null)
+                    n.Value = 0;
+            }
         }
 
         private void label28_Click(object sender, EventArgs e)
@@ -1146,7 +1172,7 @@ namespace FoodDelivery
             cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
             cmd.Parameters.Add("@ClientID", SqlDbType.NVarChar).Value = username;
             cmd.Parameters.Add("@PaymentID", SqlDbType.NVarChar).Value = paymentID;
-            cmd.Parameters.Add("@TotalCost ", SqlDbType.Decimal).Value =totalCost;
+            cmd.Parameters.Add("@TotalCost ", SqlDbType.Decimal).Value = Convert.ToDecimal(textBox21.Text.Replace("€",""));
             if (!verifySGBDConnection())
                 return;
             cmd.Connection = cn;
@@ -1487,6 +1513,144 @@ namespace FoodDelivery
         private void listView6_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            if (textBox2.Text != "")
+            {
+                SqlCommand cmd = null;
+                if (!verifySGBDConnection())
+                    return;
+                cmd = new SqlCommand("Select * from FoodDelivery_FinalProject.verifyCode ('" + textBox2.Text + "')", cn);
+                cmd.Connection = cn;
+                SqlDataReader reader = cmd.ExecuteReader();
+                string restaurantID = "";
+                string startDate = "";
+                string endDate = "";
+                string discount = "";
+                bool check = false;
+                while (reader.Read())
+                {
+                    restaurantID = reader["RestaurantID"].ToString();
+                    startDate = reader["StartDate"].ToString();
+                    endDate = reader["EndDate"].ToString();
+                    discount = reader["Discount"].ToString();
+
+
+                    
+
+                }
+                MessageBox.Show(restaurantID);
+                
+                for (int i = listView5.Items.Count - 1; i >= 0; i--)
+                {
+                    // MessageBox.Show("ola");
+                    string MealName = listView5.Items[i].SubItems[0].Text;
+
+                    string RestaurantID = listView5.Items[i].SubItems[6].Text;
+                    if (restaurantID != "")
+                    {
+                        if (RestaurantID == restaurantID)
+                        {
+                            check = true;
+                        }
+                    }
+                    else {
+                        check = true;
+                    }
+                    
+                }
+
+                if (!check)
+                {
+                    MessageBox.Show("Your code is not valid! Try another one");
+                }
+                else {
+                    if (startDate != "" & endDate != "")
+                    {
+                        DateTime start = DateTime.Parse(startDate);
+                        DateTime end = DateTime.Parse(endDate);
+                        if (DateTime.Today> start & DateTime.Today<end )
+                        {
+                            double originalPrice = Convert.ToDouble(textBox21.Text.Replace("€",""));
+                            double discountDouble = Convert.ToDouble(discount);
+                            double finalPrice = originalPrice * (1-(discountDouble / 100));
+                            textBox21.Text = finalPrice.ToString()+" €";
+                            button19.Enabled = false;
+                            textBox29.Text = discount+" %";
+                            textBox29.Visible = true;
+                            label51.Visible = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Your code is expired! Try another one");
+                        }
+
+
+                    }
+                    else if (startDate != "")
+                    {
+                        DateTime start = DateTime.Parse(startDate);
+
+                        if (DateTime.Today >start)
+                        {
+                            double originalPrice = Convert.ToDouble(textBox21.Text.Replace("€", ""));
+                            double discountDouble = Convert.ToDouble(discount);
+                            double finalPrice = originalPrice * (1 - (discountDouble / 100));
+                            textBox21.Text = finalPrice.ToString() + " €";
+                            button19.Enabled = false;
+                            textBox29.Text = discount + " %";
+                            textBox29.Visible = true;
+                            label51.Visible = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Your code is expired! Try another one");
+                        }
+                    }
+                    else if (endDate != "") {
+                        DateTime end = DateTime.Parse(endDate);
+
+
+                        if (DateTime.Today < end)
+                        {
+                            double originalPrice = Convert.ToDouble(textBox21.Text.Replace("€", ""));
+                            double discountDouble = Convert.ToDouble(discount);
+                            double finalPrice = originalPrice * (1 - (discountDouble / 100));
+                            textBox21.Text = finalPrice.ToString() + " €";
+                            button19.Enabled = false;
+                            textBox29.Text = discount + " %";
+                            textBox29.Visible = true;
+                            label51.Visible = true;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Your code is expired! Try another one");
+                        }
+                    }
+                    else
+                    {
+                        double originalPrice = Convert.ToDouble(textBox21.Text.Replace("€", ""));
+                        double discountDouble = Convert.ToDouble(discount);
+                        double finalPrice = originalPrice * (1 - (discountDouble / 100));
+                        textBox21.Text = finalPrice.ToString() + " €";
+                        button19.Enabled = false;
+                        textBox29.Text = discount + " %";
+                        textBox29.Visible = true;
+                        label51.Visible = true;
+                    }
+                }
+
+            }
+            else {
+                MessageBox.Show("Insert promotional code");
+            }
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            panel3.Visible = false;
         }
     }
 
