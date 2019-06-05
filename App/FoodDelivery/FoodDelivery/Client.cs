@@ -365,7 +365,7 @@ namespace FoodDelivery
 
 
 
-            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantCity()", cn);
+            SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantCity", cn);
 
 
             SqlDataReader reader = cmd.ExecuteReader();
@@ -548,7 +548,6 @@ namespace FoodDelivery
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
 
-            MessageBox.Show("ola " + cmd.Parameters["@responseMessage"].Value);
 
             button1.Show();
             button2.Hide();
@@ -918,7 +917,7 @@ namespace FoodDelivery
             if (listView5.Items.Count != 0)
             {
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.CheckAvailableDrivers( )", cn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.CheckAvailableDrivers", cn);
 
 
                 SqlDataReader reader = cmd.ExecuteReader();

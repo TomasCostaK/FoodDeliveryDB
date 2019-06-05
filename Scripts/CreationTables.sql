@@ -37,6 +37,7 @@ CREATE TABLE FoodDelivery_FinalProject.Tracking(
 	[Date]			DATE,
 	Hour			TIME NOT NULL,
 	DriverID		VARCHAR(50)NOT NULL,
+	City			Varchar(20)
 	
 	PRIMARY KEY(DriverID,GPS_LATITUDE,GPS_LONGITUDE,Hour) 
 
@@ -163,9 +164,8 @@ alter table FoodDelivery_FinalProject.Trip add constraint TripRequest foreign ke
 alter table FoodDelivery_FinalProject.Meal add constraint MealRestaurant foreign key(RestaurantID) references FoodDelivery_FinalProject.Restaurant(RestaurantID) ON DELETE CASCADE;
 
 --Belongs
-alter table FoodDelivery_FinalProject.Belongs add constraint BelongsMeal foreign key(Name) references FoodDelivery_FinalProject.Meal(Name);
+alter table FoodDelivery_FinalProject.Belongs add constraint BelongsMeal foreign key(Name,RestaurantID) references FoodDelivery_FinalProject.Meal(Name,RestaurantID);
 alter table FoodDelivery_FinalProject.Belongs ADD constraint BelongsRequest foreign key(RequestID) references FoodDelivery_FinalProject.Request(RequestID) ON DELETE CASCADE;
-alter table FoodDelivery_FinalProject.Belongs ADD constraint BelongsRestaurant foreign key(RestaurantID) references FoodDelivery_FinalProject.Restaurant(RestaurantID) ON DELETE CASCADE;
 
 
 

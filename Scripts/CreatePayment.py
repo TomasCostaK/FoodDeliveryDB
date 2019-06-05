@@ -11,7 +11,7 @@ type_payment = ['MB Way','Credit Card','Debit Card','Paypal','Bitcoin','Money']
 
 
 # males
-for i in range(30):
+for i in range(9300):
     type_pay=random.choice(type_payment)
 
     if(type_pay=="Money"):
