@@ -1,7 +1,3 @@
-ALTER TABLE  FoodDelivery_FinalProject.Client
-ADD PasswordHash BINARY(64) NOT NULL
-SELECT *
-FROM FoodDelivery_FinalProject.Client
 
 ALTER PROCEDURE FoodDelivery_FinalProject.AddDriver
 	
@@ -53,17 +49,3 @@ BEGIN
 	ELSE
 		SET @responseMessage='Username already exists'
 END
-
-DECLARE @responseMessage NVARCHAR(250)
-
-EXEC FoodDelivery_FinalProject.AddUser
-          @pLogin = N'Admin',
-          @pPassword = N'123',
-          @pName = N'Admin',
-          @Contact='900000001',
-		  @Image=NULL,
-		  @Street='ola',
-		  @City='adeus',
-		  @PostalCode='4812',
-		  
-          @responseMessage=@responseMessage OUTPUT

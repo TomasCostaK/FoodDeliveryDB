@@ -20,7 +20,6 @@ BEGIN
 			Update FoodDelivery_FinalProject.Client 
 			SET Contact=@Contact,Street=@Street,City=@City,PostalCode=@PostalCode,CardNumber=EncryptByPassPhrase('12345',@CardNumber),CardExpirationDate=@CardExpirationDate
 			WHERE LoginName=@pLogin
-			SET @responseMessage='olaasdasdad'+@Image
 
 		IF @Image <>'nothing'
 		BEGIN
@@ -28,7 +27,6 @@ BEGIN
 			Update FoodDelivery_FinalProject.Client 
 			SET Photo=@Image
 			WHERE LoginName=@pLogin
-			SET @responseMessage='ola43542342'+@Image
 
 		END
 

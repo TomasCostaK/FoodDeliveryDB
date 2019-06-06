@@ -1,8 +1,3 @@
-ALTER TABLE  FoodDelivery_FinalProject.Client
-ADD PasswordHash BINARY(64) NOT NULL
-SELECT *
-FROM FoodDelivery_FinalProject.Client
-
 ALTER PROCEDURE FoodDelivery_FinalProject.AddUser
 
     @pLogin NVARCHAR(50), 

@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("");
-            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.textBox4 = new System.Windows.Forms.TextBox();
@@ -121,7 +121,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
-            this.listView3 = new System.Windows.Forms.ListView();
             this.textBox34 = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.textBox35 = new System.Windows.Forms.TextBox();
@@ -132,6 +131,7 @@
             this.button9 = new System.Windows.Forms.Button();
             this.label40 = new System.Windows.Forms.Label();
             this.label43 = new System.Windows.Forms.Label();
+            this.listView3 = new System.Windows.Forms.ListView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -276,7 +276,7 @@
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(121, 21);
             this.comboBox1.TabIndex = 24;
-            this.comboBox1.Text = "None";
+            this.comboBox1.Text = "Price Ascending";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.ComboBox1_SelectedIndexChanged);
             // 
             // listView2
@@ -572,7 +572,7 @@
             this.panel1.Controls.Add(this.label33);
             this.panel1.Controls.Add(this.label34);
             this.panel1.Controls.Add(this.label37);
-            this.panel1.Location = new System.Drawing.Point(0, 2);
+            this.panel1.Location = new System.Drawing.Point(2, 2);
             this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1097, 544);
@@ -858,11 +858,11 @@
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem7,
-            listViewItem8});
-            this.listView1.Location = new System.Drawing.Point(81, 98);
+            listViewItem1,
+            listViewItem2});
+            this.listView1.Location = new System.Drawing.Point(281, 76);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(800, 413);
+            this.listView1.Size = new System.Drawing.Size(529, 413);
             this.listView1.TabIndex = 6;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.listView1_MouseClick);
@@ -1068,14 +1068,6 @@
             this.tabPage5.Text = "Promotional Codes";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
-            // listView3
-            // 
-            this.listView3.Location = new System.Drawing.Point(24, 85);
-            this.listView3.Name = "listView3";
-            this.listView3.Size = new System.Drawing.Size(620, 332);
-            this.listView3.TabIndex = 24;
-            this.listView3.UseCompatibleStateImageBehavior = false;
-            // 
             // textBox34
             // 
             this.textBox34.Location = new System.Drawing.Point(792, 292);
@@ -1159,6 +1151,15 @@
             this.label43.Size = new System.Drawing.Size(57, 13);
             this.label43.TabIndex = 35;
             this.label43.Text = "New Code";
+            // 
+            // listView3
+            // 
+            this.listView3.Location = new System.Drawing.Point(127, 87);
+            this.listView3.Name = "listView3";
+            this.listView3.Size = new System.Drawing.Size(509, 332);
+            this.listView3.TabIndex = 24;
+            this.listView3.UseCompatibleStateImageBehavior = false;
+            this.listView3.SelectedIndexChanged += new System.EventHandler(this.listView3_SelectedIndexChanged);
             // 
             // RestaurantPage
             // 

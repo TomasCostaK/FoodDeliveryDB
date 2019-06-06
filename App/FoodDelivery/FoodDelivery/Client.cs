@@ -542,7 +542,6 @@ namespace FoodDelivery
 
 
 
-
             if (!verifySGBDConnection())
                 return;
             cmd.Connection = cn;
@@ -989,7 +988,8 @@ namespace FoodDelivery
                 string Hour = reader["Hour"].ToString();
                 string latitude = reader["GPS_Latitude"].ToString();
                 string longitude = reader["GPS_Longitude"].ToString();
-                list.Add(new Driver(DriverID, Date, Hour, latitude, longitude));
+                string City = reader["City"].ToString();
+                list.Add(new Driver(DriverID, Date, Hour, latitude, longitude,City));
 
                 //verificar se existe algum driver na cidade do cliente
 
@@ -1019,7 +1019,7 @@ namespace FoodDelivery
 
                 GPS.TryGetValue(textBox7.Text, out coord);
 
-                if (Equals(b.Latitude, coord[0].Replace(".", ",")))
+                if (Equals(b.City, textBox7.Text))
                 {
                     MessageBox.Show("Found Driver");
                     driverID = b.Id;
@@ -1073,10 +1073,10 @@ namespace FoodDelivery
 
             }
             textBox23.Text = totalMealCost + " €";
-            textBox22.Text = costByKm*minDistance + " €";
+            textBox22.Text = String.Format("{0:0.00}", costByKm * minDistance)  + " €";
             travelCost = costByKm * minDistance;
             totalCost = travelCost + totalMealCost;
-            textBox21.Text =Convert.ToString(totalMealCost + costByKm * minDistance)+" €";
+            textBox21.Text = String.Format("{0:0.00}", totalMealCost + costByKm * minDistance)  +" €";
 
             
             
@@ -1106,14 +1106,17 @@ namespace FoodDelivery
             public string Hour { get; set; }
             public string Latitude { get; set; }
             public string Longitude { get; set; }
+            public string City { get; set; }
 
-            public Driver(string id, string date, string hour, string latitude, string longitude)
+
+            public Driver(string id, string date, string hour, string latitude, string longitude, string City)
             {
                 this.Id = id;
                 this.Date = date;
                 this.Hour = hour;
                 this.Latitude = latitude;
                 this.Longitude = Longitude;
+                this.City = City;
             }
 
         }
@@ -1151,7 +1154,7 @@ namespace FoodDelivery
 
 
                 if (outPutVal.Value != DBNull.Value) paymentID = outPutVal.Value.ToString();
-                //MessageBox.Show(paymentID);
+                //MessageBox.Show(paymentID);*/
 
                 createRequest();
             }
@@ -1161,7 +1164,7 @@ namespace FoodDelivery
             SqlCommand cmd = null;
 
 
-            cmd = new SqlCommand("FoodDelivery_FinalProject.addRequest", cn);
+           cmd = new SqlCommand("FoodDelivery_FinalProject.addRequest", cn);
             cmd.CommandType = CommandType.StoredProcedure;
 
             SqlParameter outPutVal = new SqlParameter("@RequestID", SqlDbType.Int);
@@ -1177,29 +1180,31 @@ namespace FoodDelivery
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
             if (outPutVal.Value != DBNull.Value) RequestID = outPutVal.Value.ToString();
-            //MessageBox.Show(RequestID);
-
-            cmd = new SqlCommand("FoodDelivery_FinalProject.addBelong", cn);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
-            cmd.Parameters.Add("@Name", SqlDbType.NVarChar);
-            //MessageBox.Show(RequestID_2);
-            cmd.Parameters.Add("@RestaurantID", SqlDbType.NVarChar);
-            cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = RequestID;
-
-            if (!verifySGBDConnection())
-                return;
-            cmd.Connection = cn;
+            
+            
             
 
             for (int i = listView5.Items.Count - 1; i >= 0; i--)
             {
-               // MessageBox.Show("ola");
+                // MessageBox.Show("ola");
+
+                cmd = new SqlCommand("FoodDelivery_FinalProject.addBelong", cn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@responseMessage", SqlDbType.NVarChar, 250).Direction = ParameterDirection.Output;
+                cmd.Parameters.Add("@Name", SqlDbType.NVarChar);
+                //MessageBox.Show(RequestID_2);
+                cmd.Parameters.Add("@RestaurantID", SqlDbType.NVarChar);
+                cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = RequestID;
+
+                if (!verifySGBDConnection())
+                    return;
+                cmd.Connection = cn;
+
                 string MealName=listView5.Items[i].SubItems[0].Text;
                 
                 string RestaurantID = listView5.Items[i].SubItems[6].Text;
-
+                MessageBox.Show(MealName);
                 cmd.Parameters["@Name"].Value = MealName;
 
                 cmd.Parameters["@RestaurantID"].Value = RestaurantID;
@@ -1335,7 +1340,7 @@ namespace FoodDelivery
 
             //listView1.Dock = DockStyle.Fill;
 
-
+            label42.Text = mealName;
             string mainIngredient = "";
             string sideIngredient = "";
             string drink = "";
@@ -1540,7 +1545,6 @@ namespace FoodDelivery
                     
 
                 }
-                MessageBox.Show(restaurantID);
                 
                 for (int i = listView5.Items.Count - 1; i >= 0; i--)
                 {
@@ -1555,12 +1559,12 @@ namespace FoodDelivery
                             check = true;
                         }
                     }
-                    else {
+                    else if (discount != "") {
                         check = true;
                     }
                     
+                    
                 }
-
                 if (!check)
                 {
                     MessageBox.Show("Your code is not valid! Try another one");
@@ -1650,6 +1654,20 @@ namespace FoodDelivery
         private void button21_Click(object sender, EventArgs e)
         {
             panel3.Visible = false;
+            textBox23.Clear();
+            textBox22.Clear();
+            textBox21.Clear();
+            textBox29.Clear();
+            textBox29.Visible = false;
+            label51.Visible = false;
+            textBox2.Clear();
+            button19.Enabled = true;
+
+        }
+
+        private void listView3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 

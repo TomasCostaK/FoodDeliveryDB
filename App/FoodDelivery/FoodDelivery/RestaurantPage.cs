@@ -47,7 +47,8 @@ namespace FoodDelivery
             createTable();
             createOrderTable();
             CreatePromotionalTable();
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+
+
             loadOrderTable();
             loadProfile();
             loadMeals();
@@ -285,6 +286,7 @@ namespace FoodDelivery
             if (op1.Equals("Price Ascending"))
             {
                 cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getMeals('" + op1 + "' ,'" + restID + "') where Name LIKE '%" + op2 + "%' order by MealCost ASC", cn);
+
             }
             else if (op1.Equals("Price Descending"))
             {
@@ -346,7 +348,7 @@ namespace FoodDelivery
 
             //listView1.Dock = DockStyle.Fill;
 
-            listView2.Items.Clear();
+            listView3.Items.Clear();
 
             while (reader.Read())
             {
@@ -416,7 +418,6 @@ namespace FoodDelivery
             else
             {
                 string name = main + "_" + side + "_" + drink;
-                MessageBox.Show(name);
                 cmd = new SqlCommand("exec FoodDelivery_FinalProject.AddMeal '" + name + "'," + restID + ", " + cost + " ,'" + main + "', "+side+" , '" + drink + "'", cn);
             }
 
@@ -511,7 +512,7 @@ namespace FoodDelivery
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
 
-            MessageBox.Show("ola " + cmd.Parameters["@responseMessage"].Value);
+            MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
 
             button4.Show();
             button1.Hide();
@@ -614,7 +615,6 @@ namespace FoodDelivery
 
             reader.Close(); // <- too easy to forget
             reader.Dispose();
-            MessageBox.Show(DriverID);
 
             cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getTripbyDriver('" + DriverID + "') ", cn);
 
@@ -652,7 +652,6 @@ namespace FoodDelivery
 
 
             loadOrderDetails(RequestID,mealName,cost);
-            MessageBox.Show(RequestID);
             panel1.Visible = true;
         }
 
@@ -741,16 +740,24 @@ namespace FoodDelivery
 
 
 
-
+            
 
             if (!verifySGBDConnection())
                 return;
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
 
-            MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
+            if (cmd.Parameters["@responseMessage"].Value.ToString() != "")
+            {
+                MessageBox.Show(cmd.Parameters["@responseMessage"].Value.ToString());
+            }
             loadCodes();
            
+        }
+
+        private void listView3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

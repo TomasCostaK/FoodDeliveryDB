@@ -36,8 +36,6 @@
             this.label17 = new System.Windows.Forms.Label();
             this.textBox16 = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.textBox17 = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.textBox18 = new System.Windows.Forms.TextBox();
             this.textBox19 = new System.Windows.Forms.TextBox();
@@ -52,12 +50,14 @@
             this.textBox23 = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox15
             // 
             this.textBox15.Location = new System.Drawing.Point(532, 117);
-            this.textBox15.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox15.Margin = new System.Windows.Forms.Padding(2);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(140, 20);
             this.textBox15.TabIndex = 86;
@@ -85,7 +85,7 @@
             // textBox24
             // 
             this.textBox24.Location = new System.Drawing.Point(532, 80);
-            this.textBox24.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox24.Margin = new System.Windows.Forms.Padding(2);
             this.textBox24.Name = "textBox24";
             this.textBox24.Size = new System.Drawing.Size(140, 20);
             this.textBox24.TabIndex = 83;
@@ -93,7 +93,7 @@
             // button9
             // 
             this.button9.Location = new System.Drawing.Point(608, 468);
-            this.button9.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button9.Margin = new System.Windows.Forms.Padding(2);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(64, 20);
             this.button9.TabIndex = 82;
@@ -113,7 +113,7 @@
             // textBox16
             // 
             this.textBox16.Location = new System.Drawing.Point(532, 444);
-            this.textBox16.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox16.Margin = new System.Windows.Forms.Padding(2);
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(140, 20);
             this.textBox16.TabIndex = 80;
@@ -128,24 +128,6 @@
             this.label18.TabIndex = 79;
             this.label18.Text = "PostalCode*:";
             // 
-            // textBox17
-            // 
-            this.textBox17.Location = new System.Drawing.Point(531, 406);
-            this.textBox17.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.textBox17.Name = "textBox17";
-            this.textBox17.Size = new System.Drawing.Size(140, 20);
-            this.textBox17.TabIndex = 78;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(460, 414);
-            this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(31, 13);
-            this.label19.TabIndex = 77;
-            this.label19.Text = "City*:";
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -159,7 +141,7 @@
             // textBox18
             // 
             this.textBox18.Location = new System.Drawing.Point(531, 370);
-            this.textBox18.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox18.Margin = new System.Windows.Forms.Padding(2);
             this.textBox18.Name = "textBox18";
             this.textBox18.Size = new System.Drawing.Size(140, 20);
             this.textBox18.TabIndex = 75;
@@ -167,7 +149,7 @@
             // textBox19
             // 
             this.textBox19.Location = new System.Drawing.Point(531, 320);
-            this.textBox19.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox19.Margin = new System.Windows.Forms.Padding(2);
             this.textBox19.Name = "textBox19";
             this.textBox19.Size = new System.Drawing.Size(140, 20);
             this.textBox19.TabIndex = 74;
@@ -175,7 +157,7 @@
             // button10
             // 
             this.button10.Location = new System.Drawing.Point(456, 314);
-            this.button10.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button10.Margin = new System.Windows.Forms.Padding(2);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(56, 30);
             this.button10.TabIndex = 73;
@@ -186,7 +168,7 @@
             // textBox20
             // 
             this.textBox20.Location = new System.Drawing.Point(531, 277);
-            this.textBox20.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox20.Margin = new System.Windows.Forms.Padding(2);
             this.textBox20.Name = "textBox20";
             this.textBox20.Size = new System.Drawing.Size(140, 20);
             this.textBox20.TabIndex = 72;
@@ -204,7 +186,7 @@
             // textBox21
             // 
             this.textBox21.Location = new System.Drawing.Point(531, 240);
-            this.textBox21.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox21.Margin = new System.Windows.Forms.Padding(2);
             this.textBox21.Name = "textBox21";
             this.textBox21.Size = new System.Drawing.Size(140, 20);
             this.textBox21.TabIndex = 70;
@@ -222,7 +204,7 @@
             // textBox22
             // 
             this.textBox22.Location = new System.Drawing.Point(531, 195);
-            this.textBox22.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox22.Margin = new System.Windows.Forms.Padding(2);
             this.textBox22.Name = "textBox22";
             this.textBox22.Size = new System.Drawing.Size(140, 20);
             this.textBox22.TabIndex = 68;
@@ -250,7 +232,7 @@
             // textBox23
             // 
             this.textBox23.Location = new System.Drawing.Point(531, 158);
-            this.textBox23.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox23.Margin = new System.Windows.Forms.Padding(2);
             this.textBox23.Name = "textBox23";
             this.textBox23.Size = new System.Drawing.Size(140, 20);
             this.textBox23.TabIndex = 65;
@@ -275,11 +257,30 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(532, 409);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(139, 21);
+            this.comboBox1.TabIndex = 123;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(460, 417);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(31, 13);
+            this.label12.TabIndex = 122;
+            this.label12.Text = "City*:";
+            // 
             // DriverSignUp
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1028, 570);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox15);
             this.Controls.Add(this.label16);
@@ -289,8 +290,6 @@
             this.Controls.Add(this.label17);
             this.Controls.Add(this.textBox16);
             this.Controls.Add(this.label18);
-            this.Controls.Add(this.textBox17);
-            this.Controls.Add(this.label19);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.textBox18);
             this.Controls.Add(this.textBox19);
@@ -304,10 +303,11 @@
             this.Controls.Add(this.label24);
             this.Controls.Add(this.textBox23);
             this.Controls.Add(this.label25);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "DriverSignUp";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form4";
+            this.Load += new System.EventHandler(this.DriverSignUp_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -323,8 +323,6 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox textBox16;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox textBox17;
-        private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TextBox textBox18;
         private System.Windows.Forms.TextBox textBox19;
@@ -339,5 +337,7 @@
         private System.Windows.Forms.TextBox textBox23;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label12;
     }
 }

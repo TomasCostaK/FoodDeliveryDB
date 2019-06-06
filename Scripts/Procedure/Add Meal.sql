@@ -20,6 +20,3 @@ BEGIN
 
 END
 
-exec FoodDelivery_FinalProject.AddMeal 'massa_picapica',22, '8.40', 'massa', 'bolonhesa', 'fanta'
-
-select * from FoodDelivery_FinalProject.getMeals('None',22)

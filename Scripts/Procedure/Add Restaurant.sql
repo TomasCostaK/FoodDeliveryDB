@@ -27,18 +27,3 @@ BEGIN
 
 END
 
-DECLARE @responseMessage NVARCHAR(250)
-
-EXEC FoodDelivery_FinalProject.AddDriver
-		  @LicensePlate='12-AA-33',
-		  @Model='Tesla',
-          @pLogin = N'Admin',
-          @pPassword = N'123',
-          @pName = N'Admin',
-          @Contact='900000001',
-		  @Image=NULL,
-		  @Street='ola',
-		  @City='adeus',
-		  @PostalCode='4812',
-		  
-          @responseMessage=@responseMessage OUTPUT

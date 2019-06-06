@@ -401,7 +401,6 @@ namespace FoodDelivery
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
 
-            MessageBox.Show("ola " + cmd.Parameters["@responseMessage"].Value);
 
             loadProfile();
 
@@ -497,7 +496,6 @@ namespace FoodDelivery
             string RequestID = listView1.SelectedItems[0].SubItems[0].Text;
 
             loadOrderDetails(RequestID);
-            MessageBox.Show(RequestID);
             panel1.Visible = true;
         }
 
@@ -546,7 +544,6 @@ namespace FoodDelivery
 
             reader.Close(); // <- too easy to forget
             reader.Dispose();
-            MessageBox.Show(driverID);
 
             cn.Close();
 
@@ -567,7 +564,6 @@ namespace FoodDelivery
             string RequestID = listView1.SelectedItems[0].SubItems[0].Text;
 
             loadOrderDetails(RequestID);
-            MessageBox.Show(RequestID);
             panel1.Visible = true;
         }
 

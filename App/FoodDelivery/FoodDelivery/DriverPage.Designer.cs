@@ -627,6 +627,7 @@
             this.ClientSize = new System.Drawing.Size(1028, 570);
             this.Controls.Add(this.tabControl1);
             this.Name = "DriverPage";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Driver Page";
             this.Load += new System.EventHandler(this.DriverPage_Load);
             this.tabControl1.ResumeLayout(false);

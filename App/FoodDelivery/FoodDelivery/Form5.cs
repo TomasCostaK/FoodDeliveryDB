@@ -16,6 +16,27 @@ namespace FoodDelivery
     public partial class Form5 : Form
     {
         private SqlConnection cn;
+
+        Dictionary<string, string[]> GPS = new Dictionary<string, string[]>
+        {      {"Aveiro", new String [2] { "40,644270", "-8,645540" } },
+               {"Beja",new String [2]  {"38,015060", "-7,863230" } },
+               {"Braga",new String [2] {"41,550320","-8,420050"}},
+               {"Bragança",new String [2] {"41,805820", "-6,757190"}},
+               {"Castelo Branco",new String [2] {"39,822190","-7,490870"}},
+               {"Coimbra",new String [2] {"40,205640","-8,419550"}},
+               {"Évora",new String [2] {"38,566670","-7,900000"}},
+               {"Faro",new String [2] {"37,019370","-7,932230"}},
+               {"Guarda",new String [2] {"40,537330","-7,265750"}},
+               {"Leiria",new String [2] {"39,743620","-8,807050"}},
+               {"Lisboa",new String [2] {"38,716670","-9,133330"}},
+               {"Portalegre",new String [2] {"39,293790","-7,431220"}},
+               {"Porto",new String [2] {"41,149610","-8,610990"}},
+               {"Santarém",new String [2] {"39,233330","-8,683330"}},
+               {"Setúbal",new String [2] {"38,524400","-8,888200"}},
+               {"Viana do Castelo",new String [2]   {"41,693230","-8,832870"}},
+               {"Vila Real",new String [2]          {"41,300620","-7,744130"}},
+               { "Viseu",new String [2]                {"40,661010","-7,909710"}},
+        };
         public Form5()
         {
             InitializeComponent();
@@ -42,13 +63,26 @@ namespace FoodDelivery
             return cn.State == ConnectionState.Open;
         }
 
+        private void populatebox1()
+        {
+            var dataSource = new List<string>();
+
+            foreach (var city in GPS)
+            {
+                dataSource.Add(city.Key);
+            }
+            comboBox1.DataSource = dataSource;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+
+        }
+
         private void button12_Click(object sender, EventArgs e)
         {
             string Name = textBox25.Text;
             string password = textBox1.Text;
             string contact = textBox30.Text;
             string street = textBox28.Text;
-            string city = textBox27.Text;
+            string city =  comboBox1.Text;
             string postalCode = textBox26.Text;
             string Type = textBox14.Text;
 
@@ -83,14 +117,28 @@ namespace FoodDelivery
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
             string restaurantID="";
+            MessageBox.Show("Success");
+
             /*if (outPutVal.Value != DBNull.Value) restaurantID = outPutVal.Value.ToString();*/
 
-            MessageBox.Show("Your restaurant ID " + cmd.Parameters["@responseMessage"].Value.ToString());
+            //MessageBox.Show("Your restaurant ID " + cmd.Parameters["@responseMessage"].Value.ToString());
 
             /*panel2.Visible = false;
             panel3.Visible = false;
             panel1.Visible = false;
             panel4.Visible = false;*/
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Form v1 = new Form2();
+            v1.Show();
+            this.Close();
+        }
+
+        private void Form5_Load(object sender, EventArgs e)
+        {
+            populatebox1();
         }
     }
 }

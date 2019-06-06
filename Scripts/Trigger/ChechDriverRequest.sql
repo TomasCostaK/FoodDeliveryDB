@@ -38,7 +38,6 @@ AS
 	
 	IF (@TrackingCity=@ClientCity)
 		BEGIN
-			print('ola')
 			UPDATE FoodDelivery_FinalProject.Request
 			SET RequestStatus=0x01
 			WHERE RequestID=@RequestID
