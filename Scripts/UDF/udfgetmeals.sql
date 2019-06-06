@@ -30,4 +30,4 @@ begin
 return 
 end
 
-select * from FoodDelivery_FinalProject.getMeals('Price Descending',22) where Name LIKE '%ados%'
+select * from FoodDelivery_FinalProject.getMeals('Price Descending',22) where Name LIKE '%tum%'
