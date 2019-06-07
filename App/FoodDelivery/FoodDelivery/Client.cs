@@ -53,7 +53,7 @@ namespace FoodDelivery
         {
             InitializeComponent();
             this.username = username;
-
+            comboBox6.DropDownStyle = ComboBoxStyle.DropDownList;
 
         }
 
@@ -84,6 +84,14 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
+            var dataSource = new List<string>();
+
+            foreach (var city in GPS)
+            {
+                dataSource.Add(city.Key);
+            }
+            comboBox6.DataSource = dataSource;
+
             SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getProfile('" + username + "')", cn);
 
 
@@ -101,7 +109,7 @@ namespace FoodDelivery
                 textBox3.Text = reader["Name"].ToString();
                 textBox4.Text = reader["Contact"].ToString();
                 textBox5.Text = reader["Street"].ToString();
-                textBox7.Text = reader["City"].ToString();
+                comboBox6.Text = reader["City"].ToString();
                 textBox6.Text = reader["PostalCode"].ToString();
                 textBox8.Text = reader["CardNumber"].ToString();
                 textBox9.Text = reader["CardExpirationDate"].ToString();
@@ -227,6 +235,8 @@ namespace FoodDelivery
         private void Client_Load_1(object sender, EventArgs e)
         {
             cn = getSGBDConnection();
+
+            loadProfile();
             createTable();
             createMealTable();
             createMealTabTable();
@@ -237,10 +247,6 @@ namespace FoodDelivery
             populateComboBox1();
             populateTabMeal();
             loadOrders();
-
-
-
-            loadProfile();
 
         }
 
@@ -405,7 +411,6 @@ namespace FoodDelivery
             textBox4.ReadOnly = check;
             textBox5.ReadOnly = check;
             textBox6.ReadOnly = check;
-            textBox7.ReadOnly = check;
             textBox8.ReadOnly = check;
             textBox9.ReadOnly = check;
         }
@@ -491,7 +496,7 @@ namespace FoodDelivery
             string Name = textBox3.Text;
             string contact = textBox4.Text;
             string street = textBox5.Text;
-            string city = textBox7.Text;
+            string city = comboBox6.Text;
             string postalCode = textBox6.Text;
             string cardNumber = textBox8.Text;
             string cardExpiration = textBox9.Text;
@@ -1017,9 +1022,9 @@ namespace FoodDelivery
                 string[] coord;
 
 
-                GPS.TryGetValue(textBox7.Text, out coord);
+                GPS.TryGetValue(comboBox6.Text, out coord);
 
-                if (Equals(b.City, textBox7.Text))
+                if (Equals(b.City, comboBox6.Text))
                 {
                     MessageBox.Show("Found Driver");
                     driverID = b.Id;
@@ -1668,6 +1673,11 @@ namespace FoodDelivery
         private void listView3_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void TextBox11_TextChanged(object sender, EventArgs e)
+        {
+            loadRestaurants();
         }
     }
 

@@ -91,6 +91,15 @@ namespace FoodDelivery
 
         private void loadProfile()
         {
+
+            var dataSource = new List<string>();
+
+            foreach (var city in GPS)
+            {
+                dataSource.Add(city.Key);
+            }
+            comboBox3.DataSource = dataSource;
+
             if (!verifySGBDConnection())
                 return;
 
@@ -112,7 +121,7 @@ namespace FoodDelivery
                 textBox9.Text = reader["Name"].ToString();
                 textBox8.Text = reader["Contact"].ToString();
                 textBox7.Text = reader["Street"].ToString();
-                textBox6.Text = reader["City"].ToString();
+                comboBox3.Text = reader["City"].ToString();
                 textBox5.Text = reader["PostalCode"].ToString();
                 textBox11.Text = reader["LicensePlate"].ToString();
             }
@@ -154,6 +163,7 @@ namespace FoodDelivery
 
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
 
             enableTextBoxs(true);
             loadTrackings();
@@ -244,7 +254,7 @@ namespace FoodDelivery
 
             string op1 = comboBox1.Text;
             string chunk = textBox12.Text;
-            SqlCommand cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getAllTrackings('"+op1+ "' , '" + driverID + "', '" + chunk + "')", cn);
+            SqlCommand cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getAllTrackings('" + op1 + "' , '" + driverID + "', '" + chunk + "')", cn);
             SqlDataReader reader = cmd.ExecuteReader();
 
             listView2.Items.Clear();
@@ -365,7 +375,7 @@ namespace FoodDelivery
             string contact = textBox8.Text;
             string street = textBox7.Text;
             string postalcode = textBox5.Text;
-            string city = textBox6.Text;
+            string city = comboBox3.Text;
 
             if (!(string.IsNullOrEmpty(filename)))
             {
@@ -412,7 +422,7 @@ namespace FoodDelivery
             textBox8.Text = "";
             textBox7.Text = "";
             textBox5.Text = "";
-            textBox6.Text = "";
+            comboBox3.Text = "Aveiro";
         }
 
         private void ComboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -493,7 +503,7 @@ namespace FoodDelivery
 
         private void ListView3_MouseClick(object sender, MouseEventArgs e)
         {
-            string RequestID = listView1.SelectedItems[0].SubItems[0].Text;
+            string RequestID = listView3.SelectedItems[0].SubItems[0].Text;
 
             loadOrderDetails(RequestID);
             panel1.Visible = true;
@@ -570,6 +580,42 @@ namespace FoodDelivery
         private void Label34_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void TextBox12_TextChanged(object sender, EventArgs e)
+        {
+            if (!verifySGBDConnection())
+                return;
+            string op1 = comboBox1.Text;
+            string chunk = textBox12.Text;
+            SqlCommand cmd = null;
+            string city = textBox12.Text;
+            listView2.Items.Clear();
+            if (GPS.ContainsKey(city))
+            {
+                string gps_lat = GPS[city][0];//.Replace(',', '.');
+                string gps_lon = GPS[city][1];//.Replace(',', '.');
+
+                cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getAllTrackings('" + op1 + "' , '" + driverID + "', '" + chunk + "')", cn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    if (reader["GPS_Latitude"].ToString().Equals(gps_lat) && reader["GPS_Longitude"].ToString().Equals(gps_lon))
+                    {
+
+                        string trdate = (reader["Date"].ToString()).Split(' ')[0];
+                        string hour = reader["Hour"].ToString();
+                        var row = new string[] { city, trdate, hour };
+                        var lvi = new ListViewItem(row);
+                        listView2.View = View.Details;
+                        listView2.Items.Add(lvi);
+                    }
+                }
+
+            }
+
+            cn.Close();
         }
     }
 }

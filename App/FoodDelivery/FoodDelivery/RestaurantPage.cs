@@ -16,6 +16,27 @@ namespace FoodDelivery
     {
         private int restID;
         private SqlConnection cn;
+        Dictionary<string, string[]> GPS = new Dictionary<string, string[]>
+        {      {"Aveiro", new String [2] { "40,644270", "-8,645540" } },
+               {"Beja",new String [2]  {"38,015060", "-7,863230" } },
+               {"Braga",new String [2] {"41,550320","-8,420050"}},
+               {"Bragança",new String [2] {"41,805820", "-6,757190"}},
+               {"Castelo Branco",new String [2] {"39,822190","-7,490870"}},
+               {"Coimbra",new String [2] {"40,205640","-8,419550"}},
+               {"Évora",new String [2] {"38,566670","-7,900000"}},
+               {"Faro",new String [2] {"37,019370","-7,932230"}},
+               {"Guarda",new String [2] {"40,537330","-7,265750"}},
+               {"Leiria",new String [2] {"39,743620","-8,807050"}},
+               {"Lisboa",new String [2] {"38,716670","-9,133330"}},
+               {"Portalegre",new String [2] {"39,293790","-7,431220"}},
+               {"Porto",new String [2] {"41,149610","-8,610990"}},
+               {"Santarém",new String [2] {"39,233330","-8,683330"}},
+               {"Setúbal",new String [2] {"38,524400","-8,888200"}},
+               {"Viana do Castelo",new String [2]   {"41,693230","-8,832870"}},
+               {"Vila Real",new String [2]          {"41,300620","-7,744130"}},
+               { "Viseu",new String [2]                {"40,661010","-7,909710"}},
+        };
+
         public RestaurantPage(string restauID)
         {
             this.restID = Convert.ToInt32(restauID);
@@ -119,6 +140,14 @@ namespace FoodDelivery
             if (!verifySGBDConnection())
                 return;
 
+            var dataSource = new List<string>();
+
+            foreach (var city in GPS)
+            {
+                dataSource.Add(city.Key);
+            }
+            comboBox2.DataSource = dataSource;
+
             SqlCommand cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantProfile('" + restID + "')", cn);
 
 
@@ -130,7 +159,7 @@ namespace FoodDelivery
                 textBox15.Text = reader["Name"].ToString();
                 textBox14.Text = reader["Contact"].ToString();
                 textBox13.Text = reader["Street"].ToString();
-                textBox11.Text = reader["City"].ToString();
+                comboBox2.Text = reader["City"].ToString();
                 textBox5.Text = reader["PostalCode"].ToString();
                 textBox10.Text = reader["Type"].ToString();
                 
@@ -460,7 +489,7 @@ namespace FoodDelivery
             textBox15.ReadOnly = check;
             textBox14.ReadOnly = check;
             textBox13.ReadOnly = check;
-            textBox11.ReadOnly = check;
+            comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
             textBox10.ReadOnly = check;
             textBox5.ReadOnly = check;
             
@@ -484,7 +513,7 @@ namespace FoodDelivery
             string restaurantName = textBox15.Text;
             string contact = textBox14.Text;
             string street = textBox13.Text;
-            string city = textBox11.Text;
+            string city = comboBox2.Text;
             string postalCode = textBox5.Text;
             string type = textBox10.Text;
 
