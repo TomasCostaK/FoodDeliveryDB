@@ -400,7 +400,15 @@ namespace FoodDelivery
             cmd.Parameters.Add("@pLogin", SqlDbType.NVarChar).Value = driverID;
             cmd.Parameters.Add("@pName", SqlDbType.NVarChar).Value = Name;
             cmd.Parameters.Add("@Contact", SqlDbType.NChar, 9).Value = contact;
-            cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = picture;
+            if (picture == "")
+            {
+                cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = "nothing";
+            }
+            else
+            {
+                cmd.Parameters.Add("@Image", SqlDbType.NVarChar).Value = picture;
+
+            }
             cmd.Parameters.Add("@Street", SqlDbType.NVarChar).Value = street;
             cmd.Parameters.Add("@City", SqlDbType.NVarChar).Value = city;
             cmd.Parameters.Add("@PostalCode ", SqlDbType.NVarChar).Value = postalcode;
@@ -411,7 +419,7 @@ namespace FoodDelivery
                 return;
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
-
+            MessageBox.Show("Edited with Sucess!");
 
             loadProfile();
 
@@ -424,6 +432,7 @@ namespace FoodDelivery
             textBox7.Text = "";
             textBox5.Text = "";
             comboBox3.Text = "Aveiro";
+            MessageBox.Show("You have cleared out all fields!");
         }
 
         private void ComboBox2_SelectedIndexChanged(object sender, EventArgs e)
