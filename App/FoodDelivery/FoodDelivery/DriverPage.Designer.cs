@@ -40,6 +40,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.button17 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.textBox10 = new System.Windows.Forms.TextBox();
@@ -80,7 +81,6 @@
             this.listView3 = new System.Windows.Forms.ListView();
             this.listView1 = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -238,6 +238,14 @@
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.TabPage2_Click);
             // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(443, 203);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(210, 21);
+            this.comboBox3.TabIndex = 81;
+            // 
             // button17
             // 
             this.button17.BackColor = System.Drawing.Color.Red;
@@ -306,7 +314,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(99, 23);
             this.button4.TabIndex = 22;
-            this.button4.Text = "Edit";
+            this.button4.Text = "Confirm Edit";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
@@ -613,14 +621,6 @@
             this.label1.Size = new System.Drawing.Size(96, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Previous Requests";
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(443, 203);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(210, 21);
-            this.comboBox3.TabIndex = 81;
             // 
             // DriverPage
             // 
