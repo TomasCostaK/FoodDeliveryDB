@@ -1,1 +1,0 @@
-CREATE INDEX idxRestaurantID ON FoodDelivery_FinalProject.Tracking(DriverID)

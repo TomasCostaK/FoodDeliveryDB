@@ -21,7 +21,8 @@ namespace FoodDelivery
         }
 
         private SqlConnection getSGBDConnection()
-        {
+        {   
+            /////INSERT USERNAME AND PASSWORD HERE/////
             return new SqlConnection("Data Source = tcp:mednat.ieeta.pt\\SQLSERVER,8101 ;Initial Catalog = p5g10; uid =p5g10 ;password =PasssNovaBD!2018 ");
 
 
