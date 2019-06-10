@@ -253,10 +253,16 @@
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
+<<<<<<< HEAD
             this.comboBox3.Location = new System.Drawing.Point(591, 250);
             this.comboBox3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(279, 24);
+=======
+            this.comboBox3.Location = new System.Drawing.Point(443, 203);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(210, 21);
+>>>>>>> a609ba08c1a4b752d0b82020c1509db430cceb3f
             this.comboBox3.TabIndex = 81;
             // 
             // button17
@@ -333,7 +339,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(132, 28);
             this.button4.TabIndex = 22;
-            this.button4.Text = "Edit";
+            this.button4.Text = "Confirm Edit";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
