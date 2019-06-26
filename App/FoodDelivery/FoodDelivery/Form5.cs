@@ -118,17 +118,28 @@ namespace FoodDelivery
                 return;
             cmd.Connection = cn;
             cmd.ExecuteNonQuery();
-            string restaurantID="";
-            MessageBox.Show("Success");
+            
 
-            /*if (outPutVal.Value != DBNull.Value) restaurantID = outPutVal.Value.ToString();*/
+            cmd = new SqlCommand("SELECT * FROM   FoodDelivery_FinalProject.getRestaurantID('" + Name + "','"+contact+"') ", cn);
 
-            //MessageBox.Show("Your restaurant ID " + cmd.Parameters["@responseMessage"].Value.ToString());
+            SqlDataReader reader = cmd.ExecuteReader();
 
-            /*panel2.Visible = false;
-            panel3.Visible = false;
-            panel1.Visible = false;
-            panel4.Visible = false;*/
+            //listView1.Dock = DockStyle.Fill;
+
+            //listView2.Items.Clear();
+            string RestaurantID = "";
+
+
+            while (reader.Read())
+            {
+                RestaurantID = reader["RestaurantID"].ToString();
+                
+
+
+            }
+
+            MessageBox.Show("Success! Your ID is: " +RestaurantID);
+
         }
 
         private void button4_Click(object sender, EventArgs e)

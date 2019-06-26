@@ -193,9 +193,11 @@ namespace FoodDelivery
 
             SqlDataReader reader = cmd.ExecuteReader();
 
-            reader.Read();
-            expensivename = reader["Name"].ToString();
-            expensive = reader["MealCost"].ToString();
+            while (reader.Read()) {
+                expensivename = reader["Name"].ToString();
+                expensive = reader["MealCost"].ToString();
+            }
+            
 
             textBox29.Text = expensivename;
             textBox33.Text = expensive;
@@ -206,9 +208,13 @@ namespace FoodDelivery
             cmd = new SqlCommand("select top 1 * from FoodDelivery_FinalProject.getMeals('None', " + restID + ") order by MealCost asc", cn);
             reader = cmd.ExecuteReader();
 
-            reader.Read();
-            cheapestname = reader["Name"].ToString();
-            cheapest = reader["MealCost"].ToString();
+            while (reader.Read()) {
+                cheapestname = reader["Name"].ToString();
+                cheapest = reader["MealCost"].ToString();
+
+
+            }
+            
 
             textBox28.Text = cheapestname;
             textBox32.Text = cheapest;
@@ -220,8 +226,11 @@ namespace FoodDelivery
             cmd = new SqlCommand("select * from FoodDelivery_FinalProject.getMoneyMade("+ restID +")", cn);
             reader = cmd.ExecuteReader();
 
-            reader.Read();
-            moneymade = reader["moneyMade"].ToString();
+            while (reader.Read()) {
+
+                moneymade = reader["moneyMade"].ToString();
+
+            }
 
             textBox31.Text = moneymade;
 
@@ -232,8 +241,11 @@ namespace FoodDelivery
             cmd = new SqlCommand("select * from FoodDelivery_FinalProject.BestClient(" + restID + ")", cn);
             reader = cmd.ExecuteReader();
 
-            reader.Read();
-            clientID = reader["ClientID"].ToString();
+            while (reader.Read()) {
+                clientID = reader["ClientID"].ToString();
+
+
+            }
 
             textBox30.Text = clientID;
 
@@ -244,8 +256,10 @@ namespace FoodDelivery
             cmd = new SqlCommand("select * from FoodDelivery_FinalProject.NumClients(" + restID + ")", cn);
             reader = cmd.ExecuteReader();
 
-            reader.Read();
-            numberClients = reader["RequestsNo"].ToString();
+            while (reader.Read()) {
+                numberClients = reader["RequestsNo"].ToString();
+
+            }
 
             textBox7.Text = numberClients;
 
@@ -256,8 +270,10 @@ namespace FoodDelivery
             cmd = new SqlCommand("select * from FoodDelivery_FinalProject.soldMain(" + restID + ")", cn);
             reader = cmd.ExecuteReader();
 
-            reader.Read();
-            mainIng = reader["MainIngredient"].ToString();
+            while (reader.Read()) {
+                mainIng = reader["MainIngredient"].ToString();
+
+            }
 
             textBox25.Text = mainIng;
 
@@ -268,8 +284,10 @@ namespace FoodDelivery
             cmd = new SqlCommand("select * from FoodDelivery_FinalProject.soldSide(" + restID + ")", cn);
             reader = cmd.ExecuteReader();
 
-            reader.Read();
-            mainSide = reader["SideIngredient"].ToString();
+            while (reader.Read()) {
+                mainSide = reader["SideIngredient"].ToString();
+
+            }
 
             textBox27.Text = mainSide;
 
@@ -280,8 +298,10 @@ namespace FoodDelivery
             cmd = new SqlCommand("select * from FoodDelivery_FinalProject.soldDrink(" + restID + ")", cn);
             reader = cmd.ExecuteReader();
 
-            reader.Read();
-            mainDrink = reader["Drink"].ToString();
+            while (reader.Read()) {
+                mainDrink = reader["Drink"].ToString();
+
+            }
 
             textBox26.Text = mainDrink;
 
