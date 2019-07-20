@@ -5,5 +5,6 @@ EatQuik is a food delivery platform developed in Windows Forms that is similiar 
 It features most of the available SQL programming methods, such as UDFs, stored procedures and index. 
 
 Authors:
+
     Tomás Costa - TomasCostaK
     João Vasconcelos - jmnmv12
